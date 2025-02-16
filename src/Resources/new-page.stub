@@ -1,0 +1,24 @@
+<?php
+
+namespace App\Controller;
+
+use Xenolabs\XenoEngineBundle\Repository\PageRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+
+class {{ controller }}Controller extends AbstractController
+{
+    #[Route('/{{ slug }}', name: '{{ route }}', defaults: ['_firewall' => 'web'])]
+    public function index(PageRepository $pageRepository, Request $request): Response
+    {
+        $locale = ucfirst($request->getLocale());
+        $page = $pageRepository->getPage('{{ route }}', $locale);
+        if (null === $page) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->render('web/index.html.twig', ['page' => $page]);
+    }
+}

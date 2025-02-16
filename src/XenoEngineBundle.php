@@ -6,6 +6,7 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\AssetMapper\AssetMapperInterface;
+use Doctrine\ORM\EntityManager;
 
 class XenoEngineBundle extends Bundle
 {
@@ -21,6 +22,23 @@ class XenoEngineBundle extends Bundle
                         __DIR__ . '/../assets/js' => '@xenolabs/xeno-engine-bundle',
                         __DIR__ . '/../assets/css' => '@xenolabs/xeno-engine-bundle',
                     ],
+                ],
+            ]);
+        }
+
+        if ($this->isDoctrineAvailable($container)) {
+            
+            $container->prependExtensionConfig('doctrine', [
+                'orm' => [
+                    'mappings' => [
+                        'XenoEngineBundle' => [
+                            'is_bundle' => true,
+                            'type' => 'attribute',
+                            'dir' => 'src/Entity',
+                            'prefix' => 'Xenolabs\XenoEngineBundle\Entity',
+                            'alias' => 'Xenolabs\XenoEngineBundle',
+                        ]
+                    ]
                 ],
             ]);
         }
@@ -43,6 +61,11 @@ class XenoEngineBundle extends Bundle
         }
 
         return is_file($bundlesMetadata['FrameworkBundle']['path'] . '/Resources/config/asset_mapper.php');
+    }
+
+    private function isDoctrineAvailable(ContainerBuilder $container): bool
+    {
+        return class_exists(EntityManager::class);
     }
 
     private function addImportJsFileInAppJs(): void

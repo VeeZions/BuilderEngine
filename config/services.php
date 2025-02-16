@@ -8,7 +8,7 @@ return static function (ContainerConfigurator $container) {
 
     $services = $container->services();
     
-    $services->set('xenolabs_xeno_engine.manager_controller', EngineController::class)
+    $services->set('xenolabs_xeno_engine.engine_controller', EngineController::class)
         ->args([
             service('twig'),
         ])

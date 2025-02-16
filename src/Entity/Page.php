@@ -1,0 +1,259 @@
+<?php
+
+namespace Xenolabs\XenoEngineBundle\Entity;
+
+use Xenolabs\XenoEngineBundle\Entity\Admin\User;
+use Xenolabs\XenoEngineBundle\Repository\PageRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation\Timestampable;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+
+#[UniqueEntity(fields: ['route'])]
+#[ORM\Entity(repositoryClass: PageRepository::class)]
+class Page
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
+    #[Assert\NotBlank]
+    #[ORM\Column(length: 255)]
+    private ?string $title = null;
+
+    /**
+     * @var array<string, string>|null
+     */
+    #[ORM\Column(nullable: true)]
+    private ?array $seo = null;
+
+    /**
+     * @var array<int, mixed>|null
+     */
+    #[ORM\Column(nullable: true)]
+    private ?array $content = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $route = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $createdBy = null;
+
+    #[Timestampable(on: 'create')]
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\ManyToOne]
+    private ?User $updatedBy = null;
+
+    #[Timestampable(on: 'update')]
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
+
+    /**
+     * @var Collection<int, Ged>
+     */
+    #[ORM\ManyToMany(targetEntity: Ged::class, mappedBy: 'page')]
+    private Collection $geds;
+
+    #[ORM\Column]
+    private ?bool $published = null;
+
+    /**
+     * @var Collection<int, Element>
+     */
+    #[ORM\OneToMany(targetEntity: Element::class, mappedBy: 'page', orphanRemoval: true)]
+    private Collection $elements;
+
+    public function __construct()
+    {
+        $this->geds = new ArrayCollection();
+        $this->elements = new ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): static
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * @return array<string, string>|null
+     */
+    public function getSeo(): ?array
+    {
+        return $this->seo;
+    }
+
+    /**
+     * @param array<string, string>|null $seo
+     */
+    public function setSeo(?array $seo): static
+    {
+        $this->seo = $seo;
+
+        return $this;
+    }
+
+    /**
+     * @return array<int, mixed>|null
+     */
+    public function getContent(): ?array
+    {
+        return $this->content;
+    }
+
+    /**
+     * @param array<int, mixed>|null $content
+     */
+    public function setContent(?array $content): static
+    {
+        $this->content = $content;
+
+        return $this;
+    }
+
+    public function getRoute(): ?string
+    {
+        return $this->route;
+    }
+
+    public function setRoute(string $route): static
+    {
+        $this->route = $route;
+
+        return $this;
+    }
+
+    public function getCreatedBy(): ?User
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(?User $createdBy): static
+    {
+        $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedBy(): ?User
+    {
+        return $this->updatedBy;
+    }
+
+    public function setUpdatedBy(?User $updatedBy): static
+    {
+        $this->updatedBy = $updatedBy;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Ged>
+     */
+    public function getGeds(): Collection
+    {
+        return $this->geds;
+    }
+
+    public function addGed(Ged $ged): static
+    {
+        if (!$this->geds->contains($ged)) {
+            $this->geds->add($ged);
+            $ged->addPage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGed(Ged $ged): static
+    {
+        if ($this->geds->removeElement($ged)) {
+            $ged->removePage($this);
+        }
+
+        return $this;
+    }
+
+    public function isPublished(): ?bool
+    {
+        return $this->published;
+    }
+
+    public function setPublished(bool $published): static
+    {
+        $this->published = $published;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Element>
+     */
+    public function getElements(): Collection
+    {
+        return $this->elements;
+    }
+
+    public function addElement(Element $element): static
+    {
+        if (!$this->elements->contains($element)) {
+            $this->elements->add($element);
+            $element->setPage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeElement(Element $element): static
+    {
+        if ($this->elements->removeElement($element)) {
+            // set the owning side to null (unless already changed)
+            if ($element->getPage() === $this) {
+                $element->setPage(null);
+            }
+        }
+
+        return $this;
+    }
+}
