@@ -18,17 +18,19 @@ class Category
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Assert\NotBlank]
-    #[ORM\Column(length: 255)]
-    private ?string $title = null;
+    #[ORM\Column]
+    private array $title = [];
 
-    #[Slug(fields: ['title'])]
-    #[ORM\Column(length: 255)]
-    private ?string $slug = null;
+    #[ORM\Column]
+    private array $slug = [];
 
     #[Timestampable(on: 'create')]
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
+
+    #[Timestampable(on: 'update')]
+    #[ORM\Column]
+    private ?\DateTimeImmutable $updatedAt = null;
 
     /**
      * @var Collection<int, Article>
@@ -45,18 +47,12 @@ class Category
     #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parent')]
     private Collection $categories;
 
-    #[ORM\Column(length: 255)]
-    private ?string $titleEn = null;
-
     /**
      * @var Collection<int, Ged>
      */
     #[ORM\ManyToMany(targetEntity: Ged::class, mappedBy: 'category')]
     private Collection $geds;
 
-    /**
-     * @var array<string, mixed>
-     */
     #[ORM\Column]
     private array $seo = [];
 
@@ -72,21 +68,28 @@ class Category
         return $this->id;
     }
 
-    public function getTitleFr(): ?string
+    public function getTitle(): array
     {
-        return $this->titleFr;
+        return $this->title;
     }
 
-    public function setTitle(string $title): static
+    public function setTitle(array $title): static
     {
         $this->title = $title;
 
         return $this;
     }
 
-    public function getSlug(): ?string
+    public function getSlug(): array
     {
-        return $this->slugFr;
+        return $this->slug;
+    }
+
+    public function setSlug(array $slug): array
+    {
+        $this->slug = $slug;
+        
+        return $this;
     }
 
     public function getCreatedAt(): ?\DateTimeImmutable
@@ -97,6 +100,18 @@ class Category
     public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

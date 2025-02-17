@@ -20,27 +20,20 @@ class Page
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Assert\NotBlank]
-    #[ORM\Column(length: 255)]
-    private ?string $title = null;
-
-    /**
-     * @var array<string, string>|null
-     */
-    #[ORM\Column(nullable: true)]
-    private ?array $seo = null;
-
-    /**
-     * @var array<int, mixed>|null
-     */
-    #[ORM\Column(nullable: true)]
-    private ?array $content = null;
+    #[ORM\Column]
+    private array $title = [];
+    
+    #[ORM\Column]
+    private array $seo = [];
+    
+    #[ORM\Column]
+    private array $content = [];
 
     #[ORM\Column(length: 255)]
     private ?string $route = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?User $createdBy = null;
 
     #[Timestampable(on: 'create')]
@@ -48,6 +41,7 @@ class Page
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?User $updatedBy = null;
 
     #[Timestampable(on: 'update')]
@@ -80,48 +74,36 @@ class Page
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    public function getTitle(): array
     {
         return $this->title;
     }
 
-    public function setTitle(string $title): static
+    public function setTitle(array $title): static
     {
         $this->title = $title;
 
         return $this;
     }
 
-    /**
-     * @return array<string, string>|null
-     */
-    public function getSeo(): ?array
+    public function getSeo(): array
     {
         return $this->seo;
     }
-
-    /**
-     * @param array<string, string>|null $seo
-     */
-    public function setSeo(?array $seo): static
+    
+    public function setSeo(array $seo): static
     {
         $this->seo = $seo;
 
         return $this;
     }
-
-    /**
-     * @return array<int, mixed>|null
-     */
-    public function getContent(): ?array
+    
+    public function getContent(): array
     {
         return $this->content;
     }
 
-    /**
-     * @param array<int, mixed>|null $content
-     */
-    public function setContent(?array $content): static
+    public function setContent(array $content): static
     {
         $this->content = $content;
 

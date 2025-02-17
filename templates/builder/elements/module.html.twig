@@ -1,0 +1,10 @@
+<div
+    data-saas--builder-target="{{ module.type }}"
+    id="{{ module.id }}"
+    data-module="{{ module.contentType }}"
+    class="{{ module.class|exclude_used_classes({'start': [], 'contain': []}) }} w-full flex flex-col items-start justify-start"
+    data-config="{{ module|filter_children|json_encode() }}"
+>
+    {% import 'macros/builder-element.html.twig' as components %}
+    {{ components.getHeader(module, 'bg-gray-600', 'border-gray-300', module.contentType, editable is defined ? editable : false) }}
+</div>

@@ -1,0 +1,120 @@
+{% import 'macros/svg.html.twig' as svg %}
+<p class="text-sm erp-text-primary w-1/2">ID: <span class="erp-text-secondary font-lato_bold">{{ data.id }}</span></p>
+<p class="text-sm erp-text-primary w-1/2 text-right">{{ 'crud.builder.label.element'|trans({}, 'crud') }}: <span class="erp-text-secondary font-lato_bold">{{ ('crud.label.builder.header.' ~ data.type)|trans({}, 'crud') }}</span></p>
+<input type="hidden" name="builder-id" value="{{ data.id }}">
+<div class="flex flex-wrap items-start justify-start w-full sm:w-1/2 sm:pr-2">
+    <h3 class="text-md erp-text-secondary font-lato_bold w-full my-4">{{ 'crud.label.background'|trans({}, 'crud') }}</h3>
+    <div class="w-full">
+        <div class="w-full mb-2 pb-2">
+            <twig:MediaProvider
+                width="w-full"
+                label="{{ 'crud.label.category.media'|trans({}, 'crud') }}"
+                editable="{{ editable }}"
+                name="builder-bg-image"
+                value="{{ data.bg is not null ? data.bg.image : null }}"
+                only="{{ [enum('App\\Constant\\GedTypeEnum').IMAGE.value] }}"
+            />
+        </div>
+        <div class="w-full bg-gray-100 rounded-md mb-2 pb-2 px-2 pt-1">
+            <twig:Input
+                name="builder-bg-size"
+                type="text"
+                value="{{ data.bg is not null ? data.bg.size : null }}"
+                autocomplete="builder-bg-size"
+                label="{{ 'crud.label.settings.css.bg.size'|trans({}, 'crud') }}"
+                readOnly="{{ editable is same as false }}"
+            />
+        </div>
+        <div class="w-full bg-gray-100 rounded-md mb-2 pb-2 px-2 pt-1">
+            <twig:Input
+                name="builder-bg-position"
+                type="text"
+                value="{{ data.bg is not null ? data.bg.position : null }}"
+                autocomplete="builder-bg-position"
+                label="{{ 'crud.label.settings.css.bg.position'|trans({}, 'crud') }}"
+                readOnly="{{ editable is same as false }}"
+            />
+        </div>
+        <div class="w-full bg-gray-100 rounded-md mb-2 pb-2 px-2">
+            <twig:Select
+                name="builder-bg-repeat"
+                label="{{ 'crud.label.settings.css.bg.repeat'|trans({}, 'crud') }}"
+                value="{{ data.bg is not null ? data.bg.repeat : 'no-repeat' }}"
+                width="w-full"
+                selectedOption="{{ data.bg is not null ? data.bg.repeat : 'No repeat' }}"
+                selectOptions="{{ {'No repeat': 'no-repeat', 'Repeat': 'repeat'} }}"
+                disabled="{{ editable is same as false }}"
+            />
+        </div>
+        <div class="w-full bg-gray-100 rounded-md pb-2 px-2 pt-1">
+            <twig:Input
+                name="builder-bg-color"
+                type="text"
+                value="{{ data.bg is not null ? data.bg.color : null }}"
+                autocomplete="builder-bg-repeat"
+                label="{{ 'crud.label.settings.css.bg.color'|trans({}, 'crud') }}"
+                readOnly="{{ editable is same as false }}"
+            />
+        </div>
+    </div>
+</div>
+<div class="flex flex-wrap items-start justify-start w-full sm:w-1/2 sm:pl-2">
+    <h3 class="text-md erp-text-secondary font-lato_bold w-full my-4">{{ 'crud.label.css'|trans({}, 'crud') }}</h3>
+    <div class="w-full">
+        <div class="w-full bg-gray-100 rounded-md pb-2 px-2 pt-1 mb-2">
+            <twig:Input
+                name="builder-classes"
+                type="text"
+                value="{{ data.class }}"
+                autocomplete="builder-classes"
+                label="{{ 'crud.label.settings.css.classes'|trans({}, 'crud') }}"
+                readOnly="{{ editable is same as false }}"
+            />
+        </div>
+        <div class="w-full bg-gray-100 rounded-md pb-2 px-2 pt-1 mb-2">
+            <twig:Input
+                name="builder-stimulus_controller"
+                type="text"
+                value="{{ data.stimulusController }}"
+                autocomplete="builder-stimulus_controller"
+                label="{{ 'crud.label.settings.css.controller'|trans({}, 'crud') }}"
+                readOnly="{{ editable is same as false }}"
+            />
+        </div>
+        <div class="w-full bg-gray-100 rounded-md pb-2 px-2 pt-1{% if data.type is same as 'block' %} mb-2{% endif %}">
+            <twig:Input
+                name="builder-stimulus_target"
+                type="text"
+                value="{{ data.stimulusTarget }}"
+                autocomplete="builder-stimulus_target"
+                label="{{ 'crud.label.settings.css.target'|trans({}, 'crud') }}"
+                readOnly="{{ editable is same as false }}"
+            />
+        </div>
+        {% if data.type is same as 'block' %}
+            <div class="w-full bg-gray-100 rounded-md pb-2 px-2 pt-1">
+                <twig:Input
+                    name="builder-responsive_order"
+                    type="number"
+                    value="{{ data.responsiveOrder }}"
+                    autocomplete="builder-responsive_order"
+                    label="{{ 'crud.label.settings.css.order'|trans({}, 'crud') }}"
+                    readOnly="{{ editable is same as false }}"
+                />
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% if editable is same as true %}
+    <div
+        id="erp-builder-modal-settings-btn"
+        class="flex items-center justify-center w-full mt-2 sm:mt-4"
+    >
+        <twig:Cta
+            text="{{ 'crud.label.btn.save'|trans({}, 'crud') }}"
+            type="button"
+            style="default"
+            width="max"
+        />
+    </div>
+{% endif %}

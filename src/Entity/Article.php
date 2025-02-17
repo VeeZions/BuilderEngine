@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation\Slug;
 use Gedmo\Mapping\Annotation\Timestampable;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -20,32 +19,26 @@ class Article
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Assert\NotBlank]
-    #[ORM\Column(length: 255)]
-    private ?string $title = null;
+    #[ORM\Column]
+    private array $title = [];
 
-    #[Slug(fields: ['title'])]
-    #[ORM\Column(length: 255)]
-    private ?string $slug = null;
+    #[ORM\Column]
+    private array $slug = [];
 
     #[ORM\ManyToOne(inversedBy: 'articles')]
     private ?Category $category = null;
-
-    /**
-     * @var array<string, string>
-     */
+    
     #[ORM\Column]
     private array $seo = [];
 
-    #[Assert\NotBlank]
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $content = null;
+    #[ORM\Column]
+    private array $content = [];
 
     #[ORM\Column]
     private ?bool $published = null;
 
     #[ORM\ManyToOne(inversedBy: 'articles')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?User $author = null;
 
     #[Timestampable(on: 'create')]
@@ -57,6 +50,7 @@ class Article
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?User $updatedBy = null;
 
     /**
@@ -75,21 +69,28 @@ class Article
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    public function getTitle(): array
     {
         return $this->title;
     }
 
-    public function setTitle(string $title): static
+    public function setTitle(array $title): static
     {
         $this->title = $title;
 
         return $this;
     }
 
-    public function getSlug(): ?string
+    public function getSlug(): array
     {
         return $this->slug;
+    }
+
+    public function setSlug(array $slug): static
+    {
+        $this->slug = $slug;
+        
+        return $this;
     }
 
     public function getCategory(): ?Category
@@ -122,12 +123,12 @@ class Article
         return $this;
     }
 
-    public function getContent(): ?string
+    public function getContent(): array
     {
         return $this->content;
     }
 
-    public function setContent(string $content): static
+    public function setContent(array $content): static
     {
         $this->content = $content;
 

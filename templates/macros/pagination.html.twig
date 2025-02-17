@@ -1,0 +1,104 @@
+{% macro header(search, order, page, maxPage, entity) %}
+    {% set count = entity.getTotalItemCount() %}
+    {% set firstItem = (page * 10) - 9 %}
+    {% set lastItem = firstItem + entity.getItems()|length - 1 %}
+    {% if count > 0 %}
+        <div class="flex items-center justify-center sm:justify-start">
+            <p class="font-lato text-sm sm:text-lg relative top-1.5 text-text">Total: <b class="text-salmon">{{ count }}</b> résultat{{ count > 1 ? 's' : '' }} ({{ firstItem }} - {{ lastItem }})</p>
+            {% if maxPage > 1 %}
+                <p class="font-lato text-sm sm:text-lg relative top-1.5 text-text">&nbsp;- Page <b class="text-salmon">{{ page }}</b> sur {{ maxPage }}</p>
+            {% endif %}
+        </div>
+    {% endif %}
+    <form class="flex items-center justify-between flex-col sm:flex-wrap sm:flex-row w-full mb-4" action="{{ path(app.request.get('_route')) }}">
+        {% if count > 0 %}
+            <input type="hidden" name="page" value="1">
+            <div class="w-full sm:w-auto flex items-center justify-center sm:justify-start mt-2">
+                <span class="font-lato mr-2 text-xl text-text relative top-1.5">Ordre</span>
+                <label class="flex items-center justify-start border border-text/20 p-2 rounded-md bg-white mr-2 cursor-pointer" title="Croissant">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="text-salmon font-semibold text-xs sm:text-sm size-5 mr-2">
+                        <path fill="currentColor" d="M151.6 469.6C145.5 476.2 137 480 128 480s-17.5-3.8-23.6-10.4l-88-96c-11.9-13-11.1-33.3 2-45.2s33.3-11.1 45.2 2L96 365.7 96 64c0-17.7 14.3-32 32-32s32 14.3 32 32l0 301.7 32.4-35.4c11.9-13 32.2-13.9 45.2-2s13.9 32.2 2 45.2l-88 96zM320 32l32 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-32 0c-17.7 0-32-14.3-32-32s14.3-32 32-32zm0 128l96 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-96 0c-17.7 0-32-14.3-32-32s14.3-32 32-32zm0 128l160 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-160 0c-17.7 0-32-14.3-32-32s14.3-32 32-32zm0 128l224 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-224 0c-17.7 0-32-14.3-32-32s14.3-32 32-32z"/>
+                    </svg>
+                    <input class="mr-1 h-4 w-4 bg-white rounded-full border-gray-400 checked:text-salmon ring-white checked:ring-salmon ring focus:ring-salmon cursor-pointer checked:bg-gold" type="radio" name="order"{{ order is same as 'asc' ? ' checked' : '' }} value="asc">
+                </label>
+                <label class="flex items-center justify-start border border-text/20 p-2 rounded-md bg-white cursor-pointer" title="Décroissant">
+                    <input class="ml-1 h-4 w-4 bg-white rounded-full border-gray-400 checked:text-salmon ring-white checked:ring-salmon ring focus:ring-salmon cursor-pointer checked:bg-gold" type="radio" name="order"{{ order is same as 'desc' ? ' checked' : '' }} value="desc">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="text-salmon font-semibold text-xs sm:text-sm size-5 ml-2">
+                        <path fill="currentColor" d="M151.6 42.4C145.5 35.8 137 32 128 32s-17.5 3.8-23.6 10.4l-88 96c-11.9 13-11.1 33.3 2 45.2s33.3 11.1 45.2-2L96 146.3 96 448c0 17.7 14.3 32 32 32s32-14.3 32-32l0-301.7 32.4 35.4c11.9 13 32.2 13.9 45.2 2s13.9-32.2 2-45.2l-88-96zM320 32c-17.7 0-32 14.3-32 32s14.3 32 32 32l32 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-32 0zm0 128c-17.7 0-32 14.3-32 32s14.3 32 32 32l96 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0zm0 128c-17.7 0-32 14.3-32 32s14.3 32 32 32l160 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-160 0zm0 128c-17.7 0-32 14.3-32 32s14.3 32 32 32l224 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-224 0z"/>
+                    </svg>
+                </label>
+            </div>
+        {% endif %}
+        {% if count is same as (0) %}
+            <div class="w-full sm:w-auto flex items-center justify-center sm:justify-start mt-2"></div>
+        {% endif %}
+        <div class="flex items-center justify-end flex-col sm:flex-row w-full sm:w-auto">
+            <label class="flex items-center justify-center w-full sm:w-auto">
+                <input class="mt-2 p-2 border border-salmon bg-salmon/10 rounded-md text-salmon font-semibold text-xs sm:text-sm sm:mr-2 ring-0 w-full focus:ring-2 focus:ring-salmon outline-none" type="text" spellcheck="false" autocomplete="off" name="search" value="{{ search }}">
+            </label>
+            <button class="mt-2 text-white text-[1.3rem] py-0.5 px-4 rounded-md font-semibold w-full sm:w-auto bg-salmon shadow-md duration-200 btns" type="submit"><span class="font-lato relative top-0.5">Rechercher</span></button>
+        </div>
+    </form>
+{% endmacro %}
+
+{% macro footer(search, page, maxPage, entity, order) %}
+    {% if maxPage > 1 and entity.getTotalItemCount() > 0 %}
+        <div class="flex items-center justify-center py-2 w-full mt-4 overflow-x-auto">
+            <span class="m-x-auto flex items-center">
+                {% if page > 1 %}
+                    <a class="text-salmon font-semibold text-xs sm:text-sm mx-1 bg-white rounded-md px-2 py-1 text-sm border border-text/20 duration-200 hover:scale-[1.2]" href="{{ path(app.request.get('_route'), {page: 1, search: search, order: order}) }}">{{ '<<' }}</a>
+                    <a class="text-salmon font-semibold text-xs sm:text-sm mx-1 bg-white rounded-md px-2 py-1 text-sm border border-text/20 duration-200 hover:scale-[1.2]" href="{{ path(app.request.get('_route'), {page: page - 1, search: search, order: order}) }}">{{ '<' }}</a>
+                {% else %}
+                    <span class="text-salmon font-semibold text-xs sm:text-sm opacity-50 mx-1 bg-white rounded-md px-2 py-1 text-sm border border-text/20 cursor-default">{{ '<<' }}</span>
+                    <span class="text-salmon font-semibold text-xs sm:text-sm opacity-50 mx-1 bg-white rounded-md px-2 py-1 text-sm border border-text/20 cursor-default">{{ '<' }}</span>
+                {% endif %}
+                {% if maxPage < 8 %}
+                    {% for index in 1..maxPage %}
+                        {% if loop.index is same as (page) %}
+                            <span class="text-gold font-semibold text-xs sm:text-sm mx-1 bg-white rounded-md px-2 py-1 text-sm border border-text/20 scale-[1.2] cursor-default">{{ page }}</span>
+                        {% else %}
+                            <a class="text-salmon font-semibold text-xs sm:text-sm mx-1 bg-white rounded-md px-2 py-1 text-sm border border-text/20 duration-200 hover:scale-[1.2]" href="{{ path(app.request.get('_route'), {page: loop.index, search: search, order: order}) }}">{{ loop.index }}</a>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    {% if page < 7 %}
+                        {% for index in 1..6 %}
+                            {% if loop.index is same as (page) %}
+                                <span class="text-gold font-semibold text-xs sm:text-sm mx-1 bg-white rounded-md px-2 py-1 text-sm border border-text/20 scale-[1.2] cursor-default">{{ page }}</span>
+                            {% else %}
+                                <a class="text-salmon font-semibold text-xs sm:text-sm mx-1 bg-white rounded-md px-2 py-1 text-sm border border-text/20 duration-200 hover:scale-[1.2]" href="{{ path(app.request.get('_route'), {page: loop.index, search: search, order: order}) }}">{{ loop.index }}</a>
+                            {% endif %}
+                        {% endfor %}
+                        <span class="text-salmon font-semibold text-xs sm:text-sm mx-1 bg-white rounded-md px-2 py-1 text-sm border border-text/20 cursor-default">...</span>
+                    {% elseif page > 6  and page < (maxPage - 4) %}
+                        <span class="text-salmon font-semibold text-xs sm:text-sm mx-1 bg-white rounded-md px-2 py-1 text-sm border border-text/20 cursor-default">...</span>
+                        {% for index in (page - 2)..(page + 2) %}
+                            {% if index is same as (page) %}
+                                <span class="text-gold font-semibold text-xs sm:text-sm mx-1 bg-white rounded-md px-2 py-1 text-sm border border-text/20 scale-[1.2] cursor-default">{{ page }}</span>
+                            {% else %}
+                                <a class="text-salmon font-semibold text-xs sm:text-sm mx-1 bg-white rounded-md px-2 py-1 text-sm border border-text/20 duration-200 hover:scale-[1.2]" href="{{ path(app.request.get('_route'), {page: index, search: search, order: order}) }}">{{ index }}</a>
+                            {% endif %}
+                        {% endfor %}
+                        <span class="text-salmon font-semibold text-xs sm:text-sm mx-1 bg-white rounded-md px-2 py-1 text-sm border border-text/20 cursor-default">...</span>
+                    {% else %}
+                        <span class="text-salmon font-semibold text-xs sm:text-sm mx-1 bg-white rounded-md px-2 py-1 text-sm border border-text/20 cursor-default">...</span>
+                        {% for index in (maxPage - 5)..maxPage %}
+                            {% if index is same as (page) %}
+                                <span class="text-gold font-semibold text-xs sm:text-sm mx-1 bg-white rounded-md px-2 py-1 text-sm border border-text/20 scale-[1.2] cursor-default">{{ page }}</span>
+                            {% else %}
+                                <a class="text-salmon font-semibold text-xs sm:text-sm mx-1 bg-white rounded-md px-2 py-1 text-sm border border-text/20 duration-200 hover:scale-[1.2]" href="{{ path(app.request.get('_route'), {page: index, search: search, order: order}) }}">{{ index }}</a>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endif %}
+                {% if page < maxPage %}
+                    <a class="text-salmon font-semibold text-xs sm:text-sm mx-1 bg-white rounded-md px-2 py-1 text-sm border border-text/20 duration-200 hover:scale-[1.2]" href="{{ path(app.request.get('_route'), {page: page + 1, search: search, order: order}) }}">{{ '>' }}</a>
+                    <a class="text-salmon font-semibold text-xs sm:text-sm mx-1 bg-white rounded-md px-2 py-1 text-sm border border-text/20 duration-200 hover:scale-[1.2]" href="{{ path(app.request.get('_route'), {page: maxPage, search: search, order: order}) }}">{{ '>>' }}</a>
+                {% else %}
+                    <span class="text-salmon font-semibold text-xs sm:text-sm opacity-50 mx-1 bg-white rounded-md px-2 py-1 text-sm border border-text/20 cursor-default">{{ '>' }}</span>
+                    <span class="text-salmon font-semibold text-xs sm:text-sm opacity-50 mx-1 bg-white rounded-md px-2 py-1 text-sm border border-text/20 cursor-default">{{ '>>' }}</span>
+                {% endif %}
+            </span>
+        </div>
+    {% endif %}
+{% endmacro %}

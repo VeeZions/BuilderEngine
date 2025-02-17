@@ -1,0 +1,13 @@
+{% import 'macros/svg.html.twig' as icons %}
+<div data-saas--navigation--builder-target="stage" class="w-full flex flex-col items-start justify-start p-2 border border-gray-300 rounded-md bg-gray-100 relative{{ loop.index > 1 ? ' mt-4' : '' }}">
+    <div data-saas--navigation--builder-target="tabs" class="w-full flex flex-col items-start justify-start droppable pb-4 min-h-[8px]">
+        {% for tab in stage %}
+            {% include 'includes/saas/navigation/tab.html.twig' %}
+        {% endfor %}
+    </div>
+    {% if loop.index > 1 %}
+        <span data-saas--navigation--builder-target="trashStage" class="absolute z-10 -right-2 -top-2 bg-white rounded shadow p-1 cursor-pointer">
+            {{ icons.crud_icon('delete', 'small', 'text-red-400 hover:text-red-500') }}
+        </span>
+    {% endif %}
+</div>

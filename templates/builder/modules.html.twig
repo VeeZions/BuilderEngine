@@ -1,0 +1,17 @@
+<div class="w-full flex flex-col items-center justify-start builder-modules min-h-[2px]">
+    {% for module in block.children %}
+        {% include 'includes/saas/builder/elements/module.html.twig' %}
+    {% endfor %}
+</div>
+{% if editable is same as true %}
+    <div class="mt-2 w-full flex items-center justify-center">
+        <span
+            data-saas--builder-target="addModule"
+            class="flex items-center justify-center cursor-pointer bg-gray-600 rounded-full size-7 border-2 border-gray-300 shadow-md"
+            title="{{ 'crud.label.builder.add.module'|trans({}, 'crud') }}"
+        >
+            {% import 'macros/svg.html.twig' as svg %}
+            {{ svg.crud_icon('add', 'medium', 'text-white') }}
+        </span>
+    </div>
+{% endif %}

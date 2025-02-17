@@ -17,11 +17,7 @@ class Navigation
     #[Assert\NotBlank]
     #[ORM\Column(length: 150)]
     private ?string $type = null;
-
-    /**
-     * @var array<string, mixed> $content
-     */
-    #[Assert\Json]
+    
     #[ORM\Column]
     private array $content = [];
 
@@ -45,18 +41,12 @@ class Navigation
 
         return $this;
     }
-
-    /**
-     * @return array<string, mixed>
-     */
+    
     public function getContent(): array
     {
         return $this->content;
     }
-
-    /**
-     * @param array<string, mixed> $content
-     */
+    
     public function setContent(array $content): static
     {
         $this->content = $content;

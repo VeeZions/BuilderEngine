@@ -1,0 +1,28 @@
+<div
+    id="erp-builder-new-section-modal"
+    class="fixed z-[999999] hidden bg-white/50 top-0 left-0 flex items-center justify-center w-full h-full"
+>
+    <div class="max-w-[90%] max-h-[90vh] erp-card border border-gray-300 shadow-md">
+        <h3 class="erp-text-secondary flex items-center justify-between text-lg w-full text-left border-b border-gray-300 pb-4 mb-4 p-2 sm:p-4">
+            <span style="width: calc(100% - 32px);" class="truncate">{{ 'crud.label.builder.choose.template'|trans({}, 'crud') }}</span>
+            {% import 'macros/svg.html.twig' as svg %}
+            <span
+                id="erp-builder-new-section-modal-close"
+                class="flex items-center justify-center cursor-pointer"
+            >
+                {{ svg.crud_icon('close', 'medium', '') }}
+            </span>
+        </h3>
+        <div class="max-w-full w-[400px] h-full flex flex-wrap items-center justify-between erp-scroller overflow-y-auto p-2 sm:p-4">
+            {% for schema in builder_section %}
+                <div class="erp-builder-section-config flex items-center justify-center w-1/2 md:w-1/3 p-1" data-config="{{ schema|json_encode() }}">
+                    <div class="w-full group flex items-center justify-between duration-200 hover:bg-sky-500 rounded shadow bg-white border border-gray-300 p-1 cursor-pointer">
+                        {% for width in schema %}
+                            <span style="width: {% if width < 100 %}calc({{ width }}% - 2px);{% else %}100%{% endif %}" class="rounded duration-200 group-hover:bg-white bg-sky-500 h-8"></span>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

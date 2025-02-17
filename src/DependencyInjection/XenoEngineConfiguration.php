@@ -11,8 +11,21 @@ class XenoEngineConfiguration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder('xeno_engine');
 
-        // ... add node definitions to the root of the tree
-        // $treeBuilder->getRootNode()->...
+        $treeBuilder->getRootNode()
+            ->addDefaultsIfNotSet()
+            ->children()
+                ->arrayNode('twitter')
+                    ->children()
+                        ->integerNode('client_id')
+                            ->defaultValue(1)
+                        ->end()
+                        ->scalarNode('client_secret')
+                            ->defaultValue('xxx')
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
 
         return $treeBuilder;
     }

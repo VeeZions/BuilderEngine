@@ -1,0 +1,12 @@
+<div
+    data-saas--builder-target="{{ section.type }}"
+    id="{{ section.id }}"
+    class="{{ section.class|exclude_used_classes({'start': ['w-', 'flex', 'items-', 'justify-'], 'contain': ['-w-']}) }} w-full flex flex-col items-center justify-start"
+    data-config="{{ section|filter_children|json_encode() }}"
+>
+    {% import 'macros/builder-element.html.twig' as components %}
+    {{ components.getHeader(section, 'bg-slate-400', 'border-slate-400', null, editable is defined ? editable : false) }}
+    <div data-saas--builder-target="blocks" class="w-full flex flex-wrap items-stretch justify-between px-2 pb-2 bg-slate-200 rounded-b-md border-x border-b border-slate-300">
+        {% include 'includes/saas/builder/blocks.html.twig' %}
+    </div>
+</div>

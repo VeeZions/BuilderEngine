@@ -1,0 +1,70 @@
+{% import 'macros/svg.html.twig' as drag %}
+<div
+    data-saas--navigation--builder-target="tab"
+    data-info="{{ tab|json_encode() }}"
+    class="draggable flex flex-col items-start justify-start w-full relative"
+>
+    <span
+        data-saas--navigation--builder-target="trash"
+        class="absolute z-10 right-2 top-2 cursor-pointer"
+    >
+        {{ drag.crud_icon('delete', 'small', 'text-red-400 hover:text-red-500') }}
+    </span>
+    <div class="flex flex-col items-start justify-start w-full p-2 erp-card border border-gray-300{% if tab.children is not defined %} mb-2{% endif %}">
+        <p class="erp-text-secondary font-lato_bold text-sm flex items-center">
+            {{ drag.dropper() }}&nbsp;&nbsp;{{ tab.label }}
+        </p>
+        <small class="erp-text-primary text-xs mt-2">
+            {{ 'saas.cms.navigation.label.type'|trans({}, 'saas') }}:
+            <b>{{ ('saas.cms.navigation.type.' ~ tab.type)|trans({}, 'saas') }}</b>
+            {% if (tab.link is not null and tab.link starts with 'http') or tab.route is not null %}
+                |
+                <a
+                    href="{{ tab.link is not null ? tab.link : path(tab.route, tab.query) }}"
+                    target="_blank"
+                    class="erp-link text-xs italic"
+                >
+                    {{ 'saas.cms.navigation.label.preview'|trans({}, 'saas') }}
+                </a>
+            {% endif %}
+        </small>
+    </div>
+    {% if tab.children is defined and selected.type is same as constant('App\\Constant\\NavigationType::HEADER_TYPE') %}
+        <div
+            data-saas--navigation--builder-target="children"
+            class="w-full flex flex-col items-start justify-start sub-droppable pl-4 min-h-[8px]"
+        >
+            {% for sub in tab.children %}
+                <div
+                    data-saas--navigation--builder-target="child"
+                    data-info="{{ sub|json_encode() }}"
+                    class="draggable w-full flex flex-col items-start justify-start erp-card border p-2 border-gray-300 relative"
+                >
+                    <span
+                        data-saas--navigation--builder-target="trash"
+                        class="absolute z-10 right-2 top-2 cursor-pointer"
+                    >
+                        {{ drag.crud_icon('delete', 'small', 'text-red-400 hover:text-red-500') }}
+                    </span>
+                    <p class="erp-text-secondary font-lato_bold text-sm flex items-center">
+                        {{ drag.dropper() }}&nbsp;&nbsp;{{ sub.label }}
+                    </p>
+                    <small class="erp-text-primary text-xs mt-2">
+                        {{ 'saas.cms.navigation.label.type'|trans({}, 'saas') }}:
+                        <b>{{ ('saas.cms.navigation.type.' ~ sub.type)|trans({}, 'saas') }}</b>
+                        {% if (sub.link is not null and sub.link starts with 'http') or sub.route is not null %}
+                            |
+                            <a
+                                    href="{{ sub.link is not null ? sub.link : path(sub.route, sub.query) }}"
+                                target="_blank"
+                                class="erp-link text-xs italic"
+                            >
+                                {{ 'saas.cms.navigation.label.preview'|trans({}, 'saas') }}
+                            </a>
+                        {% endif %}
+                    </small>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>

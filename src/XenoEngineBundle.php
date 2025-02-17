@@ -2,19 +2,20 @@
 
 namespace XenoLabs\XenoEngine;
 
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\AssetMapper\AssetMapperInterface;
 use Doctrine\ORM\EntityManager;
+use function dirname;
 
 class XenoEngineBundle extends Bundle
 {
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
-        if ($this->isAssetMapperAvailable($container)) {
+        if ($this->isAssetMapperAvailable()) {
 
-            $this->addImportJsFileInAppJs();
             $container->prependExtensionConfig('framework', [
                 'asset_mapper' => [
                     'paths' => [
@@ -26,7 +27,7 @@ class XenoEngineBundle extends Bundle
             ]);
         }
 
-        if ($this->isDoctrineAvailable($container)) {
+        if ($this->isDoctrineAvailable()) {
             
             $container->prependExtensionConfig('doctrine', [
                 'orm' => [
@@ -46,43 +47,16 @@ class XenoEngineBundle extends Bundle
 
     public function getPath(): string
     {
-        return \dirname(__DIR__);
+        return dirname(__DIR__);
     }
 
-    private function isAssetMapperAvailable(ContainerBuilder $container): bool
+    private function isAssetMapperAvailable(): bool
     {
-        if (!interface_exists(AssetMapperInterface::class)) {
-            return false;
-        }
-
-        $bundlesMetadata = $container->getParameter('kernel.bundles_metadata');
-        if (!isset($bundlesMetadata['FrameworkBundle'])) {
-            return false;
-        }
-
-        return is_file($bundlesMetadata['FrameworkBundle']['path'] . '/Resources/config/asset_mapper.php');
+        return ContainerBuilder::willBeAvailable('symfony/asset-mapper', AssetMapperInterface::class, ['symfony/framework-bundle']);
     }
 
-    private function isDoctrineAvailable(ContainerBuilder $container): bool
+    private function isDoctrineAvailable(): bool
     {
-        return class_exists(EntityManager::class);
-    }
-
-    private function addImportJsFileInAppJs(): void
-    {
-        $appJsFile = \dirname(__DIR__, 4) . '/assets/app.js';
-        $newLine = "import '@xenolabs/xeno-engine';" . "\n";
-        
-        if (file_exists($appJsFile)) {
-            $lines = file($appJsFile);
-            if (!in_array($newLine, $lines)) {
-                array_unshift($lines, "import '@xenolabs/xeno-engine';" . "\n");
-                $file = fopen($appJsFile, "w+");
-                foreach($lines as $line){
-                    fwrite($file, $line);
-                }
-                fclose($file);
-            }
-        }
+        return ContainerBuilder::willBeAvailable('doctrine/orm', EntityManager::class, ['doctrine/doctrine-bundle']);
     }
 }

@@ -1,0 +1,84 @@
+<div id="{{ app.request.get('_route')|replace({'_': '-'}) }}" data-route="{{ app.request.get('_route') }}" class="flex items-center justify-center flex-col w-full">
+    {% for row in content %}
+        <div
+            {% if row.id is defined and row.id|length > 0 %}id="{{ row.id }}"{% endif %}
+            class="w-full flex flex-col items-start justify-start{% if row.class is defined and row.class|length > 0 %} {{  row.class }}{% endif %}"
+            {% if row.stimulusController is defined and row.stimulusController is not null %}data-controller="{{ row.stimulusController }}"{% endif %}
+            {% if row.stimulusController is defined and row.stimulusController is not null and row.stimulusTarget is defined and row.stimulusTarget is not null %}data-{{ row.stimulusController }}-target="{{ row.stimulusTarget }}"{% endif %}
+            {% set bg = row.bg %}
+            {% if bg is defined and bg is not null %}
+                {% set gedValue = get_ged(bg.image) %}
+                style="{% if bg.image is defined and bg.image is not null %}background-image: url({{ gedValue is not null ? s3(gedValue.url) : '' }});{% endif %}{% if bg.position is defined and bg.position is not null %}background-position: {{ bg.position }};{% endif %}{% if bg.size is defined and bg.size is not null %}background-size: {{ bg.size }};{% endif %}{% if bg.repeat is defined and bg.repeat is not null %}background-repeat: {{ bg.repeat }};{% endif %}{% if bg.color is defined and bg.color is not null %}background-color: {{ bg.color }};{% endif %}{% if bg.attachment is defined and bg.attachment is not null %}background-attachment: {{ bg.attachment }};{% endif %}"
+            {% endif %}
+        >
+            {% for section in row.children %}
+                {{ _self.section(section) }}
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>
+
+{% macro section(section) %}
+    <div
+        {% if section.id is defined and section.id|length > 0 %}id="{{ section.id }}"{% endif %}
+        class="w-full flex flex-wrap items-start justify-start{% if section.class is defined and section.class|length > 0 %} {{ section.class }}{% endif %}"
+        {% if section.stimulusController is defined and section.stimulusController is not null %}data-controller="{{ section.stimulusController }}"{% endif %}
+        {% if section.stimulusController is defined and section.stimulusController is not null and section.stimulusTarget is defined and section.stimulusTarget is not null %}data-{{ section.stimulusController }}-target="{{ section.stimulusTarget }}"{% endif %}
+        {% set bg = section.bg %}
+        {% if bg is defined and bg is not null %}
+            {% set gedValue = get_ged(bg.image) %}
+            style="{% if bg.image is defined and bg.image is not null %}background-image: url({{ gedValue is not null ? s3(gedValue.url) : '' }});{% endif %}{% if bg.position is defined and bg.position is not null %}background-position: {{ bg.position }};{% endif %}{% if bg.size is defined and bg.size is not null %}background-size: {{ bg.size }};{% endif %}{% if bg.repeat is defined and bg.repeat is not null %}background-repeat: {{ bg.repeat }};{% endif %}{% if bg.color is defined and bg.color is not null %}background-color: {{ bg.color }};{% endif %}{% if bg.attachment is defined and bg.attachment is not null %}background-attachment: {{ bg.attachment }};{% endif %}"
+        {% endif %}
+    >
+        {% for block in section.children %}
+            {{ _self.block(block) }}
+        {% endfor %}
+    </div>
+{% endmacro %}
+
+{% macro block(block, length) %}
+    <div
+        {% if block.id is defined and block.id|length > 0 %}id="{{ block.id }}"{% endif %}
+        class="w-full sm:w-[{{ block.format }}%] flex flex-col items-start justify-start{% if block.class is defined and block.class|length > 0 %} {{ block.class }}{% endif %}"
+        {% if block.stimulusController is defined and block.stimulusController is not null %}data-controller="{{ block.stimulusController }}"{% endif %}
+        {% if block.stimulusController is defined and block.stimulusController is not null and block.stimulusTarget is defined and block.stimulusTarget is not null %}data-{{ block.stimulusController }}-target="{{ block.stimulusTarget }}"{% endif %}
+        {% set bg = block.bg %}
+        {% if bg is defined and bg is not null %}
+            {% set gedValue = get_ged(bg.image) %}
+            {% if bg.image is defined and bg.image is not null %}background-image: url({{ gedValue is not null ? s3(gedValue.url) : '' }});{% endif %}{% if bg.position is defined and bg.position is not null %}background-position: {{ bg.position }};{% endif %}{% if bg.size is defined and bg.size is not null %}background-size: {{ bg.size }};{% endif %}{% if bg.repeat is defined and bg.repeat is not null %}background-repeat: {{ bg.repeat }};{% endif %}{% if bg.color is defined and bg.color is not null %}background-color: {{ bg.color }};{% endif %}{% if bg.attachment is defined and bg.attachment is not null %}background-attachment: {{ bg.attachment }};{% endif %}"
+        {% endif %}
+    >
+        {% for module in block.children %}
+            {{ _self.module(module) }}
+        {% endfor %}
+    </div>
+{% endmacro %}
+
+{% macro module(module) %}
+    <div
+        {% if module.id is defined and module.id|length > 0 %}id="{{ module.id }}"{% endif %}
+        class="w-full{% if module.class is defined and module.class|length > 0 %} {{ module.class }}{% endif %}"
+        {% if module.stimulusController is defined and module.stimulusController is not null %}data-controller="{{ module.stimulusController }}"{% endif %}
+        {% if module.stimulusController is defined and module.stimulusController is not null and module.stimulusTarget is defined and module.stimulusTarget is not null %}data-{{ module.stimulusController }}-target="{{ module.stimulusTarget }}"{% endif %}
+        {% set bg = module.bg %}
+        {% if bg is defined and bg is not null %}
+            {% set gedValue = get_ged(bg.image) %}
+            style="{% if bg.image is defined and bg.image is not null %}background-image: url({{ gedValue is not null ? s3(gedValue.url) : '' }});{% endif %}{% if bg.position is defined and bg.position is not null %}background-position: {{ bg.position }};{% endif %}{% if bg.size is defined and bg.size is not null %}background-size: {{ bg.size }};{% endif %}{% if bg.repeat is defined and bg.repeat is not null %}background-repeat: {{ bg.repeat }};{% endif %}{% if bg.color is defined and bg.color is not null %}background-color: {{ bg.color }};{% endif %}{% if bg.attachment is defined and bg.attachment is not null %}background-attachment: {{ bg.attachment }};{% endif %}"
+        {% endif %}
+    >
+        {% if module.contentType is same as 'text' or module.contentType is same as 'html' %}
+            {{ module.data[app.request.getLocale()]|raw }}
+        {% elseif module.contentType is same as 'image' %}
+            {% set gedValue = get_ged(module.data.ged) %}
+            {% if gedValue is not null %}
+                <img class="w-full" src="{{ s3(gedValue.url) }}" alt="{{ module.id }}">
+            {% endif %}
+        {% elseif module.contentType is same as 'video' %}
+            <video src="{{ s3(get_ged(module.data).url) }}" {{ module.attributes }} class="w-full">
+                {{ 'builder.module.video.message'|trans({'%link%': s3(get_ged(module.data).url)}, 'web') }}
+            </video>
+        {% elseif module.contentType is same as 'form' %}
+            {% include 'forms/' ~ module.data ~ '.html.twig' %}
+        {% endif %}
+    </div>
+{% endmacro %}

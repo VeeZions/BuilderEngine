@@ -1,0 +1,64 @@
+{% macro getHeader(data, bg, border, type = null, editable = false) %}
+    {% import 'macros/svg.html.twig' as svg %}
+    <div class="{{ bg }} rounded{{ type is null ? '-t' : '' }}-md border {{ border }} p-2 sm:p-4 flex items-center justify-between w-full{{ data.type in ['row'] ? ' text-inherit' : ' text-white' }}">
+        <div style="width: {{ data.type is not same as 'block' and editable is same as true ? 'calc(100% - 88px)' : 'calc(100% - 40px)' }};">
+            <p class="flex items-center justify-start text-sm font-lato_bold w-full w-full">
+                {% if editable is same as true %}
+                    <span class="mr-2 bg-white rounded flex items-center justify-center">
+                        {{ svg.dropper(data.type) }}
+                    </span>
+                {% endif %}
+                <span
+                    style="width: {% if editable is same as true %}calc(100% - 40px){% else %}100%{% endif %};"
+                    class="truncate"
+                    title="{{ ('crud.label.builder.header.' ~ data.type ~ (type is not null ? '.' ~ type : ''))|trans({}, 'crud') }}"
+                >
+                    {{ ('crud.label.builder.header.' ~ data.type ~ (type is not null ? '.' ~ type : ''))|trans({}, 'crud') }}
+                </span>
+            </p>
+        </div>
+        <div class="w-max flex justify-end items-center sm:w-1/2">
+            {% if data.type is same as 'row' %}
+                <span
+                    class="flex items-center justify-center mr-8"
+                >
+                    <twig:Toggle
+                        name="isFullwidth"
+                        checked="{{ data.fullwidth }}"
+                        label="{{ svg.builder_icon('slider', 'medium', 'erp-text-secondary') }}"
+                        disabled="{{ editable is same as false }}"
+                    />
+                </span>
+            {% endif %}
+            {% if data.type is not same as 'block' and editable is same as true %}
+                <span
+                    class="flex items-center justify-center size-7 border border-gray-300 shadow cursor-pointer bg-white rounded mr-2"
+                    data-saas--builder-target="duplicateElement"
+                    data-type="{{ data.type }}"
+                    data-id="{{ data.id }}"
+                >
+                    {{ svg.crud_icon('duplicate', 'small', 'text-orange-300') }}
+                </span>
+            {% endif %}
+            <span
+                class="flex items-center justify-center size-7 border border-gray-300 shadow cursor-pointer bg-white rounded"
+                data-saas--builder-target="editElement"
+                data-type="{{ data.type }}"
+                data-id="{{ data.id }}"
+                data-editable="{{ editable is same as true ? 'true' : 'false' }}"
+            >
+                {{ svg.crud_icon('edit', 'small', 'erp-text-secondary') }}
+            </span>
+            {% if data.type is not same as 'block' and editable is same as true %}
+                <span
+                    class="flex items-center justify-center size-7 ml-2 border border-gray-300 shadow cursor-pointer bg-white rounded"
+                    data-saas--builder-target="deleteElement"
+                    data-type="{{ data.type }}"
+                    data-id="{{ data.id }}"
+                >
+                    {{ svg.crud_icon('delete', 'small', 'text-red-500') }}
+                </span>
+            {% endif %}
+        </div>
+    </div>
+{% endmacro %}

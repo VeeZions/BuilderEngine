@@ -1,0 +1,12 @@
+<div
+    data-saas--builder-target="{{ row.type }}"
+    id="{{ row.id }}"
+    class="{{ row.class|exclude_used_classes({'start': ['w-', 'flex', 'items-', 'justify-'], 'contain': ['-w-']}) }} w-full flex flex-col items-center justify-start"
+    data-config="{{ row|filter_children|json_encode() }}"
+>
+    {% import 'macros/builder-element.html.twig' as components %}
+    {{ components.getHeader(row, 'bg-white', 'border-gray-300', null, editable is defined ? editable : false) }}
+    <div data-saas--builder-target="sections" class="w-full flex flex-col items-center justify-start p-2 bg-gray-100 rounded-b-md border-x border-b border-gray-300">
+        {% include 'includes/saas/builder/sections.html.twig' %}
+    </div>
+</div>

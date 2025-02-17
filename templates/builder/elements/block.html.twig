@@ -1,0 +1,13 @@
+<div
+    data-saas--builder-target="{{ block.type }}"
+    id="{{ block.id }}"
+    class="{{ block.class|exclude_used_classes({'start': ['w-'], 'contain': ['-w-']}) }} responsive"
+    style="width:{% if block.format < 100 %} calc({{ block.format }}% - 4px){% else %} 100%{% endif %};"
+    data-config="{{ block|filter_children|json_encode() }}"
+>
+    {% import 'macros/builder-element.html.twig' as components %}
+    {{ components.getHeader(block, 'bg-sky-500', 'border-gray-300', null, editable is defined ? editable : false) }}
+    <div data-saas--builder-target="modules" class="w-full flex flex-col items-center justify-start p-2 bg-gray-100 rounded-b-md border-x border-b border-gray-300">
+        {% include 'includes/saas/builder/modules.html.twig' %}
+    </div>
+</div>

@@ -1,0 +1,26 @@
+{% macro parse(data, editable) %}
+    <div
+        class="w-full flex flex-wrap items-start justify-between"
+        data-saas--builder-modules-target="text"
+        data-language="{{ app.request.getLocale() }}"
+    >
+        {% for lang in available_translations %}
+            <div class="flex w-full mb-4 sm:mb-0 sm:w-1/2 sm:{{ (loop.index % (available_translations|length)) is same as 0 ? 'pl-2' : 'pr-2' }}">
+                {% if editable is same as true %}
+                <twig:Textarea
+                    name="builder-module_text_{{ lang }}"
+                    type="text"
+                    tinymce="{{ true }}"
+                    value="{{ data[lang] is defined ? data[lang] : '' }}"
+                    autocomplete="builder-module_text_{{ lang }}"
+                    label="{{ 'crud.label.content'|trans({'%locale%': lang}, 'crud') }}"
+                />
+                {% else %}
+                    <div class="w-full p-2 rounded-md border border-gray-300 text-sm shadow-md">
+                        {{ data[lang] is defined ? data[lang]|raw : '' }}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+{% endmacro %}

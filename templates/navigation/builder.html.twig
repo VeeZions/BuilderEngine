@@ -1,0 +1,19 @@
+<div
+    id="selected-type-container"
+    class="w-full"
+    data-saas--navigation--builder-target="container"
+>
+    <div
+        data-saas--navigation--builder-target="stages"
+        class="w-full flex flex-col items-start justify-start"
+    >
+        {% for stage in selected.content.stages %}
+            {% include 'includes/saas/navigation/stage.html.twig' with {children: true} %}
+        {% else %}
+        <div data-saas--navigation--builder-target="stage" class="w-full flex flex-col items-start justify-start p-2 border border-gray-300 rounded-md bg-gray-100 relative">
+            <div data-saas--navigation--builder-target="tabs" class="w-full flex flex-col items-start justify-start droppable pb-4 min-h-[8px]"></div>
+        </div>
+        {% endfor %}
+    </div>
+    <input type="hidden" data-saas--navigation--builder-target="marker">
+</div>

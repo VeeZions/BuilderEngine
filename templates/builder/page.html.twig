@@ -1,0 +1,26 @@
+{% include 'includes/saas/builder/modals/section.html.twig' %}
+{% include 'includes/saas/builder/modals/settings.html.twig' %}
+{% include 'includes/saas/builder/modals/module.html.twig' %}
+
+<div
+    class="w-full flex flex-col items-center justify-start mt-2"
+    data-saas--builder-target="rows"
+>
+    <div class="w-full flex flex-col items-center justify-start builder-rows min-h-[2px]">
+        {% for row in data %}
+            {% include 'includes/saas/builder/elements/row.html.twig' %}
+        {% endfor %}
+    </div>
+    {% if editable is same as true %}
+        <div class="mt-2 w-full flex items-center justify-center">
+            <span
+                data-saas--builder-target="addRow"
+                class="flex items-center justify-center cursor-pointer bg-white rounded-full size-7 border-2 border-gray-300 shadow-md"
+                title="{{ 'crud.label.builder.add.row'|trans({}, 'crud') }}"
+            >
+                {% import 'macros/svg.html.twig' as svg %}
+                {{ svg.crud_icon('add', 'medium', 'text-gray-500') }}
+            </span>
+        </div>
+    {% endif %}
+</div>
