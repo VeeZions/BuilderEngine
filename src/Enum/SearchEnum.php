@@ -1,8 +1,8 @@
 <?php
 
-namespace XenoLabs\XenoEngine\Constant\Crud;
+namespace XenoLabs\XenoEngine\Enum;
 
-enum SearchTypeEnum: string
+enum SearchEnum: string
 {
     case TEXT = 'text';
     case SELECT = 'select';

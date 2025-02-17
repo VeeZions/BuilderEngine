@@ -1,6 +1,6 @@
 <?php
 
-namespace Xenolabs\XenoEngineBundle\Form\Type;
+namespace Xenolabs\XenoEngine\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;

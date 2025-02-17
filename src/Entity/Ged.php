@@ -1,9 +1,9 @@
 <?php
 
-namespace Xenolabs\XenoEngineBundle\Entity;
+namespace Xenolabs\XenoEngine\Entity;
 
-use Xenolabs\XenoEngineBundle\Constant\GedTypeEnum;
-use Xenolabs\XenoEngineBundle\Repository\GedRepository;
+use Xenolabs\XenoEngine\Enum\GedEnum;
+use Xenolabs\XenoEngine\Repository\GedRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -31,8 +31,8 @@ class Ged
     private ?string $url = null;
 
     #[Assert\NotBlank]
-    #[ORM\Column(enumType: GedTypeEnum::class)]
-    private ?GedTypeEnum $type = null;
+    #[ORM\Column(enumType: GedEnum::class)]
+    private ?GedEnum $type = null;
 
     #[Assert\NotBlank]
     #[ORM\Column(length: 255)]
@@ -125,12 +125,12 @@ class Ged
         return $this;
     }
 
-    public function getType(): ?GedTypeEnum
+    public function getType(): ?GedEnum
     {
         return $this->type;
     }
 
-    public function setType(GedTypeEnum $type): static
+    public function setType(GedEnum $type): static
     {
         $this->type = $type;
 

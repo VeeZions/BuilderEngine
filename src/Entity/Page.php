@@ -1,9 +1,10 @@
 <?php
 
-namespace Xenolabs\XenoEngineBundle\Entity;
+namespace Xenolabs\XenoEngine\Entity;
 
-use Xenolabs\XenoEngineBundle\Entity\Admin\User;
-use Xenolabs\XenoEngineBundle\Repository\PageRepository;
+use Xenolabs\XenoEngine\Abstract\XenoEngineUser;
+use Xenolabs\XenoEngine\Entity\Element;
+use Xenolabs\XenoEngine\Repository\PageRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -34,7 +35,7 @@ class Page
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
-    private ?User $createdBy = null;
+    private ?XenoEngineUser $createdBy = null;
 
     #[Timestampable(on: 'create')]
     #[ORM\Column]
@@ -42,7 +43,7 @@ class Page
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
-    private ?User $updatedBy = null;
+    private ?XenoEngineUser $updatedBy = null;
 
     #[Timestampable(on: 'update')]
     #[ORM\Column(nullable: true)]
@@ -122,12 +123,12 @@ class Page
         return $this;
     }
 
-    public function getCreatedBy(): ?User
+    public function getCreatedBy(): ?XenoEngineUser
     {
         return $this->createdBy;
     }
 
-    public function setCreatedBy(?User $createdBy): static
+    public function setCreatedBy(?XenoEngineUser $createdBy): static
     {
         $this->createdBy = $createdBy;
 
@@ -146,12 +147,12 @@ class Page
         return $this;
     }
 
-    public function getUpdatedBy(): ?User
+    public function getUpdatedBy(): ?XenoEngineUser
     {
         return $this->updatedBy;
     }
 
-    public function setUpdatedBy(?User $updatedBy): static
+    public function setUpdatedBy(?XenoEngineUser $updatedBy): static
     {
         $this->updatedBy = $updatedBy;
 

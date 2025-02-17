@@ -1,8 +1,10 @@
 <?php
 
-namespace Xenolabs\XenoEngineBundle\Entity\Web;
+namespace Xenolabs\XenoEngine\Entity;
 
-use Xenolabs\XenoEngineBundle\Repository\ElementRepository;
+use Xenolabs\XenoEngine\Entity\Ged;
+use Xenolabs\XenoEngine\Entity\Page;
+use Xenolabs\XenoEngine\Repository\ElementRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;

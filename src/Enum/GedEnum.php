@@ -1,8 +1,8 @@
 <?php
 
-namespace XenoLabs\XenoEngine\Constant;
+namespace XenoLabs\XenoEngine\Enum;
 
-enum GedTypeEnum: string
+enum GedEnum: string
 {
     case IMAGE = 'image';
     case VIDEO = 'video';

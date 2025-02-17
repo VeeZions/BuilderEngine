@@ -1,8 +1,8 @@
 <?php
 
-namespace Xenolabs\XenoEngineBundle\Entity\Web;
+namespace Xenolabs\XenoEngine\Entity;
 
-use Xenolabs\XenoEngineBundle\Repository\NavigationRepository;
+use Xenolabs\XenoEngine\Repository\NavigationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 

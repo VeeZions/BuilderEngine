@@ -1,8 +1,8 @@
 <?php
 
-namespace Xenolabs\XenoEngineBundle\Repository;
+namespace Xenolabs\XenoEngine\Repository;
 
-use Xenolabs\XenoEngineBundle\Entity\Element;
+use Xenolabs\XenoEngine\Entity\Element;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

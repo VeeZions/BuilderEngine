@@ -1,8 +1,8 @@
 <?php
 
-namespace XenoLabs\XenoEngine\Constant\Crud;
+namespace XenoLabs\XenoEngine\Enum;
 
-enum ColumnTypeEnum: string
+enum ColumnEnum: string
 {
     // Texts
     case TEXT = 'text';

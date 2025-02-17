@@ -1,10 +1,10 @@
 <?php
 
-namespace Xenolabs\XenoEngineBundle\Repository;
+namespace Xenolabs\XenoEngine\Repository;
 
-use Xenolabs\XenoEngineBundle\Entity\Article;
-use Xenolabs\XenoEngineBundle\Entity\Category;
-use Xenolabs\XenoEngineBundle\Trait\SearchTrait;
+use Xenolabs\XenoEngine\Entity\Article;
+use Xenolabs\XenoEngine\Entity\Category;
+use Xenolabs\XenoEngine\Trait\SearchTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\Pagination\PaginationInterface;

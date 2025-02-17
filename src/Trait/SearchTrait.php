@@ -1,6 +1,6 @@
 <?php
 
-namespace Xenolabs\XenoEngineBundle\Trait;
+namespace Xenolabs\XenoEngine\Trait;
 
 use Doctrine\ORM\QueryBuilder;
 

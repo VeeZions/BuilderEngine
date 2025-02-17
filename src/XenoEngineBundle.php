@@ -35,9 +35,8 @@ class XenoEngineBundle extends Bundle
                         'XenoEngineBundle' => [
                             'is_bundle' => true,
                             'type' => 'attribute',
-                            'dir' => 'src/Entity',
-                            'prefix' => 'Xenolabs\XenoEngineBundle\Entity',
-                            'alias' => 'Xenolabs\XenoEngineBundle',
+                            'dir' => 'src',
+                            'prefix' => 'Xenolabs\XenoEngine'
                         ]
                     ]
                 ],

@@ -1,8 +1,8 @@
 <?php
 
-namespace Xenolabs\XenoEngineBundle\Constant;
+namespace Xenolabs\XenoEngine\Constant;
 
-class AssetManagerConstant
+class AssetConstant
 {
 // Directories
     public const MEDIA = 'uploads/media/';

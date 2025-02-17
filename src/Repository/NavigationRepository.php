@@ -1,9 +1,9 @@
 <?php
 
-namespace Xenolabs\XenoEngineBundle\Repository;
+namespace Xenolabs\XenoEngine\Repository;
 
-use Xenolabs\XenoEngineBundle\Entity\Navigation;
-use Xenolabs\XenoEngineBundle\Trait\SearchTrait;
+use Xenolabs\XenoEngine\Entity\Navigation;
+use Xenolabs\XenoEngine\Trait\SearchTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\Pagination\PaginationInterface;

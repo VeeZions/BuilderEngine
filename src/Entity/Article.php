@@ -1,9 +1,9 @@
 <?php
 
-namespace Xenolabs\XenoEngineBundle\Entity;
+namespace Xenolabs\XenoEngine\Entity;
 
-use App\Entity\User;
-use Xenolabs\XenoEngineBundle\Repository\ArticleRepository;
+use Xenolabs\XenoEngine\Abstract\XenoEngineUser;
+use Xenolabs\XenoEngine\Repository\ArticleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -39,7 +39,7 @@ class Article
 
     #[ORM\ManyToOne(inversedBy: 'articles')]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
-    private ?User $author = null;
+    private ?XenoEngineUser $author = null;
 
     #[Timestampable(on: 'create')]
     #[ORM\Column]
@@ -51,7 +51,7 @@ class Article
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
-    private ?User $updatedBy = null;
+    private ?XenoEngineUser $updatedBy = null;
 
     /**
      * @var Collection<int, Ged>
@@ -147,12 +147,12 @@ class Article
         return $this;
     }
 
-    public function getAuthor(): ?User
+    public function getAuthor(): ?XenoEngineUser
     {
         return $this->author;
     }
 
-    public function setAuthor(?User $author): static
+    public function setAuthor(?XenoEngineUser $author): static
     {
         $this->author = $author;
 
@@ -183,12 +183,12 @@ class Article
         return $this;
     }
 
-    public function getUpdatedBy(): ?User
+    public function getUpdatedBy(): ?XenoEngineUser
     {
         return $this->updatedBy;
     }
 
-    public function setUpdatedBy(?User $updatedBy): static
+    public function setUpdatedBy(?XenoEngineUser $updatedBy): static
     {
         $this->updatedBy = $updatedBy;
 

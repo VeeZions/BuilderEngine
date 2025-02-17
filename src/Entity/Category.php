@@ -1,8 +1,8 @@
 <?php
 
-namespace Xenolabs\XenoEngineBundle\Entity\Web;
+namespace Xenolabs\XenoEngine\Entity;
 
-use Xenolabs\XenoEngineBundle\Repository\CategoryRepository;
+use Xenolabs\XenoEngine\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;

@@ -1,10 +1,10 @@
 <?php
 
-namespace Xenolabs\XenoEngineBundle\Repository;
+namespace Xenolabs\XenoEngine\Repository;
 
-use Xenolabs\XenoEngineBundle\Constant\AssetManagerConstant;
-use Xenolabs\XenoEngineBundle\Entity\Ged;
-use Xenolabs\XenoEngineBundle\Trait\SearchTrait;
+use Xenolabs\XenoEngine\Constant\AssetManagerConstant;
+use Xenolabs\XenoEngine\Entity\Ged;
+use Xenolabs\XenoEngine\Trait\SearchTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\Pagination\PaginationInterface;
