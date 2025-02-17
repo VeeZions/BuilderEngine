@@ -1,6 +1,6 @@
 <?php
 
-namespace XenoLabs\XenoEngine\Enum;
+namespace XenoLab\XenoEngine\Enum;
 
 enum SearchEnum: string
 {

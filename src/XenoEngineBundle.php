@@ -1,6 +1,6 @@
 <?php
 
-namespace XenoLabs\XenoEngine;
+namespace XenoLab\XenoEngine;
 
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -19,9 +19,10 @@ class XenoEngineBundle extends Bundle
             $container->prependExtensionConfig('framework', [
                 'asset_mapper' => [
                     'paths' => [
-                        __DIR__ . '/../assets/controllers' => '@xenolabs/xeno-engine-bundle',
-                        __DIR__ . '/../assets/js' => '@xenolabs/xeno-engine-bundle',
-                        __DIR__ . '/../assets/css' => '@xenolabs/xeno-engine-bundle',
+                        __DIR__ . '/../assets/controllers' => '@xenolab/xeno-engine-bundle',
+                        __DIR__ . '/../assets/js' => '@xenolab/xeno-engine-bundle',
+                        __DIR__ . '/../assets/utils' => '@xenolab/xeno-engine-bundle',
+                        __DIR__ . '/../assets/css' => '@xenolab/xeno-engine-bundle'
                     ],
                 ],
             ]);

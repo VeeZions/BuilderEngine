@@ -1,5 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
-import {tinymceCss} from "utils/chat";
+import {tinymceCss} from "@xenolab/xeno-engine-utils-modules";
 
 stimulusFetch: 'lazy'
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace XenoLabs\XenoEngine\Manager;
+namespace XenoLab\XenoEngine\Manager;
 
-use XenoLabs\XenoEngine\Repository\ArticleRepository;
-use XenoLabs\XenoEngine\Repository\CategoryRepository;
-use XenoLabs\XenoEngine\Repository\PageRepository;
+use XenoLab\XenoEngine\Repository\ArticleRepository;
+use XenoLab\XenoEngine\Repository\CategoryRepository;
+use XenoLab\XenoEngine\Repository\PageRepository;
 
 readonly class NavigationManager
 {

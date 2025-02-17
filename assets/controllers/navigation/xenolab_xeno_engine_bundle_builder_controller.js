@@ -1,5 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
-import { buildNavigationData, setNavigationDragAndDrop } from 'utils/navigation';
+import { buildNavigationData, setNavigationDragAndDrop } from '@xenolab/xeno-engine-utils-navigation';
 
 stimulusFetch: 'lazy'
 

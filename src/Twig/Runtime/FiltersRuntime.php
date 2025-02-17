@@ -1,8 +1,8 @@
 <?php
 
-namespace XenoLabs\XenoEngine\Twig\Runtime;
+namespace XenoLab\XenoEngine\Twig\Runtime;
 
-use XenoLabs\XenoEngine\IntegrityChecks\Constants;
+use XenoLab\XenoEngine\IntegrityChecks\Constants;
 use Twig\Extension\RuntimeExtensionInterface;
 use Symfony\Component\Uid\Uuid;
 use Carbon\Carbon;

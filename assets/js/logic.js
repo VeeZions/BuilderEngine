@@ -1,5 +1,5 @@
-import { resizeGridItems, resizeMediaProvider } from 'utils/components';
-import './styles/app.css';
+import { resizeGridItems, resizeMediaProvider } from '@xenolab/xeno-engine-utils-components';
+import '../css/style.css';
 
 // Opera 8.0+
 const isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;

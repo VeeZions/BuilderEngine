@@ -1,6 +1,6 @@
 <?php
 
-namespace XenoLabs\XenoEngine\DependencyInjection;
+namespace XenoLab\XenoEngine\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -31,7 +31,7 @@ class XenoEngineExtension extends Extension
 
     private function setServicesArguments(array $config, ContainerBuilder $container): void
     {
-        $controlerDefinition = $container->getDefinition('xenolabs_xeno_engine.engine_controller');
+        $controlerDefinition = $container->getDefinition('xenolab_xeno_engine.engine_controller');
         $controlerDefinition->setArgument('$clientId', $config['twitter']['client_id']);
     }
 }

@@ -1,5 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
-import { buildNavigationData } from 'utils/navigation';
+import { buildNavigationData } from '@xenolab/xeno-engine-utils-navigation';
 
 stimulusFetch: 'lazy'
 

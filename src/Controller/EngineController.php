@@ -1,6 +1,6 @@
 <?php
 
-namespace XenoLabs\XenoEngine\Controller;
+namespace XenoLab\XenoEngine\Controller;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpFoundation\Request;

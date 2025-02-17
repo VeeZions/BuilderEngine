@@ -2,7 +2,7 @@
 
 namespace App\Twig\Extension;
 
-use XenoLabs\XenoEngine\Twig\Runtime\FiltersRuntime;
+use XenoLab\XenoEngine\Twig\Runtime\FiltersRuntime;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;

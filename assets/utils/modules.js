@@ -205,3 +205,90 @@ export const getDataFromModule = (type, data, translations) => {
     }
     return null;
 }
+
+export const tinymceCss = (fontSize = 14) => {
+    const css = `<style>
+        body { 
+            font-family:"sans",Helvetica,Arial,sans-serif; 
+            font-size:${fontSize}px; 
+            line-height: 18px;
+            color: #56565d; 
+            background-color: transparent; 
+            cursor: text; 
+        } 
+        p {
+            margin: 0;
+        } 
+        img {
+            width: 150px;
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        } 
+        .file-message-container img {
+            
+        }
+        .file-message-container {
+            display: flex;
+            justify-content: flex-start;
+            align-items: stretch;
+            background-color: #fff;
+            border-radius: 10px;
+            border: 1px solid #e1e1e1;
+            width: max-content;
+            max-width: calc(100% - 20px);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+        .file-message-container-default {
+            
+        }
+        .file-message-container-image {
+            
+        }
+        .file-message-container-left {
+            display: flex; 
+            justify-content: flex-start; 
+            align-items: center; 
+            flex-direction: column; 
+            padding: 10px 20px; 
+            background-color: dodgerblue; 
+            border-top-left-radius: 10px; 
+            border-bottom-left-radius: 10px;
+        }
+        .file-message-container-right {
+            display: flex; 
+            justify-content: flex-start; 
+            align-items: flex-start; 
+            flex-direction: column; 
+            padding: 10px; 
+            border-top-right-radius: 10px; 
+            border-bottom-right-radius: 10px; 
+            overflow: hidden;
+        }
+        .file-message-container-left-svg {
+            width: 30px; 
+            color: #fff;
+        }
+        .file-message-container-left-ext {
+            font-weight: bold; 
+            font-size: 14px; 
+            color: #fff;
+        }
+        .file-message-container-right-title {
+            font-weight: bold; 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+            white-space: nowrap; 
+            width: 100%;
+        }
+        .file-message-container-right-size {
+            font-style: italic; 
+            font-size: 10px; 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+            white-space: nowrap; 
+            width: 100%;
+        }
+    </style>`;
+    return css.replace(/<[^>]*>/g, '');
+}

@@ -1,6 +1,6 @@
 <?php
 
-namespace XenoLabs\XenoEngine\DependencyInjection;
+namespace XenoLab\XenoEngine\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -12,9 +12,9 @@ class XenoEngineConfiguration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder('xeno_engine');
 
         $treeBuilder->getRootNode()
-            ->addDefaultsIfNotSet()
             ->children()
                 ->arrayNode('twitter')
+                    ->addDefaultsIfNotSet()
                     ->children()
                         ->integerNode('client_id')
                             ->defaultValue(1)

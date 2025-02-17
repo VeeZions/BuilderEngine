@@ -2,7 +2,7 @@
 
 This package is a [Symfony](http://symfony.com) Bundle allowing you to use particular **FormTypes** in order to build ***complete frontend pages*** with ***categories***, ***articles*** and ***navigation***, including ***GED***, in the context of a ***CMS***.
 
-[![Package version](https://img.shields.io/packagist/v/xenolabs/xeno-engine-bundle.svg?style=flat-square)](https://packagist.org/packages/xenolabs/xeno-engine-bundle)
+[![Package version](https://img.shields.io/packagist/v/xenolab/xeno-engine-bundle.svg?style=flat-square)](https://packagist.org/packages/xenolab/xeno-engine-bundle)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE)
 [![Slack](https://img.shields.io/badge/slack-%23xeno--engine--bundle-gold.svg?style=flat-square)](https://join.slack.com/t/sensioxenolab/shared_invite/zt-2j1r521bb-njCE7vP1vT9Ujcwfguyw4w)
 
@@ -22,7 +22,7 @@ A public web or shop site to mount in your Symfony/PHP stack? A need to quickly 
 With [Symfony Flex](https://symfony.com/doc/current/setup/flex.html) (recommended):
 
 ```
-composer require xenolabs/xeno-engine-bundle
+composer require xenolab/xeno-engine-bundle
 ```
 
 You're ready to use XenoEngineBundle, and can jump to the next section!
@@ -42,8 +42,6 @@ return [
 Configure the bundle to your needs, for example:
 
 ## Basic usage
-
-[Advanced usage](doc/advanced-usage.md)
 
 ## Database testing
 

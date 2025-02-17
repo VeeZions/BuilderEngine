@@ -1,11 +1,11 @@
 <?php
 
-namespace XenoLabs\XenoEngine\Manager;
+namespace XenoLab\XenoEngine\Manager;
 
-use XenoLabs\XenoEngine\Constant\AssetManagerConstant;
-use XenoLabs\XenoEngine\Enum\GedTypeEnum;
-use XenoLabs\XenoEngine\Entity\Ged;
-use XenoLabs\XenoEngine\Repository\GedRepository;
+use XenoLab\XenoEngine\Constant\AssetManagerConstant;
+use XenoLab\XenoEngine\Enum\GedTypeEnum;
+use XenoLab\XenoEngine\Entity\Ged;
+use XenoLab\XenoEngine\Repository\GedRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Gedmo\Sluggable\Util\Urlizer;
 use League\Flysystem\FilesystemException;

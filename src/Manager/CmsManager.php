@@ -1,9 +1,9 @@
 <?php
 
-namespace XenoLabs\XenoEngine\Manager;
+namespace XenoLab\XenoEngine\Manager;
 
-use XenoLabs\XenoEngine\Entity\Page;
-use XenoLabs\XenoEngine\Repository\NavigationRepository;
+use XenoLab\XenoEngine\Entity\Page;
+use XenoLab\XenoEngine\Repository\NavigationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;

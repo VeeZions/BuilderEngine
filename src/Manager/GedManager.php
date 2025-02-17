@@ -1,12 +1,12 @@
 <?php
 
-namespace XenoLabs\XenoEngine\Manager;
+namespace XenoLab\XenoEngine\Manager;
 
-use XenoLabs\XenoEngine\Entity\Element;
-use XenoLabs\XenoEngine\Entity\Ged as GedEntity;
-use XenoLabs\XenoEngine\Entity\Page;
-use XenoLabs\XenoEngine\Repository\ElementRepository;
-use XenoLabs\XenoEngine\Repository\GedRepository;
+use XenoLab\XenoEngine\Entity\Element;
+use XenoLab\XenoEngine\Entity\Ged as GedEntity;
+use XenoLab\XenoEngine\Entity\Page;
+use XenoLab\XenoEngine\Repository\ElementRepository;
+use XenoLab\XenoEngine\Repository\GedRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 

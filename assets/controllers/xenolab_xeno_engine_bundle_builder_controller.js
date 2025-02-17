@@ -5,7 +5,7 @@ import {
     setPageBuilderDragAndDrop,
     rebuildPageJson,
     getDataFromModule
-} from 'utils/modules';
+} from '@xenolab/xeno-engine-utils-modules';
 
 stimulusFetch: 'lazy'
 
