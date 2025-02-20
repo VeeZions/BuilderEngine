@@ -1,6 +1,6 @@
 <?php
 
-namespace Xenolabs\XenoEngine\Constant;
+namespace XenoLab\XenoEngine\Constant;
 
 class AssetConstant
 {
@@ -14,11 +14,11 @@ class AssetConstant
     public const THUMBNAILS = 'thumbnails';
     public const LOW_QUALITY = 'low_quality';
 
-    // GED per page items
+    // Library per page items
     public const ITEMS_PER_LOAD = 15;
-    // GED max file size in octets
+    // Library max file size in octets
     public const MAX_FILE_SIZE = 2000000;
-    // GED filetypes accepted
+    // Library filetypes accepted
     public const IMAGE_TYPE = 'image/jpeg,image/png,image/gif';
     public const VIDEO_TYPE = 'video/mp4,video/mpeg,video/quicktime,video/x-msvideo,video/x-ms-wmv';
     public const DOCUMENT_TYPE = 'application/pdf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/csv';

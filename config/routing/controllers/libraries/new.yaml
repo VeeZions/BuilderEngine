@@ -1,0 +1,4 @@
+xlxeb_controller_library_new:
+  controller: 'xenolab_xeno_engine.library_controller::new'
+  path: '/libraries/new'
+  methods: ['GET', 'POST']

@@ -3,14 +3,14 @@
 namespace XenoLab\XenoEngine\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
 
 class XenoEngineExtension extends Extension
 {
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
@@ -21,7 +21,11 @@ class XenoEngineExtension extends Extension
         );
         $loader->load('services.php');
 
-        $this->setServicesArguments($config, $container);
+        if ($container->getParameter('kernel.debug') === true) {
+            $loader->load('debug.php');
+        }
+
+        $this->setControllersArgumentsFromConfig($config, $container);
     }
 
     public function getConfiguration(array $config, ContainerBuilder $container): XenoEngineConfiguration
@@ -29,9 +33,17 @@ class XenoEngineExtension extends Extension
         return new XenoEngineConfiguration();
     }
 
-    private function setServicesArguments(array $config, ContainerBuilder $container): void
+    private function setControllersArgumentsFromConfig(array $config, ContainerBuilder $container): void
     {
-        $controlerDefinition = $container->getDefinition('xenolab_xeno_engine.engine_controller');
-        $controlerDefinition->setArgument('$clientId', $config['twitter']['client_id']);
+        $asyncDefinition = $container->getDefinition('xenolab_xeno_engine.route_loader');
+        $asyncDefinition->setArgument('$mode', $config['mode']);
+        $asyncDefinition->setArgument('$prefix', $config['crud_prefix']);
+        $asyncDefinition->setArgument('$actionsConfig', $config['actions']);
+
+        $articlesDefinition = $container->getDefinition('xenolab_xeno_engine.article_controller');
+        $articlesDefinition->setArgument('$authors', $config['author_providers']['articles']);
+
+        $pagesDefinition = $container->getDefinition('xenolab_xeno_engine.page_controller');
+        $pagesDefinition->setArgument('$authors', $config['author_providers']['pages']);
     }
 }

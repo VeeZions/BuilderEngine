@@ -1,0 +1,4 @@
+xlxeb_controller_page_delete:
+  controller: 'xenolab_xeno_engine.page_controller::delete'
+  path: '/pages/{id}/delete'
+  methods: ['GET']

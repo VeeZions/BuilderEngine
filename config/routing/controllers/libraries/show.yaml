@@ -1,0 +1,4 @@
+xlxeb_controller_library_show:
+  controller: 'xenolab_xeno_engine.library_controller::show'
+  path: '/libraries/{id}/show'
+  methods: ['GET']

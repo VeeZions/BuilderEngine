@@ -8,7 +8,7 @@
             label="{{ 'crud.label.category.media'|trans({}, 'crud') }}"
             editable="{{ editable }}"
             name="builder-module_image"
-            value="{{ data.ged is defined ? data.ged : null }}"
+            value="{{ data.library is defined ? data.library : null }}"
             only="{{ [enum('App\\Constant\\GedTypeEnum').IMAGE.value] }}"
         />
     </div>

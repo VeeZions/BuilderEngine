@@ -1,6 +1,6 @@
 <?php
 
-namespace Xenolabs\XenoEngine\Trait;
+namespace XenoLab\XenoEngine\Trait;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;

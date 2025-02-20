@@ -201,7 +201,7 @@ export const getDataFromModule = (type, data, translations) => {
         }
         return content;
     } else if (['image', 'video'].includes(type)) {
-        return {'ged': parseInt(data['module_' + type])}
+        return {'library': parseInt(data['module_' + type])}
     }
     return null;
 }

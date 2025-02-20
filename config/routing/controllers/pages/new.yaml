@@ -1,0 +1,4 @@
+xlxeb_controller_page_new:
+  controller: 'xenolab_xeno_engine.page_controller::new'
+  path: '/pages/new'
+  methods: ['GET', 'POST']

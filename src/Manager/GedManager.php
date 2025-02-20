@@ -2,11 +2,11 @@
 
 namespace XenoLab\XenoEngine\Manager;
 
-use XenoLab\XenoEngine\Entity\Element;
-use XenoLab\XenoEngine\Entity\Ged as GedEntity;
-use XenoLab\XenoEngine\Entity\Page;
-use XenoLab\XenoEngine\Repository\ElementRepository;
-use XenoLab\XenoEngine\Repository\GedRepository;
+use XenoLab\XenoEngine\Entity\XenoElement;
+use XenoLab\XenoEngine\Entity\XenoLibrary as GedEntity;
+use XenoLab\XenoEngine\Entity\XenoPage;
+use XenoLab\XenoEngine\Repository\XenoElementRepository;
+use XenoLab\XenoEngine\Repository\XenoLibraryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -14,13 +14,13 @@ readonly class GedManager
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private GedRepository $gedRepository,
-        private ElementRepository $elementRepository,
+        private XenoLibraryRepository $gedRepository,
+        private XenoElementRepository $elementRepository,
         private TranslatorInterface $translator,
     ) {
     }
 
-    public function setGedsFromPageBuilder(Page $page): void
+    public function setGedsFromPageBuilder(XenoPage $page): void
     {
         $content = $page->getContent();
         $this->removeAllElementGeds($page);
@@ -38,12 +38,12 @@ readonly class GedManager
                 && is_string($bId)
                 && is_string($t)
             ) {
-                $el = new Element();
+                $el = new XenoElement();
                 $el->setPage($p)
                     ->setBuilderId($bId)
                     ->setType($t)
                 ;
-                if ($g instanceof GedEntity) {
+                if ($g instanceof XenoLibrary) {
                     $el->setBgImage($g);
                     $el->addMedium($g);
                 }
@@ -52,7 +52,7 @@ readonly class GedManager
                 }
                 if (is_iterable($element['media'])) {
                     foreach ($element['media'] as $media) {
-                        if ($media instanceof GedEntity) {
+                        if ($media instanceof XenoLibrary) {
                             $el->addMedium($media);
                         }
                     }
@@ -70,11 +70,11 @@ readonly class GedManager
      *
      * @return array<int, array<string, mixed>>
      */
-    private function loopOnStagesForGeds(array $content, array $elements, Page $page): array
+    private function loopOnStagesForGeds(array $content, array $elements, XenoPage $page): array
     {
         foreach ($content as $row) {
             if ((is_array($row) && isset($row['bg']['image']) && is_int($row['bg']['image']))
-                || (is_array($row) && isset($row['data']['ged']) && is_int($row['data']['ged']))
+                || (is_array($row) && isset($row['data']['library']) && is_int($row['data']['library']))
             ) {
                 $el = [
                     'page' => $page,
@@ -83,13 +83,13 @@ readonly class GedManager
                     'bgImage' => isset($row['bg']['image']) ? $this->gedRepository->find($row['bg']['image']) : null,
                 ];
                 $el['media'] = match (true) {
-                    isset($row['data']['ged']) && is_int($row['data']['ged']) => [$this->gedRepository->find($row['data']['ged'])],
+                    isset($row['data']['library']) && is_int($row['data']['library']) => [$this->gedRepository->find($row['data']['library'])],
                     isset($row['data']['slider']) && is_array($row['data']['slider']) => array_map(function ($item) {
-                        return $this->gedRepository->find($item['ged']);
+                        return $this->gedRepository->find($item['library']);
                     }, $row['data']['slider']),
-                    isset($row['data']['geds']) && is_array($row['data']['geds']) => array_map(function ($item) {
-                        return $this->gedRepository->find($item['ged']);
-                    }, $row['data']['geds']),
+                    isset($row['data']['libraries']) && is_array($row['data']['libraries']) => array_map(function ($item) {
+                        return $this->gedRepository->find($item['library']);
+                    }, $row['data']['libraries']),
                     default => [],
                 };
                 if ('module' === $row['type']) {

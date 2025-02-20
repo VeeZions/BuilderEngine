@@ -2,10 +2,10 @@
 
 namespace XenoLab\XenoEngine\Manager;
 
-use XenoLab\XenoEngine\Constant\AssetManagerConstant;
-use XenoLab\XenoEngine\Enum\GedTypeEnum;
-use XenoLab\XenoEngine\Entity\Ged;
-use XenoLab\XenoEngine\Repository\GedRepository;
+use XenoLab\XenoEngine\Constant\AssetConstant;
+use XenoLab\XenoEngine\Enum\LibraryEnum;
+use XenoLab\XenoEngine\Entity\XenoLibrary;
+use XenoLab\XenoEngine\Repository\XenoLibraryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Gedmo\Sluggable\Util\Urlizer;
 use League\Flysystem\FilesystemException;
@@ -26,11 +26,11 @@ readonly class AssetManager
         private FilesystemOperator $uploadsFilesystem,
         private CacheManager $cacheManager,
         private ParameterBagInterface $params,
-        private AssetManagerConstant $assetManagerConstant,
+        private AssetConstant $assetManagerConstant,
         private FilterManager $filterManager,
         private DataManager $dataManager,
         private EntityManagerInterface $entityManager,
-        private GedRepository $gedRepository,
+        private XenoLibraryRepository $gedRepository,
     ) {
     }
 
@@ -39,7 +39,7 @@ readonly class AssetManager
      *
      * @throws FilesystemException
      */
-    public function upload(mixed $uploadedFile, array $filters = [], string $context = 'ged', mixed $slug = null): ?string
+    public function upload(mixed $uploadedFile, array $filters = [], string $context = 'library', mixed $slug = null): ?string
     {
         try {
             if ($uploadedFile instanceof UploadedFile) {
@@ -80,7 +80,7 @@ readonly class AssetManager
                     fclose($stream);
                 }
 
-                if ('ged' === $context) {
+                if ('library' === $context) {
                     if (in_array($uploadedFile->getMimeType(), ['image/jpg', 'image/jpeg', 'image/png', 'image/gif'], true)) {
                         foreach ($filters as $filter) {
                             $this->storeVariant($filter, $newFilename);
@@ -120,7 +120,7 @@ readonly class AssetManager
      */
     private function recordNewFileInGed(string $newFilename, UploadedFile $uploadedFile, array $fileInfo): void
     {
-        $ged = new Ged();
+        $ged = new XenoLibrary();
         $ged->setUrl($newFilename)
             ->setTitle(str_replace(
                 '.'.$uploadedFile->getClientOriginalExtension(),
@@ -160,7 +160,7 @@ readonly class AssetManager
         }
     }
 
-    public function replace(?string $oldFileName, ?UploadedFile $uploadedFile, string $context = 'ged', mixed $slug = null): ?string
+    public function replace(?string $oldFileName, ?UploadedFile $uploadedFile, string $context = 'library', mixed $slug = null): ?string
     {
         try {
             $this->delete($oldFileName, $context);
@@ -174,7 +174,7 @@ readonly class AssetManager
     /**
      * @throws FilesystemException
      */
-    public function delete(?string $oldFileName, string $context = 'ged'): void
+    public function delete(?string $oldFileName, string $context = 'library'): void
     {
         try {
             if ($oldFileName) {
@@ -183,7 +183,7 @@ readonly class AssetManager
                     $oldFileName = '/'.$oldFileName;
                 }
                 $this->uploadsFilesystem->delete($oldFileName);
-                if ('ged' === $context) {
+                if ('library' === $context) {
                     $this->cacheManager->remove($oldFileName);
                     $this->deleteMedia($oldFileName);
                 }

@@ -1,0 +1,4 @@
+xlxeb_controller_navigation_edit:
+  controller: 'xenolab_xeno_engine.navigation_controller::edit'
+  path: '/navigations/{id}/edit'
+  methods: ['GET', 'POST']

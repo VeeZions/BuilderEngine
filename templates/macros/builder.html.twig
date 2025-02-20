@@ -69,7 +69,7 @@
         {% if module.contentType is same as 'text' or module.contentType is same as 'html' %}
             {{ module.data[app.request.getLocale()]|raw }}
         {% elseif module.contentType is same as 'image' %}
-            {% set gedValue = get_ged(module.data.ged) %}
+            {% set gedValue = get_ged(module.data.library) %}
             {% if gedValue is not null %}
                 <img class="w-full" src="{{ s3(gedValue.url) }}" alt="{{ module.id }}">
             {% endif %}

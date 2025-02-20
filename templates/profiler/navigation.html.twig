@@ -1,0 +1,65 @@
+{% extends '@WebProfiler/Profiler/layout.html.twig' %}
+
+{% block head %}
+    {{ parent() }}
+{% endblock %}
+
+{% block toolbar %}
+
+    {% set icon %}
+        <svg style="height: 16px; width: 16px; margin: 0 2px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" stroke="orange" stroke-width="1.8">
+            <path d="M27.023 28.99h-22.047l0.015-1.895 2.56-2.207c0 0 4.609 1.52 8.438 1.52 3.773 0 8.523-1.52 8.523-1.52l2.512 2.18v1.922zM8.183 24.119l1.6-5.076h12.413l1.6 5.076c0 0-4.834 1.441-7.77 1.441-2.865 0.001-7.843-1.441-7.843-1.441zM10.73 16.037l1.599-5.075h7.322l1.598 5.075h-10.519zM14.834 3.009h2.31l1.559 4.945h-5.427l1.558-4.945z"></path>
+        </svg>
+        <span class="sf-toolbar-value">8</span>
+        <span class="sf-toolbar-label">ms</span>
+    {% endset %}
+
+    {% set text %}
+
+        <div class="sf-toolbar-info-piece">
+            <b>Entry View</b>
+            <span>
+                <a href="file:///home/frgef/PhpstormProjects/Research/Symfony/symfony-boilerplate-xeno-manager/app/templates/home/index.html.twig#L1" title="/home/frgef/PhpstormProjects/Research/Symfony/symfony-boilerplate-xeno-manager/app/templates/home/index.html.twig">
+                    home/index.html.twig
+                </a>
+            </span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Render Time</b>
+            <span>7 ms</span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Template Calls</b>
+            <span class="sf-toolbar-status">5</span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Block Calls</b>
+            <span class="sf-toolbar-status">6</span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Macro Calls</b>
+            <span class="sf-toolbar-status">0</span>
+        </div>
+
+    {% endset %}
+
+    {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: true }) }}
+{% endblock %}
+
+{% block menu %}
+    <span class="label {{ collector.pages|length == 0 ? 'disabled' }}">
+        <span class="icon">
+            <svg style="margin: 0 2px 0 2px;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M27.023 28.99h-22.047l0.015-1.895 2.56-2.207c0 0 4.609 1.52 8.438 1.52 3.773 0 8.523-1.52 8.523-1.52l2.512 2.18v1.922zM8.183 24.119l1.6-5.076h12.413l1.6 5.076c0 0-4.834 1.441-7.77 1.441-2.865 0.001-7.843-1.441-7.843-1.441zM10.73 16.037l1.599-5.075h7.322l1.598 5.075h-10.519zM14.834 3.009h2.31l1.559 4.945h-5.427l1.558-4.945z"></path>
+        </svg>
+        </span>
+        <strong style="padding-top: 2px;">Xeno Engine</strong>
+    </span>
+{% endblock %}
+
+{% block panel %}
+    <h2>Xeno Engine</h2>
+    <div class="empty empty-panel">
+        <p>No data available for this route.</p>
+    </div>
+{% endblock %}

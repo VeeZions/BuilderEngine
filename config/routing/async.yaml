@@ -1,0 +1,4 @@
+xlxeb_async:
+  controller: 'xenolab_xeno_engine.async_controller::index'
+  path: '/_async'
+  methods: ['POST']

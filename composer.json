@@ -1,7 +1,7 @@
 {
   "name": "xenolab/xeno-engine-bundle",
   "type": "library",
-  "description": "This package is a Symfony bundle allowing you to build a full CMS with page, categorie, article and navigation builder with ged includes.",
+  "description": "This package is a Symfony bundle allowing you to build a full CMS with page, categorie, article and navigation builder with EDM library includes.",
   "keywords": [
     "page",
     "builder",
@@ -26,11 +26,11 @@
   ],
   "require": {
     "php": ">=8.2.0",
-    "symfony/stimulus-bundle": ">=2.16",
     "nesbot/carbon": ">=3.3",
-    "symfony/filesystem": ">=7.0",
     "symfony/asset-mapper": ">=7.0",
+    "symfony/filesystem": ">=7.0",
     "symfony/intl": ">=7.0",
+    "symfony/stimulus-bundle": ">=2.16",
     "symfony/string": ">=7.0",
     "symfony/translation": ">=7.0",
     "symfony/twig-bundle": ">=7.0",
@@ -41,12 +41,12 @@
     "twig/twig": "^2.12|^3.0"
   },
   "require-dev": {
-    "monolog/monolog": "1.*|2.*",
     "friendsofphp/php-cs-fixer": "^3.54",
+    "monolog/monolog": "1.*|2.*",
     "php-parallel-lint/php-var-dump-check": "^0.5.0",
+    "phpstan/phpdoc-parser": "^1.25",
     "phpstan/phpstan-symfony": "^1.3",
-    "phpunit/phpunit": "^9.5",
-    "phpstan/phpdoc-parser": "^1.25"
+    "phpunit/phpunit": "^9.5"
   },
   "suggest": {
     "php": "PHP 8.0 or higher comes with attributes, a native replacement for annotations",

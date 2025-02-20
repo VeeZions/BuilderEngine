@@ -1,6 +1,6 @@
 # Xeno Engine
 
-This package is a [Symfony](http://symfony.com) Bundle allowing you to use particular **FormTypes** in order to build ***complete frontend pages*** with ***categories***, ***articles*** and ***navigation***, including ***GED***, in the context of a ***CMS***.
+This package is a [Symfony](http://symfony.com) Bundle allowing you to use particular **FormTypes** in order to build ***complete frontend pages*** with ***categories***, ***articles*** and ***navigation***, including ***EDM library***, in the context of a ***CMS***.
 
 [![Package version](https://img.shields.io/packagist/v/xenolab/xeno-engine-bundle.svg?style=flat-square)](https://packagist.org/packages/xenolab/xeno-engine-bundle)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE)

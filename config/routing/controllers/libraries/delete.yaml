@@ -1,0 +1,4 @@
+xlxeb_controller_library_delete:
+  controller: 'xenolab_xeno_engine.library_controller::delete'
+  path: '/libraries/{id}/delete'
+  methods: ['GET']

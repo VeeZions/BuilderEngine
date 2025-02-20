@@ -1,0 +1,4 @@
+xlxeb_controller_page_index:
+  controller: 'xenolab_xeno_engine.page_controller::index'
+  path: '/pages'
+  methods: ['GET']
