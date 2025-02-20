@@ -10,6 +10,7 @@ use Symfony\Component\AssetMapper\AssetMapperInterface;
 use Doctrine\ORM\EntityManager;
 use Twig\Environment;
 use XenoLab\XenoEngine\DependencyInjection\Compiler\GlobalVariablesCompilerPass;
+use Symfony\Component\Filesystem\Filesystem;
 use function dirname;
 
 class XenoEngineBundle extends Bundle
@@ -48,12 +49,23 @@ class XenoEngineBundle extends Bundle
 
         if ($this->isTwigAvailable()) {
 
+            $paths = [
+                '%kernel.project_dir%/vendor/xenolab/xeno-engine-bundle/src/Resources/internal' => 'XenoEngineAsynchronousInternal',
+                '%kernel.project_dir%/vendor/xenolab/xeno-engine-bundle/src/Resources/views' => 'XenoEngineBundle',
+            ];
+
+            $filesystem = new Filesystem();
+            $templatesPath = $container
+                ->getParameterBag()
+                ->resolveValue('%kernel.project_dir%/templates/bundles/XenoEngineBundle');
+
+            if ($filesystem->exists($templatesPath)) {
+                $paths['%kernel.project_dir%/templates/bundles/XenoEngineBundle'] = 'XenoEngineBundle';
+                $paths = array_reverse($paths);
+            }
+
             $container->prependExtensionConfig('twig', [
-                'paths' => [
-                    '%kernel.project_dir%/templates/bundles/XenoEngineBundle' => 'XenoEngineBundle',
-                    '%kernel.project_dir%/vendor/xenolab/xeno-engine-bundle/src/Resources/views' => 'XenoEngineBundle',
-                    '%kernel.project_dir%/vendor/xenolab/xeno-engine-bundle/src/Resources/internal' => 'XenoEngineAsynchronousInternal',
-                ],
+                'paths' => $paths,
             ]);
         }
 

@@ -23,6 +23,10 @@ class XenoEngineExtension extends Extension
 
         $loader->load('services.php');
 
+        if ($config['mode'] !== 'form') {
+            $loader->load('controllers.php');
+        }
+
         if ($container->getParameter('kernel.debug') === true) {
             $loader->load('debug.php');
         }
@@ -45,21 +49,23 @@ class XenoEngineExtension extends Extension
         $asyncDefinition->setArgument('$prefix', $config['crud_prefix']);
         $asyncDefinition->setArgument('$actionsConfig', $config['actions']);
 
-        $articlesDefinition = $container->getDefinition('xenolab_xeno_engine.article_controller');
-        $articlesDefinition->setArgument('$authors', $config['author_providers']['articles']);
-        $articlesDefinition->setArgument('$actions', $config['actions']['articles']);
+        if ($config['mode'] !== 'form') {
+            $articlesDefinition = $container->getDefinition('xenolab_xeno_engine.article_controller');
+            $articlesDefinition->setArgument('$authors', $config['author_providers']['articles']);
+            $articlesDefinition->setArgument('$actions', $config['actions']['articles']);
 
-        $pagesDefinition = $container->getDefinition('xenolab_xeno_engine.page_controller');
-        $pagesDefinition->setArgument('$authors', $config['author_providers']['pages']);
-        $pagesDefinition->setArgument('$actions', $config['actions']['pages']);
+            $pagesDefinition = $container->getDefinition('xenolab_xeno_engine.page_controller');
+            $pagesDefinition->setArgument('$authors', $config['author_providers']['pages']);
+            $pagesDefinition->setArgument('$actions', $config['actions']['pages']);
 
-        $categoriesDefinition = $container->getDefinition('xenolab_xeno_engine.category_controller');
-        $categoriesDefinition->setArgument('$actions', $config['actions']['categories']);
+            $categoriesDefinition = $container->getDefinition('xenolab_xeno_engine.category_controller');
+            $categoriesDefinition->setArgument('$actions', $config['actions']['categories']);
 
-        $navigationsDefinition = $container->getDefinition('xenolab_xeno_engine.navigation_controller');
-        $navigationsDefinition->setArgument('$actions', $config['actions']['navigations']);
+            $navigationsDefinition = $container->getDefinition('xenolab_xeno_engine.navigation_controller');
+            $navigationsDefinition->setArgument('$actions', $config['actions']['navigations']);
 
-        $librariesDefinition = $container->getDefinition('xenolab_xeno_engine.library_controller');
-        $librariesDefinition->setArgument('$actions', $config['actions']['libraries']);
+            $librariesDefinition = $container->getDefinition('xenolab_xeno_engine.library_controller');
+            $librariesDefinition->setArgument('$actions', $config['actions']['libraries']);
+        }
     }
 }

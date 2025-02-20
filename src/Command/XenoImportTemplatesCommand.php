@@ -4,11 +4,11 @@ namespace XenoLab\XenoEngine\Command;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 #[AsCommand(
     name: 'xeno:import-templates',
@@ -16,33 +16,39 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class XenoImportTemplatesCommand extends Command
 {
-    public function __construct()
+    public function __construct(
+        private ParameterBagInterface $params,
+    )
     {
         parent::__construct();
-    }
-
-    protected function configure(): void
-    {
-        $this
-            ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
-        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $arg1 = $input->getArgument('arg1');
-
-        if ($arg1) {
-            $io->note(sprintf('You passed an argument: %s', $arg1));
+        $io->title('XenoEngineBundle templates list');
+        
+        $templatesPath = $this->params->get('kernel.project_dir').'/vendor/xenolab/xeno-engine-bundle/src/Resources/views';
+        $destinationPath = $this->params->get('kernel.project_dir').'/templates/bundles/XenoEngineBundle/';
+        
+        $filesystem = new Filesystem();
+        if ($filesystem->exists($templatesPath)) {
+            $filesystem->mirror($templatesPath, $destinationPath);
         }
+        
+        $io->text([
+            '<info>Articles</info> templates',
+            '<info>Categories</info> templates',
+            '<info>Libraries</info> templates',
+            '<info>Navigations</info> templates',
+            '<info>Pages</info> templates',
+            '<comment>Main</comment> template',
+        ]);
+        
+        $io->newLine();
+        $io->text('Destination folder: <question>./templates/bundles/XenoEngineBundle</question>');
 
-        if ($input->getOption('option1')) {
-            // ...
-        }
-
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
+        $io->success('All templates have been imported successfully !');
 
         return Command::SUCCESS;
     }
