@@ -8,6 +8,8 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\AssetMapper\AssetMapperInterface;
 use Doctrine\ORM\EntityManager;
+use Twig\Environment;
+use XenoLab\XenoEngine\DependencyInjection\Compiler\GlobalVariablesCompilerPass;
 use function dirname;
 
 class XenoEngineBundle extends Bundle
@@ -43,6 +45,19 @@ class XenoEngineBundle extends Bundle
                 ],
             ]);
         }
+
+        if ($this->isTwigAvailable()) {
+
+            $container->prependExtensionConfig('twig', [
+                'paths' => [
+                    '%kernel.project_dir%/templates/bundles/XenoEngineBundle' => 'XenoEngineBundle',
+                    '%kernel.project_dir%/vendor/xenolab/xeno-engine-bundle/src/Resources/views' => 'XenoEngineBundle',
+                    '%kernel.project_dir%/vendor/xenolab/xeno-engine-bundle/src/Resources/internal' => 'XenoEngineAsynchronousInternal',
+                ],
+            ]);
+        }
+
+        $container->addCompilerPass(new GlobalVariablesCompilerPass());
     }
 
     public function getPath(): string
@@ -58,5 +73,10 @@ class XenoEngineBundle extends Bundle
     private function isDoctrineAvailable(): bool
     {
         return ContainerBuilder::willBeAvailable('doctrine/orm', EntityManager::class, ['doctrine/doctrine-bundle']);
+    }
+
+    private function isTwigAvailable(): bool
+    {
+        return ContainerBuilder::willBeAvailable('twig/environment', Environment::class, ['symfony/framework-bundle']);
     }
 }

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Twig\Extension;
+namespace XenoLab\XenoEngine\Twig\Extension;
 
 use XenoLab\XenoEngine\Twig\Runtime\FiltersRuntime;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
-class FiltersExtension extends AbstractExtension
+final class FiltersExtension extends AbstractExtension
 {
     public function getFilters(): array
     {

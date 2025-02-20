@@ -7,6 +7,7 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
+use Symfony\Component\DependencyInjection\Reference;
 
 class XenoEngineExtension extends Extension
 {
@@ -19,11 +20,15 @@ class XenoEngineExtension extends Extension
             $container,
             new FileLocator(__DIR__.'/../../config')
         );
+
         $loader->load('services.php');
 
         if ($container->getParameter('kernel.debug') === true) {
             $loader->load('debug.php');
         }
+
+        $loader->load('twig.php');
+        $loader->load('command.php');
 
         $this->setControllersArgumentsFromConfig($config, $container);
     }
@@ -42,8 +47,19 @@ class XenoEngineExtension extends Extension
 
         $articlesDefinition = $container->getDefinition('xenolab_xeno_engine.article_controller');
         $articlesDefinition->setArgument('$authors', $config['author_providers']['articles']);
+        $articlesDefinition->setArgument('$actions', $config['actions']['articles']);
 
         $pagesDefinition = $container->getDefinition('xenolab_xeno_engine.page_controller');
         $pagesDefinition->setArgument('$authors', $config['author_providers']['pages']);
+        $pagesDefinition->setArgument('$actions', $config['actions']['pages']);
+
+        $categoriesDefinition = $container->getDefinition('xenolab_xeno_engine.category_controller');
+        $categoriesDefinition->setArgument('$actions', $config['actions']['categories']);
+
+        $navigationsDefinition = $container->getDefinition('xenolab_xeno_engine.navigation_controller');
+        $navigationsDefinition->setArgument('$actions', $config['actions']['navigations']);
+
+        $librariesDefinition = $container->getDefinition('xenolab_xeno_engine.library_controller');
+        $librariesDefinition->setArgument('$actions', $config['actions']['libraries']);
     }
 }

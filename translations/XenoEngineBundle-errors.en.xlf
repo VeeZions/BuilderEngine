@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="fr" target-language="en" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="error.category.not.found" resname="error.category.not.found">
+        <source>error.category.not.found</source>
+        <target>This category does not exist.</target>
+      </trans-unit>
+      <trans-unit id="error.article.not.found" resname="error.article.not.found">
+        <source>error.article.not.found</source>
+        <target>This article does not exist.</target>
+      </trans-unit>
+      <trans-unit id="error.page.not.found" resname="error.page.not.found">
+        <source>error.page.not.found</source>
+        <target>This page does not exist.</target>
+      </trans-unit>
+      <trans-unit id="error.navigation.not.found" resname="error.navigation.not.found">
+        <source>error.navigation.not.found</source>
+        <target>This navigation does not exist.</target>
+      </trans-unit>
+      <trans-unit id="error.library.not.found" resname="error.library.not.found">
+        <source>error.library.not.found</source>
+        <target>This media resource does not exist.</target>
+      </trans-unit>
+      <trans-unit id="error.action.disabled" resname="error.action.disabled">
+        <source>error.action.disabled</source>
+        <target>Page not found.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
