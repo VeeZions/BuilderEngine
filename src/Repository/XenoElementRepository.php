@@ -2,9 +2,9 @@
 
 namespace XenoLab\XenoEngine\Repository;
 
-use XenoLab\XenoEngine\Entity\XenoElement;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use XenoLab\XenoEngine\Entity\XenoElement;
 
 /**
  * @extends ServiceEntityRepository<XenoElement>

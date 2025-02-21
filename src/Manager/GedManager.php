@@ -2,13 +2,12 @@
 
 namespace XenoLab\XenoEngine\Manager;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use XenoLab\XenoEngine\Entity\XenoElement;
-use XenoLab\XenoEngine\Entity\XenoLibrary as GedEntity;
 use XenoLab\XenoEngine\Entity\XenoPage;
 use XenoLab\XenoEngine\Repository\XenoElementRepository;
 use XenoLab\XenoEngine\Repository\XenoLibraryRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 readonly class GedManager
 {

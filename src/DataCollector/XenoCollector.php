@@ -12,7 +12,7 @@ class XenoCollector extends AbstractDataCollector
     {
         $this->data = [
             'route' => $request->get('_route'),
-            'pages' => []
+            'pages' => [],
         ];
     }
 

@@ -4,7 +4,7 @@ namespace XenoLab\XenoEngine\Constant;
 
 class AssetConstant
 {
-// Directories
+    // Directories
     public const MEDIA = 'uploads/media/';
     public const DOCUMENT = 'uploads/documents/';
     public const CHAT = 'uploads/chat/';

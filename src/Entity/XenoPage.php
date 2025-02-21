@@ -2,13 +2,12 @@
 
 namespace XenoLab\XenoEngine\Entity;
 
-use XenoLab\XenoEngine\Repository\XenoPageRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation\Timestampable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints as Assert;
+use XenoLab\XenoEngine\Repository\XenoPageRepository;
 
 #[UniqueEntity(fields: ['route'])]
 #[ORM\Entity(repositoryClass: XenoPageRepository::class)]
@@ -21,10 +20,10 @@ class XenoPage
 
     #[ORM\Column]
     private array $title = [];
-    
+
     #[ORM\Column]
     private array $seo = [];
-    
+
     #[ORM\Column]
     private array $content = [];
 
@@ -87,14 +86,14 @@ class XenoPage
     {
         return $this->seo;
     }
-    
+
     public function setSeo(array $seo): static
     {
         $this->seo = $seo;
 
         return $this;
     }
-    
+
     public function getContent(): array
     {
         return $this->content;

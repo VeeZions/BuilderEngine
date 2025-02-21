@@ -2,9 +2,9 @@
 
 namespace XenoLab\XenoEngine\Entity;
 
-use XenoLab\XenoEngine\Repository\XenoNavigationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use XenoLab\XenoEngine\Repository\XenoNavigationRepository;
 
 #[ORM\Entity(repositoryClass: XenoNavigationRepository::class)]
 class XenoNavigation
@@ -17,7 +17,7 @@ class XenoNavigation
     #[Assert\NotBlank]
     #[ORM\Column(length: 150)]
     private ?string $type = null;
-    
+
     #[ORM\Column]
     private array $content = [];
 
@@ -41,12 +41,12 @@ class XenoNavigation
 
         return $this;
     }
-    
+
     public function getContent(): array
     {
         return $this->content;
     }
-    
+
     public function setContent(array $content): static
     {
         $this->content = $content;

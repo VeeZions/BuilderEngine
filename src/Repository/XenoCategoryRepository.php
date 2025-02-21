@@ -2,30 +2,27 @@
 
 namespace XenoLab\XenoEngine\Repository;
 
-use XenoLab\XenoEngine\Entity\XenoCategory;
-use XenoLab\XenoEngine\Trait\SearchTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use XenoLab\XenoEngine\Entity\XenoCategory;
+use XenoLab\XenoEngine\Trait\SearchTrait;
 
 /**
  * @extends ServiceEntityRepository<XenoCategory>
  */
 class XenoCategoryRepository extends ServiceEntityRepository
 {
-    //use SearchTrait;
+    // use SearchTrait;
 
-    /**
-     * @param array<int, string> $availableTranslations
-     */
     public function __construct(
         ManagerRegistry $registry,
-        //private readonly PaginatorInterface $paginator,
+        // private readonly PaginatorInterface $paginator,
     ) {
         parent::__construct($registry, XenoCategory::class);
     }
-    
+
     /*public function getCategory(string $slug, string $locale): ?array
     {
         $locale = in_array(strtolower($locale), $this->availableTranslations, true) ? $locale : 'En';

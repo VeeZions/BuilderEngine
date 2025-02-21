@@ -3,16 +3,15 @@
 namespace XenoLab\XenoEngine\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment as TwigEnvironment;
 use XenoLab\XenoEngine\Entity\XenoCategory;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use XenoLab\XenoEngine\Trait\AccessTrait;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class CategoryController
 {
@@ -25,9 +24,7 @@ class CategoryController
         private EntityManagerInterface $entityManager,
         private AuthorizationCheckerInterface $authorizationChecker,
         private array $actions,
-    )
-    {
-
+    ) {
     }
 
     public function index(): Response
@@ -47,11 +44,7 @@ class CategoryController
         $this->isGranted($this->actions['show']['roles']);
 
         if (null === $category) {
-            throw new NotFoundHttpException($this->translator->trans(
-                'error.category.not.found',
-                [],
-                'XenoEngineBundle-errors'
-            ));
+            throw new NotFoundHttpException($this->translator->trans('error.category.not.found', [], 'XenoEngineBundle-errors'));
         }
 
         return new Response($this->twig->render('@XenoEngineBundle/categories/show.html.twig'));
@@ -62,11 +55,7 @@ class CategoryController
         $this->isGranted($this->actions['edit']['roles']);
 
         if (null === $category) {
-            throw new NotFoundHttpException($this->translator->trans(
-                'error.category.not.found',
-                [],
-                'XenoEngineBundle-errors'
-            ));
+            throw new NotFoundHttpException($this->translator->trans('error.category.not.found', [], 'XenoEngineBundle-errors'));
         }
 
         return new Response($this->twig->render('@XenoEngineBundle/categories/edit.html.twig'));
@@ -79,7 +68,7 @@ class CategoryController
         if (null !== $category) {
             $this->entityManager->remove($category);
         }
-        
+
         return new RedirectResponse($this->router->generate('xlxeb_controller_category_index'));
     }
 }

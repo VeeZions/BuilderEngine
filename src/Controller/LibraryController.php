@@ -3,15 +3,14 @@
 namespace XenoLab\XenoEngine\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment as TwigEnvironment;
 use XenoLab\XenoEngine\Entity\XenoLibrary;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use XenoLab\XenoEngine\Trait\AccessTrait;
 
 class LibraryController
@@ -25,9 +24,7 @@ class LibraryController
         private EntityManagerInterface $entityManager,
         private AuthorizationCheckerInterface $authorizationChecker,
         private array $actions,
-    )
-    {
-
+    ) {
     }
 
     public function index(): Response
@@ -47,11 +44,7 @@ class LibraryController
         $this->isGranted($this->actions['show']['roles']);
 
         if (null === $library) {
-            throw new NotFoundHttpException($this->translator->trans(
-                'error.library.not.found',
-                [],
-                'XenoEngineBundle-errors'
-            ));
+            throw new NotFoundHttpException($this->translator->trans('error.library.not.found', [], 'XenoEngineBundle-errors'));
         }
 
         return new Response($this->twig->render('@XenoEngineBundle/libraries/show.html.twig'));
@@ -62,11 +55,7 @@ class LibraryController
         $this->isGranted($this->actions['edit']['roles']);
 
         if (null === $library) {
-            throw new NotFoundHttpException($this->translator->trans(
-                'error.library.not.found',
-                [],
-                'XenoEngineBundle-errors'
-            ));
+            throw new NotFoundHttpException($this->translator->trans('error.library.not.found', [], 'XenoEngineBundle-errors'));
         }
 
         return new Response($this->twig->render('@XenoEngineBundle/libraries/edit.html.twig'));

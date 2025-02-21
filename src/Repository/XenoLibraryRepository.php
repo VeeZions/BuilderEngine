@@ -2,29 +2,29 @@
 
 namespace XenoLab\XenoEngine\Repository;
 
-use XenoLab\XenoEngine\Constant\AssetConstant;
-use XenoLab\XenoEngine\Entity\XenoLibrary;
-use XenoLab\XenoEngine\Trait\SearchTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use XenoLab\XenoEngine\Constant\AssetConstant;
+use XenoLab\XenoEngine\Entity\XenoLibrary;
+use XenoLab\XenoEngine\Trait\SearchTrait;
 
 /**
  * @extends ServiceEntityRepository<XenoLibrary>
  */
 class XenoLibraryRepository extends ServiceEntityRepository
 {
-    //use SearchTrait;
+    // use SearchTrait;
 
     public function __construct(
         ManagerRegistry $registry,
-        //private readonly PaginatorInterface $paginator,
+        // private readonly PaginatorInterface $paginator,
     ) {
         parent::__construct($registry, XenoLibrary::class);
     }
 
-    /**
+    /*
      * @param array<int, string>|null $types
      *
      * @return PaginationInterface<int, mixed>
@@ -49,7 +49,7 @@ class XenoLibraryRepository extends ServiceEntityRepository
         return $this->paginator->paginate($query->orderBy('g.id', $order), 1, $count);
     }*/
 
-    /**
+    /*
      * @param array<int, int> $ids
      *
      * @return array<int, XenoLibrary>

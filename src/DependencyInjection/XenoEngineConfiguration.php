@@ -4,12 +4,13 @@ namespace XenoLab\XenoEngine\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use XenoLab\XenoEngine\Constant\ConfigConstant;
 
 class XenoEngineConfiguration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder('xeno_engine');
+        $treeBuilder = new TreeBuilder(ConfigConstant::CONFIG_FILE_NAME);
 
         $treeBuilder->getRootNode()
             ->children()
@@ -41,7 +42,7 @@ class XenoEngineConfiguration implements ConfigurationInterface
                         ->scalarNode('service')->defaultValue(null)->end()
                     ->end()
                 ->end()
-                ->scalarNode('mode')->defaultValue('default')->info('Possible values: default, form')->cannotBeEmpty()->end()
+                ->scalarNode('mode')->defaultValue(ConfigConstant::CONFIG_MODE_DEFAULT)->info('Possible values: '.ConfigConstant::CONFIG_MODE_DEFAULT.', '.ConfigConstant::CONFIG_MODE_FORM)->cannotBeEmpty()->end()
                 ->scalarNode('crud_prefix')->defaultValue('/admin')->info('Add a prefix to controllers URLs')->end()
                 ->arrayNode('actions')
                     ->addDefaultsIfNotSet()

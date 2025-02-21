@@ -2,13 +2,11 @@
 
 namespace XenoLab\XenoEngine\Entity;
 
-use XenoLab\XenoEngine\Repository\XenoCategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation\Slug;
 use Gedmo\Mapping\Annotation\Timestampable;
-use Symfony\Component\Validator\Constraints as Assert;
+use XenoLab\XenoEngine\Repository\XenoCategoryRepository;
 
 #[ORM\Entity(repositoryClass: XenoCategoryRepository::class)]
 class XenoCategory
@@ -88,7 +86,7 @@ class XenoCategory
     public function setSlug(array $slug): array
     {
         $this->slug = $slug;
-        
+
         return $this;
     }
 

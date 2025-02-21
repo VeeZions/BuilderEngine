@@ -2,12 +2,11 @@
 
 namespace XenoLab\XenoEngine\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
-use Symfony\Component\DependencyInjection\Extension\Extension;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\Alias;
-use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\Extension;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
+use XenoLab\XenoEngine\Constant\ConfigConstant;
 
 class XenoEngineExtension extends Extension
 {
@@ -23,11 +22,11 @@ class XenoEngineExtension extends Extension
 
         $loader->load('services.php');
 
-        if ($config['mode'] !== 'form') {
+        if (ConfigConstant::CONFIG_MODE_FORM !== $config['mode']) {
             $loader->load('controllers.php');
         }
 
-        if ($container->getParameter('kernel.debug') === true) {
+        if (true === $container->getParameter('kernel.debug')) {
             $loader->load('debug.php');
         }
 
@@ -49,7 +48,10 @@ class XenoEngineExtension extends Extension
         $asyncDefinition->setArgument('$prefix', $config['crud_prefix']);
         $asyncDefinition->setArgument('$actionsConfig', $config['actions']);
 
-        if ($config['mode'] !== 'form') {
+        $importCommandDefinition = $container->getDefinition('xenolab_xeno_engine.command.import_templates');
+        $importCommandDefinition->setArgument('$mode', $config['mode']);
+
+        if (ConfigConstant::CONFIG_MODE_FORM !== $config['mode']) {
             $articlesDefinition = $container->getDefinition('xenolab_xeno_engine.article_controller');
             $articlesDefinition->setArgument('$authors', $config['author_providers']['articles']);
             $articlesDefinition->setArgument('$actions', $config['actions']['articles']);

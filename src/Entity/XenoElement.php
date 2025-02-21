@@ -2,10 +2,10 @@
 
 namespace XenoLab\XenoEngine\Entity;
 
-use XenoLab\XenoEngine\Repository\XenoElementRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use XenoLab\XenoEngine\Repository\XenoElementRepository;
 
 #[ORM\Entity(repositoryClass: XenoElementRepository::class)]
 class XenoElement

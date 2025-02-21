@@ -2,37 +2,32 @@
 
 namespace XenoLab\XenoEngine;
 
-use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\AssetMapper\AssetMapperInterface;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\AssetMapper\AssetMapperInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Twig\Environment;
 use XenoLab\XenoEngine\DependencyInjection\Compiler\GlobalVariablesCompilerPass;
-use Symfony\Component\Filesystem\Filesystem;
-use function dirname;
 
 class XenoEngineBundle extends Bundle
 {
     public function build(ContainerBuilder $container): void
     {
         if ($this->isAssetMapperAvailable()) {
-
             $container->prependExtensionConfig('framework', [
                 'asset_mapper' => [
                     'paths' => [
-                        __DIR__ . '/../assets/controllers' => '@xenolab/xeno-engine-bundle',
-                        __DIR__ . '/../assets/js' => '@xenolab/xeno-engine-bundle',
-                        __DIR__ . '/../assets/utils' => '@xenolab/xeno-engine-bundle',
-                        __DIR__ . '/../assets/css' => '@xenolab/xeno-engine-bundle'
+                        __DIR__.'/../assets/controllers' => '@xenolab/xeno-engine-bundle',
+                        __DIR__.'/../assets/js' => '@xenolab/xeno-engine-bundle',
+                        __DIR__.'/../assets/utils' => '@xenolab/xeno-engine-bundle',
+                        __DIR__.'/../assets/css' => '@xenolab/xeno-engine-bundle',
                     ],
                 ],
             ]);
         }
 
         if ($this->isDoctrineAvailable()) {
-            
             $container->prependExtensionConfig('doctrine', [
                 'orm' => [
                     'mappings' => [
@@ -40,15 +35,14 @@ class XenoEngineBundle extends Bundle
                             'is_bundle' => true,
                             'type' => 'attribute',
                             'dir' => 'src',
-                            'prefix' => 'XenoLab\XenoEngine'
-                        ]
-                    ]
+                            'prefix' => 'XenoLab\XenoEngine',
+                        ],
+                    ],
                 ],
             ]);
         }
 
         if ($this->isTwigAvailable()) {
-
             $paths = [
                 '%kernel.project_dir%/vendor/xenolab/xeno-engine-bundle/src/Resources/internal' => 'XenoEngineAsynchronousInternal',
                 '%kernel.project_dir%/vendor/xenolab/xeno-engine-bundle/src/Resources/views' => 'XenoEngineBundle',
@@ -74,7 +68,7 @@ class XenoEngineBundle extends Bundle
 
     public function getPath(): string
     {
-        return dirname(__DIR__);
+        return \dirname(__DIR__);
     }
 
     private function isAssetMapperAvailable(): bool

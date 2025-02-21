@@ -3,12 +3,8 @@
 namespace XenoLab\XenoEngine\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Exception\InvalidConfigurationException;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 
 class CategoryType extends AbstractType
 {
@@ -29,6 +25,5 @@ class CategoryType extends AbstractType
 
     private function checkOptionsIntegrity(array $options): void
     {
-        
     }
 }
