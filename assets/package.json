@@ -27,7 +27,10 @@
     "importmap": {
       "@hotwired/stimulus": "^3.0.0",
       "slugify": "^1.6.5",
+      "@xenolab/xeno-engine-jquery": "path:%PACKAGE%/libraries/jquery.min.js",
+      "@xenolab/xeno-engine-jquery-ui": "path:%PACKAGE%/libraries/jquery-ui.min.js",
       "@xenolab/xeno-engine-logic": "path:%PACKAGE%/js/logic.js",
+      "@xenolab/xeno-engine-css": "path:%PACKAGE%/css/style.css",
       "@xenolab/xeno-engine-utils-components": "path:%PACKAGE%/utils/components.js",
       "@xenolab/xeno-engine-utils-modules": "path:%PACKAGE%/utils/modules.js",
       "@xenolab/xeno-engine-utils-navigation": "path:%PACKAGE%/utils/navigation.js"

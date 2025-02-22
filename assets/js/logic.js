@@ -1,7 +1,5 @@
-import './libraries/jquery.3.7.1.min.js';
-import './libraries/jquery-ui-1.14.1.min.js';
 import { resizeGridItems, resizeMediaProvider } from '@xenolab/xeno-engine-utils-components';
-import '../css/style.css';
+import '@xenolab/xeno-engine-css';
 
 // Opera 8.0+
 const isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;

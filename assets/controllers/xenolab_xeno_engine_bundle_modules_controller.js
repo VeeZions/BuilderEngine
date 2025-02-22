@@ -16,6 +16,10 @@ export default class extends Controller {
         'video'
     ];
 
+    languages = {
+        'fr': 'fr_FR'
+    }
+
     connect() {
 
     }
@@ -31,7 +35,9 @@ export default class extends Controller {
                 link_title: false,
                 link_target_list: false,
                 toolbar_mode: 'scrolling',
-                language: this.textTarget.dataset.language === 'fr' ? 'fr_FR' : false,
+                language: typeof this.languages[this.textTarget.dataset.language] !== "undefined"
+                    ? this.languages[this.textTarget.dataset.language]
+                    : null,
                 plugins: 'charmap image link lists media autoresize',
                 toolbar: 'bold italic strikethrough | link | numlist bullist | align | blocks',
                 content_style: tinymceCss(12),

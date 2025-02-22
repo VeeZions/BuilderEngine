@@ -21,7 +21,8 @@ class XenoEngineBundle extends Bundle
                         __DIR__.'/../assets/controllers' => '@xenolab/xeno-engine-bundle',
                         __DIR__.'/../assets/js' => '@xenolab/xeno-engine-bundle',
                         __DIR__.'/../assets/utils' => '@xenolab/xeno-engine-bundle',
-                        __DIR__.'/../assets/css' => '@xenolab/xeno-engine-bundle',
+                        __DIR__.'/../assets/libraries' => '@xenolab/xeno-engine-bundle',
+                        __DIR__.'/../assets/css' => '@xenolab/xeno-engine-bundle'
                     ],
                 ],
             ]);
