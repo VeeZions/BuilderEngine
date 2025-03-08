@@ -1,6 +1,6 @@
 <?php
 
-namespace Vision\BuilderEngine\Command;
+namespace VeeZions\BuilderEngine\Command;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -9,7 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Vision\BuilderEngine\Constant\ConfigConstant;
+use VeeZions\BuilderEngine\Constant\ConfigConstant;
 
 #[AsCommand(
     name: 'builder:import-templates',
@@ -37,7 +37,7 @@ class BuilderImportTemplatesCommand extends Command
             return Command::SUCCESS;
         }
 
-        $templatesPath = $this->params->get('kernel.project_dir').'/vendor/vision/builder-engine-bundle/src/Resources/views';
+        $templatesPath = $this->params->get('kernel.project_dir').'/vendor/veezions/builder-engine-bundle/src/Resources/views';
         $destinationPath = $this->params->get('kernel.project_dir').'/templates/bundles/BuilderEngineBundle/';
 
         $filesystem = new Filesystem();

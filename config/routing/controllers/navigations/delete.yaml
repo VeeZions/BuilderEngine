@@ -1,4 +1,4 @@
 xlxeb_controller_navigation_delete:
-  controller: 'vision_builder_engine.navigation_controller::delete'
+  controller: 'veezions_builder_engine.navigation_controller::delete'
   path: '/navigations/{id}/delete'
   methods: ['GET']

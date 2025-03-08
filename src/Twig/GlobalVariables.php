@@ -1,6 +1,6 @@
 <?php
 
-namespace Vision\BuilderEngine\Twig;
+namespace VeeZions\BuilderEngine\Twig;
 
 final class GlobalVariables
 {

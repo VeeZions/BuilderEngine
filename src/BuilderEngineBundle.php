@@ -1,6 +1,6 @@
 <?php
 
-namespace Vision\BuilderEngine;
+namespace VeeZions\BuilderEngine;
 
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\AssetMapper\AssetMapperInterface;
@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Twig\Environment;
-use Vision\BuilderEngine\DependencyInjection\Compiler\GlobalVariablesCompilerPass;
+use VeeZions\BuilderEngine\DependencyInjection\Compiler\GlobalVariablesCompilerPass;
 
 class BuilderEngineBundle extends Bundle
 {
@@ -18,11 +18,11 @@ class BuilderEngineBundle extends Bundle
             $container->prependExtensionConfig('framework', [
                 'asset_mapper' => [
                     'paths' => [
-                        __DIR__.'/../assets/controllers' => '@vision/builder-engine-bundle',
-                        __DIR__.'/../assets/js' => '@vision/builder-engine-bundle',
-                        __DIR__.'/../assets/utils' => '@vision/builder-engine-bundle',
-                        __DIR__.'/../assets/libraries' => '@vision/builder-engine-bundle',
-                        __DIR__.'/../assets/css' => '@vision/builder-engine-bundle'
+                        __DIR__.'/../assets/controllers' => '@veezions/builder-engine-bundle',
+                        __DIR__.'/../assets/js' => '@veezions/builder-engine-bundle',
+                        __DIR__.'/../assets/utils' => '@veezions/builder-engine-bundle',
+                        __DIR__.'/../assets/libraries' => '@veezions/builder-engine-bundle',
+                        __DIR__.'/../assets/css' => '@veezions/builder-engine-bundle'
                     ],
                 ],
             ]);
@@ -36,7 +36,7 @@ class BuilderEngineBundle extends Bundle
                             'is_bundle' => true,
                             'type' => 'attribute',
                             'dir' => 'src',
-                            'prefix' => 'Vision\BuilderEngine',
+                            'prefix' => 'VeeZions\BuilderEngine',
                         ],
                     ],
                 ],
@@ -45,8 +45,8 @@ class BuilderEngineBundle extends Bundle
 
         if ($this->isTwigAvailable()) {
             $paths = [
-                '%kernel.project_dir%/vendor/vision/builder-engine-bundle/src/Resources/internal' => 'BuilderEngineInternal',
-                '%kernel.project_dir%/vendor/vision/builder-engine-bundle/src/Resources/views' => 'BuilderEngineBundle',
+                '%kernel.project_dir%/vendor/veezions/builder-engine-bundle/src/Resources/internal' => 'BuilderEngineInternal',
+                '%kernel.project_dir%/vendor/veezions/builder-engine-bundle/src/Resources/views' => 'BuilderEngineBundle',
             ];
 
             $filesystem = new Filesystem();

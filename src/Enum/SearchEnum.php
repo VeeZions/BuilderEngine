@@ -1,6 +1,6 @@
 <?php
 
-namespace Vision\BuilderEngine\Enum;
+namespace VeeZions\BuilderEngine\Enum;
 
 enum SearchEnum: string
 {

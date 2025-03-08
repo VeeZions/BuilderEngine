@@ -1,18 +1,18 @@
 <?php
 
-namespace Vision\BuilderEngine\Form;
+namespace VeeZions\BuilderEngine\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Vision\BuilderEngine\Form\Type\SeoType;
-use Vision\BuilderEngine\Form\Type\BuilderType;
+use VeeZions\BuilderEngine\Form\Type\SeoType;
+use VeeZions\BuilderEngine\Form\Type\BuilderType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Vision\BuilderEngine\Entity\BuilderPage;
+use VeeZions\BuilderEngine\Entity\BuilderPage;
 use Symfony\Component\Form\Extension\Core\Type\LocaleType;
 use Symfony\Component\Form\Event\PostSubmitEvent as FormEvent;
 

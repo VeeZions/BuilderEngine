@@ -2,9 +2,9 @@
 
 This package is a [Symfony](http://symfony.com) Bundle allowing you to use particular **FormTypes** in order to build ***complete frontend pages*** with ***categories***, ***articles*** and ***navigation***, including ***EDM library***, in the context of a ***CMS***.
 
-[![Package version](https://img.shields.io/packagist/v/vision/builder-engine-bundle.svg?style=flat-square)](https://packagist.org/packages/vision/builder-engine-bundle)
+[![Package version](https://img.shields.io/packagist/v/veezions/builder-engine-bundle.svg?style=flat-square)](https://packagist.org/packages/veezions/builder-engine-bundle)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE)
-[![Slack](https://img.shields.io/badge/slack-%23builder--engine--bundle-gold.svg?style=flat-square)](https://join.slack.com/t/sensiovision/shared_invite/zt-2j1r521bb-njCE7vP1vT9Ujcwfguyw4w)
+[![Slack](https://img.shields.io/badge/slack-%23builder--engine--bundle-gold.svg?style=flat-square)](https://join.slack.com/t/veezions/shared_invite/zt-2j1r521bb-njCE7vP1vT9Ujcwfguyw4w)
 
 ## When to use this bundle ?
 
@@ -22,7 +22,7 @@ A public web or shop site to mount in your Symfony/PHP stack? A need to quickly 
 With [Symfony Flex](https://symfony.com/doc/current/setup/flex.html) (recommended):
 
 ```
-composer require vision/builder-engine-bundle
+composer require veezions/builder-engine-bundle
 ```
 
 You're ready to use BuilderEngineBundle, and can jump to the next section!

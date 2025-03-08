@@ -1,8 +1,8 @@
 <?php
 
-namespace Vision\BuilderEngine\Controller;
+namespace VeeZions\BuilderEngine\Controller;
 
-use Vision\BuilderEngine\Constant\Crud\CategoryConstant;
+use VeeZions\BuilderEngine\Constant\Crud\CategoryConstant;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -12,11 +12,11 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment as TwigEnvironment;
-use Vision\BuilderEngine\Entity\BuilderCategory;
-use Vision\BuilderEngine\Form\CategoryType;
-use Vision\BuilderEngine\Manager\FormManager;
-use Vision\BuilderEngine\Trait\AccessTrait;
-use Vision\BuilderEngine\Trait\PaginationTrait;
+use VeeZions\BuilderEngine\Entity\BuilderCategory;
+use VeeZions\BuilderEngine\Form\CategoryType;
+use VeeZions\BuilderEngine\Manager\FormManager;
+use VeeZions\BuilderEngine\Trait\AccessTrait;
+use VeeZions\BuilderEngine\Trait\PaginationTrait;
 
 class CategoryController
 {

@@ -1,5 +1,5 @@
-import { resizeGridItems, resizeMediaProvider } from '@vision/builder-engine-utils-components';
-import '@vision/builder-engine-css';
+import { resizeGridItems, resizeMediaProvider } from '@veezions/builder-engine-utils-components';
+import '@veezions/builder-engine-css';
 
 // Opera 8.0+
 const isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;

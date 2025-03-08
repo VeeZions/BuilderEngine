@@ -1,9 +1,9 @@
 <?php
 
-namespace Vision\BuilderEngine\Constant\Crud;
+namespace VeeZions\BuilderEngine\Constant\Crud;
 
-use Vision\BuilderEngine\Enum\ColumnEnum;
-use Vision\BuilderEngine\Enum\SearchEnum;
+use VeeZions\BuilderEngine\Enum\ColumnEnum;
+use VeeZions\BuilderEngine\Enum\SearchEnum;
 
 readonly class CategoryConstant
 {

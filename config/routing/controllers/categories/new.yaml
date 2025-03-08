@@ -1,4 +1,4 @@
 xlxeb_controller_category_new:
-  controller: 'vision_builder_engine.category_controller::new'
+  controller: 'veezions_builder_engine.category_controller::new'
   path: '/categories/new'
   methods: ['GET', 'POST']

@@ -1,8 +1,8 @@
 <?php
 
-namespace Vision\BuilderEngine\Controller;
+namespace VeeZions\BuilderEngine\Controller;
 
-use Vision\BuilderEngine\Constant\Crud\PageConstant;
+use VeeZions\BuilderEngine\Constant\Crud\PageConstant;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -12,11 +12,11 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment as TwigEnvironment;
-use Vision\BuilderEngine\Entity\BuilderPage;
-use Vision\BuilderEngine\Form\PageType;
-use Vision\BuilderEngine\Manager\FormManager;
-use Vision\BuilderEngine\Trait\AccessTrait;
-use Vision\BuilderEngine\Trait\PaginationTrait;
+use VeeZions\BuilderEngine\Entity\BuilderPage;
+use VeeZions\BuilderEngine\Form\PageType;
+use VeeZions\BuilderEngine\Manager\FormManager;
+use VeeZions\BuilderEngine\Trait\AccessTrait;
+use VeeZions\BuilderEngine\Trait\PaginationTrait;
 
 class PageController
 {

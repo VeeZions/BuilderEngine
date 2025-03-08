@@ -1,8 +1,8 @@
 <?php
 
-namespace Vision\BuilderEngine\Controller;
+namespace VeeZions\BuilderEngine\Controller;
 
-use Vision\BuilderEngine\Constant\Crud\NavigationConstant;
+use VeeZions\BuilderEngine\Constant\Crud\NavigationConstant;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -12,10 +12,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment as TwigEnvironment;
-use Vision\BuilderEngine\Entity\BuilderNavigation;
-use Vision\BuilderEngine\Manager\FormManager;
-use Vision\BuilderEngine\Trait\AccessTrait;
-use Vision\BuilderEngine\Trait\PaginationTrait;
+use VeeZions\BuilderEngine\Entity\BuilderNavigation;
+use VeeZions\BuilderEngine\Manager\FormManager;
+use VeeZions\BuilderEngine\Trait\AccessTrait;
+use VeeZions\BuilderEngine\Trait\PaginationTrait;
 
 class NavigationController
 {

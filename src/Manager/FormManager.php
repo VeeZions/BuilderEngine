@@ -1,6 +1,6 @@
 <?php
 
-namespace Vision\BuilderEngine\Manager;
+namespace VeeZions\BuilderEngine\Manager;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -14,18 +14,18 @@ use Symfony\Component\Intl\Countries;
 use Symfony\Component\Intl\Locales;
 use Symfony\Component\Routing\Router;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Vision\BuilderEngine\Constant\AssetConstant;
-use Vision\BuilderEngine\Constant\ConfigConstant;
-use Vision\BuilderEngine\Entity\BuilderArticle;
-use Vision\BuilderEngine\Entity\BuilderPage;
-use Vision\BuilderEngine\Entity\BuilderCategory;
-use Vision\BuilderEngine\Entity\BuilderLibrary;
-use Vision\BuilderEngine\Entity\BuilderNavigation;
-use Vision\BuilderEngine\Form\ArticleType;
-use Vision\BuilderEngine\Form\CategoryType;
-use Vision\BuilderEngine\Form\LibraryType;
-use Vision\BuilderEngine\Form\NavigationType;
-use Vision\BuilderEngine\Form\PageType;
+use VeeZions\BuilderEngine\Constant\AssetConstant;
+use VeeZions\BuilderEngine\Constant\ConfigConstant;
+use VeeZions\BuilderEngine\Entity\BuilderArticle;
+use VeeZions\BuilderEngine\Entity\BuilderPage;
+use VeeZions\BuilderEngine\Entity\BuilderCategory;
+use VeeZions\BuilderEngine\Entity\BuilderLibrary;
+use VeeZions\BuilderEngine\Entity\BuilderNavigation;
+use VeeZions\BuilderEngine\Form\ArticleType;
+use VeeZions\BuilderEngine\Form\CategoryType;
+use VeeZions\BuilderEngine\Form\LibraryType;
+use VeeZions\BuilderEngine\Form\NavigationType;
+use VeeZions\BuilderEngine\Form\PageType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface as Security;
 

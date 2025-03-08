@@ -1,6 +1,6 @@
 <?php
 
-namespace Vision\BuilderEngine\DataCollector;
+namespace VeeZions\BuilderEngine\DataCollector;
 
 use Symfony\Bundle\FrameworkBundle\DataCollector\AbstractDataCollector;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +18,7 @@ class BuilderCollector extends AbstractDataCollector
 
     public function getName(): string
     {
-        return 'vision_collector';
+        return 'veezions_collector';
     }
 
     public function getRoute(): string

@@ -1,4 +1,4 @@
 xlxeb_controller_category_edit:
-  controller: 'vision_builder_engine.category_controller::edit'
+  controller: 'veezions_builder_engine.category_controller::edit'
   path: '/categories/{id}/edit'
   methods: ['GET', 'POST']

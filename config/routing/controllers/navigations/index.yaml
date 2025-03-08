@@ -1,4 +1,4 @@
 xlxeb_controller_navigation_index:
-  controller: 'vision_builder_engine.navigation_controller::index'
+  controller: 'veezions_builder_engine.navigation_controller::index'
   path: '/navigations'
   methods: ['GET']

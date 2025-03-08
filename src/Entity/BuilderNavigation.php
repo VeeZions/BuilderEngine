@@ -1,10 +1,10 @@
 <?php
 
-namespace Vision\BuilderEngine\Entity;
+namespace VeeZions\BuilderEngine\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Vision\BuilderEngine\Repository\BuilderNavigationRepository;
+use VeeZions\BuilderEngine\Repository\BuilderNavigationRepository;
 
 #[ORM\Entity(repositoryClass: BuilderNavigationRepository::class)]
 class BuilderNavigation

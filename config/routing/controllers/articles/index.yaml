@@ -1,4 +1,4 @@
 xlxeb_controller_article_index:
-  controller: 'vision_builder_engine.article_controller::index'
+  controller: 'veezions_builder_engine.article_controller::index'
   path: '/articles'
   methods: ['GET']

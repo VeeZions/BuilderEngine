@@ -1,6 +1,6 @@
 <?php
 
-namespace Vision\BuilderEngine\Trait;
+namespace VeeZions\BuilderEngine\Trait;
 
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Vision\BuilderEngine\Entity;
+namespace VeeZions\BuilderEngine\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation\Slug;
 use Gedmo\Mapping\Annotation\Timestampable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Vision\BuilderEngine\Repository\BuilderPageRepository;
+use VeeZions\BuilderEngine\Repository\BuilderPageRepository;
 
 #[UniqueEntity(fields: ['route'])]
 #[ORM\Entity(repositoryClass: BuilderPageRepository::class)]

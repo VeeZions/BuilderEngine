@@ -1,10 +1,10 @@
 <?php
 
-namespace Vision\BuilderEngine\DependencyInjection;
+namespace VeeZions\BuilderEngine\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
-use Vision\BuilderEngine\Constant\ConfigConstant;
+use VeeZions\BuilderEngine\Constant\ConfigConstant;
 
 class BuilderEngineConfiguration implements ConfigurationInterface
 {

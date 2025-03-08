@@ -5,7 +5,7 @@ import {
     setPageBuilderDragAndDrop,
     rebuildPageJson,
     getDataFromModule
-} from '@vision/builder-engine-utils-modules';
+} from '@veezions/builder-engine-utils-modules';
 
 stimulusFetch: 'lazy'
 

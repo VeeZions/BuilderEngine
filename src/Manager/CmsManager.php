@@ -1,13 +1,13 @@
 <?php
 
-namespace Vision\BuilderEngine\Manager;
+namespace VeeZions\BuilderEngine\Manager;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use Vision\BuilderEngine\Entity\BuilderNavigation;
-use Vision\BuilderEngine\Entity\Page;
+use VeeZions\BuilderEngine\Entity\BuilderNavigation;
+use VeeZions\BuilderEngine\Entity\Page;
 
 readonly class CmsManager
 {

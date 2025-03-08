@@ -1,6 +1,6 @@
 <?php
 
-namespace Vision\BuilderEngine\Manager;
+namespace VeeZions\BuilderEngine\Manager;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Gedmo\Sluggable\Util\Urlizer;
@@ -15,9 +15,9 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Vision\BuilderEngine\Constant\AssetConstant;
-use Vision\BuilderEngine\Entity\BuilderLibrary;
-use Vision\BuilderEngine\Enum\LibraryEnum;
+use VeeZions\BuilderEngine\Constant\AssetConstant;
+use VeeZions\BuilderEngine\Entity\BuilderLibrary;
+use VeeZions\BuilderEngine\Enum\LibraryEnum;
 
 readonly class AssetManager
 {

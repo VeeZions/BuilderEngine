@@ -1,11 +1,11 @@
 <?php
 
-use Vision\BuilderEngine\Repository\BuilderCategoryRepository;
-use Vision\BuilderEngine\Repository\BuilderArticleRepository;
-use Vision\BuilderEngine\Repository\BuilderElementRepository;
-use Vision\BuilderEngine\Repository\BuilderPageRepository;
-use Vision\BuilderEngine\Repository\BuilderNavigationRepository;
-use Vision\BuilderEngine\Repository\BuilderLibraryRepository;
+use VeeZions\BuilderEngine\Repository\BuilderCategoryRepository;
+use VeeZions\BuilderEngine\Repository\BuilderArticleRepository;
+use VeeZions\BuilderEngine\Repository\BuilderElementRepository;
+use VeeZions\BuilderEngine\Repository\BuilderPageRepository;
+use VeeZions\BuilderEngine\Repository\BuilderNavigationRepository;
+use VeeZions\BuilderEngine\Repository\BuilderLibraryRepository;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Knp\Component\Pager\PaginatorInterface;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;

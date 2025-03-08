@@ -1,6 +1,6 @@
 <?php
 
-namespace Vision\BuilderEngine\Twig\Runtime;
+namespace VeeZions\BuilderEngine\Twig\Runtime;
 
 use Twig\Extension\RuntimeExtensionInterface;
 

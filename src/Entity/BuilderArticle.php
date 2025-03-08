@@ -1,13 +1,13 @@
 <?php
 
-namespace Vision\BuilderEngine\Entity;
+namespace VeeZions\BuilderEngine\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
 use Gedmo\Mapping\Annotation\Timestampable;
-use Vision\BuilderEngine\Repository\BuilderArticleRepository;
+use VeeZions\BuilderEngine\Repository\BuilderArticleRepository;
 use Gedmo\Mapping\Annotation\Slug;
 
 #[ORM\Entity(repositoryClass: BuilderArticleRepository::class)]

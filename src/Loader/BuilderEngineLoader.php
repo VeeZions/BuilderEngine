@@ -1,6 +1,6 @@
 <?php
 
-namespace Vision\BuilderEngine\Loader;
+namespace VeeZions\BuilderEngine\Loader;
 
 use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\Routing\RouteCollection;

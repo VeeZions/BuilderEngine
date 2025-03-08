@@ -1,11 +1,11 @@
 <?php
 
-namespace Vision\BuilderEngine\Form;
+namespace VeeZions\BuilderEngine\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Vision\BuilderEngine\Constant\AssetConstant;
+use VeeZions\BuilderEngine\Constant\AssetConstant;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class LibraryType extends AbstractType

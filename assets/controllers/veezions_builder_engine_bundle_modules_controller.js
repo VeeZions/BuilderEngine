@@ -1,5 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
-import {tinymceCss} from "@vision/builder-engine-utils-modules";
+import {tinymceCss} from "@veezions/builder-engine-utils-modules";
 
 stimulusFetch: 'lazy'
 

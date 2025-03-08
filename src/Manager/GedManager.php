@@ -1,12 +1,12 @@
 <?php
 
-namespace Vision\BuilderEngine\Manager;
+namespace VeeZions\BuilderEngine\Manager;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Vision\BuilderEngine\Entity\BuilderElement;
-use Vision\BuilderEngine\Entity\BuilderLibrary;
-use Vision\BuilderEngine\Entity\BuilderPage;
+use VeeZions\BuilderEngine\Entity\BuilderElement;
+use VeeZions\BuilderEngine\Entity\BuilderLibrary;
+use VeeZions\BuilderEngine\Entity\BuilderPage;
 
 readonly class GedManager
 {

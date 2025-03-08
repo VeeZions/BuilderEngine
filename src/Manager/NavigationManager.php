@@ -1,10 +1,10 @@
 <?php
 
-namespace Vision\BuilderEngine\Manager;
+namespace VeeZions\BuilderEngine\Manager;
 
-use Vision\BuilderEngine\Entity\BuilderArticle;
-use Vision\BuilderEngine\Entity\BuilderCategory;
-use Vision\BuilderEngine\Entity\BuilderPage;
+use VeeZions\BuilderEngine\Entity\BuilderArticle;
+use VeeZions\BuilderEngine\Entity\BuilderCategory;
+use VeeZions\BuilderEngine\Entity\BuilderPage;
 use Doctrine\ORM\EntityManagerInterface;
 
 readonly class NavigationManager

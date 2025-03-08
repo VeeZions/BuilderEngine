@@ -1,13 +1,13 @@
 <?php
 
-namespace Vision\BuilderEngine\Entity;
+namespace VeeZions\BuilderEngine\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation\Slug;
 use Gedmo\Mapping\Annotation\Timestampable;
-use Vision\BuilderEngine\Repository\BuilderCategoryRepository;
+use VeeZions\BuilderEngine\Repository\BuilderCategoryRepository;
 
 #[ORM\Entity(repositoryClass: BuilderCategoryRepository::class)]
 class BuilderCategory

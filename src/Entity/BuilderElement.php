@@ -1,11 +1,11 @@
 <?php
 
-namespace Vision\BuilderEngine\Entity;
+namespace VeeZions\BuilderEngine\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Vision\BuilderEngine\Repository\BuilderElementRepository;
+use VeeZions\BuilderEngine\Repository\BuilderElementRepository;
 
 #[ORM\Entity(repositoryClass: BuilderElementRepository::class)]
 class BuilderElement

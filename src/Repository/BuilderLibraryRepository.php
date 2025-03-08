@@ -1,13 +1,13 @@
 <?php
 
-namespace Vision\BuilderEngine\Repository;
+namespace VeeZions\BuilderEngine\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Vision\BuilderEngine\Constant\AssetConstant;
-use Vision\BuilderEngine\Entity\BuilderLibrary;
+use VeeZions\BuilderEngine\Constant\AssetConstant;
+use VeeZions\BuilderEngine\Entity\BuilderLibrary;
 
 /**
  * @extends ServiceEntityRepository<BuilderLibrary>

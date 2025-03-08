@@ -1,6 +1,6 @@
 <?php
 
-namespace Vision\BuilderEngine\Controller;
+namespace VeeZions\BuilderEngine\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
@@ -11,9 +11,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment as TwigEnvironment;
-use Vision\BuilderEngine\Entity\BuilderLibrary;
-use Vision\BuilderEngine\Form\LibraryType;
-use Vision\BuilderEngine\Manager\FormManager;
+use VeeZions\BuilderEngine\Entity\BuilderLibrary;
+use VeeZions\BuilderEngine\Form\LibraryType;
+use VeeZions\BuilderEngine\Manager\FormManager;
 
 class LibraryController
 {

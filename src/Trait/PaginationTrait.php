@@ -1,6 +1,6 @@
 <?php
 
-namespace Vision\BuilderEngine\Trait;
+namespace VeeZions\BuilderEngine\Trait;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;

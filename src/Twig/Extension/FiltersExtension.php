@@ -1,6 +1,6 @@
 <?php
 
-namespace Vision\BuilderEngine\Twig\Extension;
+namespace VeeZions\BuilderEngine\Twig\Extension;
 
 use Twig\Extension\AbstractExtension;
 

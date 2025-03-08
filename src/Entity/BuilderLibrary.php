@@ -1,6 +1,6 @@
 <?php
 
-namespace Vision\BuilderEngine\Entity;
+namespace VeeZions\BuilderEngine\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -8,8 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation\Timestampable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
-use Vision\BuilderEngine\Enum\LibraryEnum;
-use Vision\BuilderEngine\Repository\BuilderLibraryRepository;
+use VeeZions\BuilderEngine\Enum\LibraryEnum;
+use VeeZions\BuilderEngine\Repository\BuilderLibraryRepository;
 
 #[UniqueEntity(fields: ['url'])]
 #[ORM\Entity(repositoryClass: BuilderLibraryRepository::class)]

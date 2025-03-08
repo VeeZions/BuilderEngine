@@ -1,13 +1,13 @@
 <?php
 
-namespace Vision\BuilderEngine\Repository;
+namespace VeeZions\BuilderEngine\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Vision\BuilderEngine\Entity\BuilderNavigation;
-use Vision\BuilderEngine\Trait\SearchTrait;
+use VeeZions\BuilderEngine\Entity\BuilderNavigation;
+use VeeZions\BuilderEngine\Trait\SearchTrait;
 
 /**
  * @extends ServiceEntityRepository<BuilderNavigation>

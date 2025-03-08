@@ -1,6 +1,6 @@
 <?php
 
-namespace Vision\BuilderEngine\Form\Type;
+namespace VeeZions\BuilderEngine\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

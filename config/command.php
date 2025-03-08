@@ -1,8 +1,8 @@
 <?php
 
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use Vision\BuilderEngine\Command\BuilderImportTemplatesCommand;
-use Vision\BuilderEngine\Command\BuilderLibrariesReferencesCommand;
+use VeeZions\BuilderEngine\Command\BuilderImportTemplatesCommand;
+use VeeZions\BuilderEngine\Command\BuilderLibrariesReferencesCommand;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\abstract_arg;
 
@@ -10,7 +10,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
 
     $services
-        ->set('vision_builder_engine.command.import_templates', BuilderImportTemplatesCommand::class)
+        ->set('veezions_builder_engine.command.import_templates', BuilderImportTemplatesCommand::class)
         ->args([
             service('parameter_bag'),
             abstract_arg('Get config.mode value'),
@@ -19,7 +19,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     ;
 
     $services
-        ->set('vision_builder_engine.command.libraries.references', BuilderLibrariesReferencesCommand::class)
+        ->set('veezions_builder_engine.command.libraries.references', BuilderLibrariesReferencesCommand::class)
         ->tag('console.command')
     ;
 };

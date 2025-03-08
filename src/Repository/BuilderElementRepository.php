@@ -1,10 +1,10 @@
 <?php
 
-namespace Vision\BuilderEngine\Repository;
+namespace VeeZions\BuilderEngine\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Vision\BuilderEngine\Entity\BuilderElement;
+use VeeZions\BuilderEngine\Entity\BuilderElement;
 
 /**
  * @extends ServiceEntityRepository<BuilderElement>

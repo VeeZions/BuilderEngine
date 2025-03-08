@@ -1,6 +1,6 @@
 <?php
 
-namespace Vision\BuilderEngine\Constant;
+namespace VeeZions\BuilderEngine\Constant;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Filesystem\Filesystem;

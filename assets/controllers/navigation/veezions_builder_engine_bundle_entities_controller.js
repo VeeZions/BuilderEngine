@@ -1,5 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
-import { buildNavigationData } from '@vision/builder-engine-utils-navigation';
+import { buildNavigationData } from '@veezions/builder-engine-utils-navigation';
 
 stimulusFetch: 'lazy'
 

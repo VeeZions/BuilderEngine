@@ -1,14 +1,14 @@
 <?php
 
-namespace Vision\BuilderEngine\Constant;
+namespace VeeZions\BuilderEngine\Constant;
 
 class AssetConstant
 {
     // Directories
-    public const MEDIA = 'uploads/vision-builder/media/';
-    public const DOCUMENT = 'uploads/vision-builder/documents/';
-    public const CHAT = 'uploads/vision-builder/chat/';
-    public const ACCOUNT = 'uploads/vision-builder/accounts/';
+    public const MEDIA = 'uploads/veezions-builder/media/';
+    public const DOCUMENT = 'uploads/veezions-builder/documents/';
+    public const CHAT = 'uploads/veezions-builder/chat/';
+    public const ACCOUNT = 'uploads/veezions-builder/accounts/';
 
     // Library per page items
     public const ITEMS_PER_LOAD = 15;
