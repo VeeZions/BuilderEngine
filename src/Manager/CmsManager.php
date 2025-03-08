@@ -1,20 +1,19 @@
 <?php
 
-namespace XenoLab\XenoEngine\Manager;
+namespace Vision\BuilderEngine\Manager;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use XenoLab\XenoEngine\Entity\Page;
-use XenoLab\XenoEngine\Repository\NavigationRepository;
+use Vision\BuilderEngine\Entity\BuilderNavigation;
+use Vision\BuilderEngine\Entity\Page;
 
 readonly class CmsManager
 {
     public function __construct(
         private ParameterBagInterface $parameterBag,
         private Filesystem $filesystem,
-        private NavigationRepository $navigationRepository,
         private EntityManagerInterface $entityManager,
     ) {
     }
@@ -88,7 +87,7 @@ readonly class CmsManager
 
     public function removeFromNavigation(Page $page): void
     {
-        $navigations = $this->navigationRepository->findAll();
+        $navigations = $this->entityManager->getRepository(BuilderNavigation::class)->findAll();
         $filtered = ['name' => null, 'stages' => []];
         foreach ($navigations as $navigation) {
             $content = $navigation->getContent();

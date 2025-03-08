@@ -1,26 +1,24 @@
 {
-  "name": "xenolab/xeno-engine-bundle",
+  "name": "vision/builder-engine-bundle",
   "type": "library",
-  "description": "This package is a Symfony bundle allowing you to build a full CMS with page, categorie, article and navigation builder with EDM library includes.",
+  "description": "This package is a Symfony bundle allowing you to build a full CMS with pages, categories, articles and navigation builder with EDM library includes.",
   "keywords": [
     "page",
     "builder",
     "symfony",
     "bundle",
-    "sensiolabs",
     "form",
     "type",
     "symfony-ux",
-    "xeno",
     "engine"
   ],
-  "homepage": "https://github.com/Sensio-XenoLab/XenoEngine",
+  "homepage": "https://github.com/Vision/BuilderEngine",
   "license": "MIT",
   "authors": [
     {
       "name": "Frédéric GEFFRAY",
-      "email": "frederic.geffray@sensiolabs.com",
-      "homepage": "https://sensiolabs.com",
+      "email": "fred.geffray@gamil.com",
+      "homepage": "https://omnivision.com",
       "role": "Developer"
     }
   ],
@@ -71,17 +69,17 @@
     "symfony/var-dumper": ">=7.0"
   },
   "suggest": {
-    "php": "PHP 8.0 or higher comes with attributes, a native replacement for annotations",
+    "php": "PHP 8.2 or higher comes with attributes, a native replacement for annotations",
     "monolog/monolog": "Allows to handle logs"
   },
   "autoload": {
     "psr-4": {
-      "XenoLab\\XenoEngine\\": "src/"
+      "Vision\\BuilderEngine\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "XenoLab\\XenoEngine\\Tests\\": "tests/"
+      "Vision\\BuilderEngine\\Tests\\": "tests/"
     }
   },
   "config": {

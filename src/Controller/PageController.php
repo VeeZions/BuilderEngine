@@ -1,21 +1,27 @@
 <?php
 
-namespace XenoLab\XenoEngine\Controller;
+namespace Vision\BuilderEngine\Controller;
 
+use Vision\BuilderEngine\Constant\Crud\PageConstant;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment as TwigEnvironment;
-use XenoLab\XenoEngine\Entity\XenoPage;
-use XenoLab\XenoEngine\Trait\AccessTrait;
+use Vision\BuilderEngine\Entity\BuilderPage;
+use Vision\BuilderEngine\Form\PageType;
+use Vision\BuilderEngine\Manager\FormManager;
+use Vision\BuilderEngine\Trait\AccessTrait;
+use Vision\BuilderEngine\Trait\PaginationTrait;
 
 class PageController
 {
     use AccessTrait;
+    use PaginationTrait;
 
     public function __construct(
         private TwigEnvironment $twig,
@@ -23,46 +29,67 @@ class PageController
         private TranslatorInterface $translator,
         private EntityManagerInterface $entityManager,
         private AuthorizationCheckerInterface $authorizationChecker,
-        private array $authors,
+        private FormManager $formManager,
+        private PageConstant $constant,
         private array $actions,
     ) {
     }
 
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        return new Response($this->twig->render('@XenoEngineBundle/pages/index.html.twig'));
+        $pagination = $this->getPaginationData(
+            $request,
+            BuilderPage::class,
+            $this->constant->getCrudConfig(),
+            $this->entityManager
+        );
+
+        return new Response($this->twig->render('@BuilderEngineBundle/pages/index.html.twig', [
+            'title' => $this->formManager->translateCrudTitle('pages', 'index'),
+            'pagination' => $pagination,
+        ]));
     }
 
-    public function new(): Response
+    public function new(Request $request): Response
     {
         $this->isGranted($this->actions['new']['roles']);
+        $form = $this->formManager->form(PageType::class);
 
-        return new Response($this->twig->render('@XenoEngineBundle/pages/new.html.twig'));
+        return new Response($this->twig->render('@BuilderEngineBundle/pages/new-edit.html.twig', [
+            'title' => $this->formManager->translateCrudTitle('page', 'new'),
+            'form' => $form
+        ]));
     }
 
-    public function show(?XenoPage $page): Response
+    public function show(?BuilderPage $page): Response
     {
         $this->isGranted($this->actions['show']['roles']);
 
         if (null === $page) {
-            throw new NotFoundHttpException($this->translator->trans('error.page.not.found', [], 'XenoEngineBundle-errors'));
+            throw new NotFoundHttpException($this->translator->trans('error.page.not.found', [], 'BuilderEngineBundle-errors'));
         }
 
-        return new Response($this->twig->render('@XenoEngineBundle/pages/show.html.twig'));
+        return new Response($this->twig->render('@BuilderEngineBundle/pages/show.html.twig', [
+            'title' => $this->formManager->translateCrudTitle('page', 'show')
+        ]));
     }
 
-    public function edit(?XenoPage $page): Response
+    public function edit(?BuilderPage $page, Request $request): Response
     {
         $this->isGranted($this->actions['edit']['roles']);
 
         if (null === $page) {
-            throw new NotFoundHttpException($this->translator->trans('error.page.not.found', [], 'XenoEngineBundle-errors'));
+            throw new NotFoundHttpException($this->translator->trans('error.page.not.found', [], 'BuilderEngineBundle-errors'));
         }
+        $form = $this->formManager->form(PageType::class, $page);
 
-        return new Response($this->twig->render('@XenoEngineBundle/pages/edit.html.twig'));
+        return new Response($this->twig->render('@BuilderEngineBundle/pages/new-edit.html.twig', [
+            'title' => $this->formManager->translateCrudTitle('page', 'edit'),
+            'form' => $form
+        ]));
     }
 
-    public function delete(?XenoPage $page): Response
+    public function delete(?BuilderPage $page): Response
     {
         $this->isGranted($this->actions['delete']['roles']);
 

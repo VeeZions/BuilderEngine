@@ -1,18 +1,14 @@
 <?php
 
-namespace XenoLab\XenoEngine\Constant;
+namespace Vision\BuilderEngine\Constant;
 
 class AssetConstant
 {
     // Directories
-    public const MEDIA = 'uploads/media/';
-    public const DOCUMENT = 'uploads/documents/';
-    public const CHAT = 'uploads/chat/';
-    public const ACCOUNT = 'uploads/accounts/';
-
-    // Filters
-    public const THUMBNAILS = 'thumbnails';
-    public const LOW_QUALITY = 'low_quality';
+    public const MEDIA = 'uploads/vision-builder/media/';
+    public const DOCUMENT = 'uploads/vision-builder/documents/';
+    public const CHAT = 'uploads/vision-builder/chat/';
+    public const ACCOUNT = 'uploads/vision-builder/accounts/';
 
     // Library per page items
     public const ITEMS_PER_LOAD = 15;
@@ -23,14 +19,16 @@ class AssetConstant
     public const VIDEO_TYPE = 'video/mp4,video/mpeg,video/quicktime,video/x-msvideo,video/x-ms-wmv';
     public const DOCUMENT_TYPE = 'application/pdf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/csv';
 
+    public function __construct(private readonly array $liipFilters)
+    {
+
+    }
+
     /**
      * @return array<string>
      */
     public function getFilters(): array
     {
-        return [
-            self::THUMBNAILS,
-            self::LOW_QUALITY,
-        ];
+        return $this->liipFilters;
     }
 }

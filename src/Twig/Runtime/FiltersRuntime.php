@@ -1,6 +1,6 @@
 <?php
 
-namespace XenoLab\XenoEngine\Twig\Runtime;
+namespace Vision\BuilderEngine\Twig\Runtime;
 
 use Twig\Extension\RuntimeExtensionInterface;
 

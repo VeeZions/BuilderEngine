@@ -1,6 +1,6 @@
 <?php
 
-namespace XenoLab\XenoEngine\Trait;
+namespace Vision\BuilderEngine\Trait;
 
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 

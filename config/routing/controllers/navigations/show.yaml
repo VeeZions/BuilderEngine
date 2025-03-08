@@ -1,4 +1,4 @@
 xlxeb_controller_navigation_show:
-  controller: 'xenolab_xeno_engine.navigation_controller::show'
+  controller: 'vision_builder_engine.navigation_controller::show'
   path: '/navigations/{id}/show'
   methods: ['GET']

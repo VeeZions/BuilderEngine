@@ -1,4 +1,4 @@
 xlxeb_controller_category_show:
-  controller: 'xenolab_xeno_engine.category_controller::show'
+  controller: 'vision_builder_engine.category_controller::show'
   path: '/categories/{id}/show'
   methods: ['GET']

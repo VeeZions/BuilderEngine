@@ -1,6 +1,6 @@
 <?php
 
-namespace XenoLab\XenoEngine\Manager;
+namespace Vision\BuilderEngine\Manager;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Gedmo\Sluggable\Util\Urlizer;
@@ -15,9 +15,9 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use XenoLab\XenoEngine\Constant\AssetConstant;
-use XenoLab\XenoEngine\Entity\XenoLibrary;
-use XenoLab\XenoEngine\Repository\XenoLibraryRepository;
+use Vision\BuilderEngine\Constant\AssetConstant;
+use Vision\BuilderEngine\Entity\BuilderLibrary;
+use Vision\BuilderEngine\Enum\LibraryEnum;
 
 readonly class AssetManager
 {
@@ -25,11 +25,10 @@ readonly class AssetManager
         private FilesystemOperator $uploadsFilesystem,
         private CacheManager $cacheManager,
         private ParameterBagInterface $params,
-        private AssetConstant $assetManagerConstant,
+        private AssetConstant $assetConstant,
         private FilterManager $filterManager,
         private DataManager $dataManager,
         private EntityManagerInterface $entityManager,
-        private XenoLibraryRepository $gedRepository,
     ) {
     }
 
@@ -51,13 +50,13 @@ readonly class AssetManager
                     'video/mpeg',
                     'video/quicktime',
                     'video/x-msvideo',
-                    'video/x-ms-wmv' => AssetManagerConstant::MEDIA,
-                    default => AssetManagerConstant::DOCUMENT,
+                    'video/x-ms-wmv' => AssetConstant::MEDIA,
+                    default => AssetConstant::DOCUMENT,
                 };
 
                 $type = match ($context) {
-                    'chat' => AssetManagerConstant::CHAT.($slug ? $slug.'/' : ''),
-                    'account' => AssetManagerConstant::ACCOUNT.'/'.$slug.'/',
+                    'chat' => AssetConstant::CHAT.($slug ? $slug.'/' : ''),
+                    'account' => AssetConstant::ACCOUNT.'/'.$slug.'/',
                     default => $type,
                 };
 
@@ -119,7 +118,7 @@ readonly class AssetManager
      */
     private function recordNewFileInGed(string $newFilename, UploadedFile $uploadedFile, array $fileInfo): void
     {
-        $ged = new XenoLibrary();
+        $ged = new BuilderLibrary();
         $ged->setUrl($newFilename)
             ->setTitle(str_replace(
                 '.'.$uploadedFile->getClientOriginalExtension(),
@@ -140,7 +139,7 @@ readonly class AssetManager
         $oldFileName = str_starts_with($oldFileName, '/')
             ? substr($oldFileName, 1)
             : $oldFileName;
-        $ged = $this->gedRepository->findOneBy(['url' => $oldFileName]);
+        $ged = $this->entityManager->getRepository(BuilderLibrary::class)->findOneBy(['url' => $oldFileName]);
         if (null !== $ged) {
             $pages = $ged->getPage();
             foreach ($pages as $page) {
@@ -194,7 +193,7 @@ readonly class AssetManager
 
     private function storeVariant(string $filter, string $fileName): void
     {
-        if (in_array($filter, $this->assetManagerConstant->getFilters(), true)
+        if (in_array($filter, $this->assetConstant->getFilters(), true)
             && !$this->cacheManager->isStored($fileName, $filter)
         ) {
             $binary = $this->dataManager->find($filter, $fileName);
@@ -235,24 +234,24 @@ readonly class AssetManager
         return 'string' === gettype($cloudFrontUrl) ? $cloudFrontUrl.$value : null;
     }
 
-    public function getTypeFromMime(UploadedFile $uploadedFile): GedTypeEnum
+    public function getTypeFromMime(UploadedFile $uploadedFile): LibraryEnum
     {
         return match ($uploadedFile->getMimeType()) {
             'image/jpeg',
             'image/png',
-            'image/gif' => GedTypeEnum::IMAGE,
+            'image/gif' => LibraryEnum::IMAGE,
             'application/pdf',
             'application/vnd.ms-excel',
             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             'application/msword',
             'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-            'text/csv' => GedTypeEnum::DOCUMENT,
+            'text/csv' => LibraryEnum::DOCUMENT,
             'video/mp4',
             'video/mpeg',
             'video/quicktime',
             'video/x-msvideo',
-            'video/x-ms-wmv' => GedTypeEnum::VIDEO,
-            default => GedTypeEnum::UNKNOWN,
+            'video/x-ms-wmv' => LibraryEnum::VIDEO,
+            default => LibraryEnum::UNKNOWN,
         };
     }
 

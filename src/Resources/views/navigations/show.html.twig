@@ -1,10 +1,10 @@
-{% extends '@XenoEngineBundle/xeno.html.twig' %}
+{% extends '@BuilderEngineBundle/builder.html.twig' %}
 
-{% block title %}Show navigation{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="/bundles/xenoengine/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="/bundles/builderengine/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
 {% endblock %}
 
 {% block body %}

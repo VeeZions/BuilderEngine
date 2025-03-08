@@ -1,17 +1,16 @@
 <?php
 
-namespace XenoLab\XenoEngine\Manager;
+namespace Vision\BuilderEngine\Manager;
 
-use XenoLab\XenoEngine\Repository\ArticleRepository;
-use XenoLab\XenoEngine\Repository\CategoryRepository;
-use XenoLab\XenoEngine\Repository\PageRepository;
+use Vision\BuilderEngine\Entity\BuilderArticle;
+use Vision\BuilderEngine\Entity\BuilderCategory;
+use Vision\BuilderEngine\Entity\BuilderPage;
+use Doctrine\ORM\EntityManagerInterface;
 
 readonly class NavigationManager
 {
     public function __construct(
-        private ArticleRepository $articleRepository,
-        private PageRepository $pageRepository,
-        private CategoryRepository $categoryRepository,
+        private EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -35,7 +34,7 @@ readonly class NavigationManager
                     'link' => null,
                     'blank' => false,
                 ];
-            }, $this->pageRepository->findAll()),
+            }, $this->entityManager->getRepository(BuilderPage::class)->findAll()),
 
             'articles' => array_map(function ($article) use ($locale) {
                 return [
@@ -50,7 +49,7 @@ readonly class NavigationManager
                     'link' => null,
                     'blank' => false,
                 ];
-            }, $this->articleRepository->findBy(['published' => true])),
+            }, $this->entityManager->getRepository(BuilderArticle::class)->findBy(['published' => true])),
 
             'categories' => array_map(function ($category) use ($locale) {
                 return [
@@ -62,7 +61,7 @@ readonly class NavigationManager
                     'link' => null,
                     'blank' => false,
                 ];
-            }, $this->categoryRepository->findAll()),
+            }, $this->entityManager->getRepository(BuilderCategory::class)->findAll()),
 
             'user' => [],
             'commerce' => [],

@@ -1,4 +1,4 @@
 xlxeb_controller_library_index:
-  controller: 'xenolab_xeno_engine.library_controller::index'
+  controller: 'vision_builder_engine.library_controller::index'
   path: '/libraries'
-  methods: ['GET']
+  methods: ['GET','POST']

@@ -1,6 +1,6 @@
 <?php
 
-namespace XenoLab\XenoEngine\Twig\Extension;
+namespace Vision\BuilderEngine\Twig\Extension;
 
 use Twig\Extension\AbstractExtension;
 

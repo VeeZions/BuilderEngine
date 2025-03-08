@@ -1,25 +1,22 @@
 <?php
 
-namespace XenoLab\XenoEngine\Manager;
+namespace Vision\BuilderEngine\Manager;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use XenoLab\XenoEngine\Entity\XenoElement;
-use XenoLab\XenoEngine\Entity\XenoPage;
-use XenoLab\XenoEngine\Repository\XenoElementRepository;
-use XenoLab\XenoEngine\Repository\XenoLibraryRepository;
+use Vision\BuilderEngine\Entity\BuilderElement;
+use Vision\BuilderEngine\Entity\BuilderLibrary;
+use Vision\BuilderEngine\Entity\BuilderPage;
 
 readonly class GedManager
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private XenoLibraryRepository $gedRepository,
-        private XenoElementRepository $elementRepository,
         private TranslatorInterface $translator,
     ) {
     }
 
-    public function setGedsFromPageBuilder(XenoPage $page): void
+    public function setGedsFromPageBuilder(BuilderPage $page): void
     {
         $content = $page->getContent();
         $this->removeAllElementGeds($page);
@@ -37,12 +34,12 @@ readonly class GedManager
                 && is_string($bId)
                 && is_string($t)
             ) {
-                $el = new XenoElement();
+                $el = new BuilderElement();
                 $el->setPage($p)
                     ->setBuilderId($bId)
                     ->setType($t)
                 ;
-                if ($g instanceof XenoLibrary) {
+                if ($g instanceof BuilderLibrary) {
                     $el->setBgImage($g);
                     $el->addMedium($g);
                 }
@@ -51,7 +48,7 @@ readonly class GedManager
                 }
                 if (is_iterable($element['media'])) {
                     foreach ($element['media'] as $media) {
-                        if ($media instanceof XenoLibrary) {
+                        if ($media instanceof BuilderLibrary) {
                             $el->addMedium($media);
                         }
                     }
@@ -69,7 +66,7 @@ readonly class GedManager
      *
      * @return array<int, array<string, mixed>>
      */
-    private function loopOnStagesForGeds(array $content, array $elements, XenoPage $page): array
+    private function loopOnStagesForGeds(array $content, array $elements, BuilderPage $page): array
     {
         foreach ($content as $row) {
             if ((is_array($row) && isset($row['bg']['image']) && is_int($row['bg']['image']))
@@ -79,15 +76,15 @@ readonly class GedManager
                     'page' => $page,
                     'builderId' => $row['id'],
                     'type' => $row['type'],
-                    'bgImage' => isset($row['bg']['image']) ? $this->gedRepository->find($row['bg']['image']) : null,
+                    'bgImage' => isset($row['bg']['image']) ? $this->entityManager->getRepository(BuilderLibrary::class)->find($row['bg']['image']) : null,
                 ];
                 $el['media'] = match (true) {
-                    isset($row['data']['library']) && is_int($row['data']['library']) => [$this->gedRepository->find($row['data']['library'])],
+                    isset($row['data']['library']) && is_int($row['data']['library']) => [$this->entityManager->getRepository(BuilderLibrary::class)->find($row['data']['library'])],
                     isset($row['data']['slider']) && is_array($row['data']['slider']) => array_map(function ($item) {
-                        return $this->gedRepository->find($item['library']);
+                        return $this->entityManager->getRepository(BuilderLibrary::class)->find($item['library']);
                     }, $row['data']['slider']),
                     isset($row['data']['libraries']) && is_array($row['data']['libraries']) => array_map(function ($item) {
-                        return $this->gedRepository->find($item['library']);
+                        return $this->entityManager->getRepository(BuilderLibrary::class)->find($item['library']);
                     }, $row['data']['libraries']),
                     default => [],
                 };
@@ -106,7 +103,7 @@ readonly class GedManager
 
     public function removeAllElementGeds(Page $page): void
     {
-        $elements = $this->elementRepository->findBy(['page' => $page]);
+        $elements = $this->entityManager->getRepository(BuilderElement::class)->findBy(['page' => $page]);
         foreach ($elements as $element) {
             $geds = $element->getMedia();
             foreach ($geds as $ged) {

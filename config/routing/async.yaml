@@ -1,4 +1,3 @@
 xlxeb_async:
-  controller: 'xenolab_xeno_engine.async_controller::index'
-  path: '/_async'
-  methods: ['POST']
+  controller: 'vision_builder_engine.async_controller::index'
+  path: '/_async/{slug}'

@@ -1,6 +1,6 @@
 <?php
 
-namespace XenoLab\XenoEngine\Enum;
+namespace Vision\BuilderEngine\Enum;
 
 enum LibraryEnum: string
 {

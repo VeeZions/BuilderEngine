@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="fr" target-language="fr" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="form.title.index" resname="form.title.index">
+        <source>form.title.index</source>
+        <target>Liste %entity%</target>
+      </trans-unit>
+      <trans-unit id="form.title.new" resname="form.title.new">
+        <source>form.title.new</source>
+        <target>Créer %entity%</target>
+      </trans-unit>
+      <trans-unit id="form.title.show" resname="form.title.show">
+        <source>form.title.show</source>
+        <target>Voir %entity%</target>
+      </trans-unit>
+      <trans-unit id="form.title.edit" resname="form.title.edit">
+        <source>form.title.edit</source>
+        <target>Modifier %entity%</target>
+      </trans-unit>
+      <trans-unit id="form.entities.articles" resname="form.entities.articles">
+        <source>form.entities.articles</source>
+        <target>des articles</target>
+      </trans-unit>
+      <trans-unit id="form.entities.article" resname="form.entities.article">
+        <source>form.entities.article</source>
+        <target>un article</target>
+      </trans-unit>
+      <trans-unit id="form.entities.categories" resname="form.entities.categories">
+        <source>form.entities.categories</source>
+        <target>des catégories</target>
+      </trans-unit>
+      <trans-unit id="form.entities.category" resname="form.entities.category">
+        <source>form.entities.category</source>
+        <target>une catégorie</target>
+      </trans-unit>
+      <trans-unit id="form.entities.libraries" resname="form.entities.libraries">
+        <source>form.entities.libraries</source>
+        <target>des médias</target>
+      </trans-unit>
+      <trans-unit id="form.entities.library" resname="form.entities.library">
+        <source>form.entities.library</source>
+        <target>un média</target>
+      </trans-unit>
+      <trans-unit id="form.entities.navigations" resname="form.entities.navigations">
+        <source>form.entities.navigations</source>
+        <target>des navigations</target>
+      </trans-unit>
+      <trans-unit id="form.entities.navigation" resname="form.entities.navigation">
+        <source>form.entities.navigation</source>
+        <target>une navigation</target>
+      </trans-unit>
+      <trans-unit id="form.entities.pages" resname="form.entities.pages">
+        <source>form.entities.pages</source>
+        <target>des pages</target>
+      </trans-unit>
+      <trans-unit id="form.entities.page" resname="form.entities.page">
+        <source>form.entities.page</source>
+        <target>une page</target>
+      </trans-unit>
+      <trans-unit id="form.label.categories" resname="form.label.categories">
+        <source>form.label.categories</source>
+        <target>Sélectionner des catégories</target>
+      </trans-unit>
+      <trans-unit id="form.label.title" resname="form.label.title">
+        <source>form.label.title</source>
+        <target>Titre</target>
+      </trans-unit>
+      <trans-unit id="form.label.published" resname="form.label.published">
+        <source>form.label.published</source>
+        <target>Publié</target>
+      </trans-unit>
+      <trans-unit id="form.label.locale" resname="form.label.locale">
+        <source>form.label.locale</source>
+        <target>Sélectionner un langage</target>
+      </trans-unit>
+      <trans-unit id="form.label.content" resname="form.label.content">
+        <source>form.label.content</source>
+        <target>Contenu</target>
+      </trans-unit>
+      <trans-unit id="form.label.seo" resname="form.label.seo">
+        <source>form.label.seo</source>
+        <target>Section SEO</target>
+      </trans-unit>
+      <trans-unit id="form.label.seo.title" resname="form.label.seo.title">
+        <source>form.label.seo.title</source>
+        <target>Balise titre</target>
+      </trans-unit>
+      <trans-unit id="form.label.seo.desc" resname="form.label.seo.desc">
+        <source>form.label.seo.desc</source>
+        <target>Balise description</target>
+      </trans-unit>
+      <trans-unit id="form.label.seo.keywords" resname="form.label.seo.keywords">
+        <source>form.label.seo.keywords</source>
+        <target>Balise des mots clés</target>
+      </trans-unit>
+      <trans-unit id="form.label.libraries" resname="form.label.libraries">
+        <source>form.label.libraries</source>
+        <target>Médiathèque</target>
+      </trans-unit>
+      <trans-unit id="form.label.categories.parent" resname="form.label.categories.parent">
+        <source>form.label.categories.parent</source>
+        <target>Catégorie parente</target>
+      </trans-unit>
+      <trans-unit id="form.label.categories.parent.placeholder" resname="form.label.categories.parent.placeholder">
+        <source>form.label.categories.parent.placeholder</source>
+        <target>Choisir une catégorie</target>
+      </trans-unit>
+      <trans-unit id="form.label.author" resname="form.label.author">
+        <source>form.label.author</source>
+        <target>Auteur</target>
+      </trans-unit>
+      <trans-unit id="form.btn.save" resname="form.btn.save">
+        <source>form.btn.save</source>
+        <target>Sauvegarder</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

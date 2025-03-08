@@ -1,6 +1,6 @@
 <?php
 
-namespace XenoLab\XenoEngine\DependencyInjection\Compiler;
+namespace Vision\BuilderEngine\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -17,6 +17,6 @@ final class GlobalVariablesCompilerPass implements CompilerPassInterface
         $twigDefinition = $container->getDefinition('twig');
 
         $twigDefinition
-            ->addMethodCall('addGlobal', ['xeno', new Reference('xenolab_xeno_engine.twig.global')]);
+            ->addMethodCall('addGlobal', ['builder', new Reference('vision_builder_engine.twig.global')]);
     }
 }

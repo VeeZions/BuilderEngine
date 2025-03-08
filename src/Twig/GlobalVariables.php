@@ -1,6 +1,6 @@
 <?php
 
-namespace XenoLab\XenoEngine\Twig;
+namespace Vision\BuilderEngine\Twig;
 
 final class GlobalVariables
 {

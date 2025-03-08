@@ -1,6 +1,6 @@
 <?php
 
-use XenoLab\XenoEngine\DataCollector\XenoCollector;
+use Vision\BuilderEngine\DataCollector\BuilderCollector;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $container): void {
@@ -8,10 +8,10 @@ return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services
-        ->set('xenolab_xeno_engine.data_collector', XenoCollector::class)
+        ->set('vision_builder_engine.data_collector', BuilderCollector::class)
         ->tag('data_collector', [
-            'template' => '@XenoEngineAsynchronousInternal/profiler/navigation.html.twig',
-            'id' => 'xenolab_collector'
+            'template' => '@BuilderEngineInternal/profiler/navigation.html.twig',
+            'id' => 'vision_collector'
         ])
     ;
 };

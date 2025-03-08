@@ -1,25 +1,25 @@
 {
-  "name": "@xenolab/xeno-engine-bundle",
+  "name": "@vision/builder-engine-bundle",
   "version": "1.0.0",
   "symfony": {
     "controllers": {
-      "xenolab_xeno_engine_bundle_navigation_builder": {
-        "main": "controllers/navigation/xenolab_xeno_engine_bundle_builder_controller.js",
+      "vision_builder_engine_bundle_navigation_builder": {
+        "main": "controllers/navigation/vision_builder_engine_bundle_builder_controller.js",
         "fetch": "eager",
         "enabled": true
       },
-      "xenolab_xeno_engine_bundle_navigation_entities": {
-        "main": "controllers/navigation/xenolab_xeno_engine_bundle_entities_controller.js",
+      "vision_builder_engine_bundle_navigation_entities": {
+        "main": "controllers/navigation/vision_builder_engine_bundle_entities_controller.js",
         "fetch": "eager",
         "enabled": true
       },
-      "xenolab_xeno_engine_bundle_modules": {
-        "main": "controllers/xenolab_xeno_engine_bundle_modules_controller.js",
+      "vision_builder_engine_bundle_modules": {
+        "main": "controllers/vision_builder_engine_bundle_modules_controller.js",
         "fetch": "eager",
         "enabled": true
       },
-      "xenolab_xeno_engine_bundle_builder": {
-        "main": "controllers/xenolab_xeno_engine_bundle_builder_controller.js",
+      "vision_builder_engine_bundle_builder": {
+        "main": "controllers/vision_builder_engine_bundle_builder_controller.js",
         "fetch": "eager",
         "enabled": true
       }
@@ -27,13 +27,13 @@
     "importmap": {
       "@hotwired/stimulus": "^3.0.0",
       "slugify": "^1.6.5",
-      "@xenolab/xeno-engine-jquery": "path:%PACKAGE%/libraries/jquery.min.js",
-      "@xenolab/xeno-engine-jquery-ui": "path:%PACKAGE%/libraries/jquery-ui.min.js",
-      "@xenolab/xeno-engine-logic": "path:%PACKAGE%/js/logic.js",
-      "@xenolab/xeno-engine-css": "path:%PACKAGE%/css/style.css",
-      "@xenolab/xeno-engine-utils-components": "path:%PACKAGE%/utils/components.js",
-      "@xenolab/xeno-engine-utils-modules": "path:%PACKAGE%/utils/modules.js",
-      "@xenolab/xeno-engine-utils-navigation": "path:%PACKAGE%/utils/navigation.js"
+      "@vision/builder-engine-jquery": "path:%PACKAGE%/libraries/jquery.min.js",
+      "@vision/builder-engine-jquery-ui": "path:%PACKAGE%/libraries/jquery-ui.min.js",
+      "@vision/builder-engine-logic": "path:%PACKAGE%/js/logic.js",
+      "@vision/builder-engine-css": "path:%PACKAGE%/css/style.css",
+      "@vision/builder-engine-utils-components": "path:%PACKAGE%/utils/components.js",
+      "@vision/builder-engine-utils-modules": "path:%PACKAGE%/utils/modules.js",
+      "@vision/builder-engine-utils-navigation": "path:%PACKAGE%/utils/navigation.js"
     }
   },
   "peerDependencies": {

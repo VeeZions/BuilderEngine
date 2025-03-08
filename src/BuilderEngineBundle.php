@@ -1,0 +1,89 @@
+<?php
+
+namespace Vision\BuilderEngine;
+
+use Doctrine\ORM\EntityManager;
+use Symfony\Component\AssetMapper\AssetMapperInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Twig\Environment;
+use Vision\BuilderEngine\DependencyInjection\Compiler\GlobalVariablesCompilerPass;
+
+class BuilderEngineBundle extends Bundle
+{
+    public function build(ContainerBuilder $container): void
+    {
+        if ($this->isAssetMapperAvailable()) {
+            $container->prependExtensionConfig('framework', [
+                'asset_mapper' => [
+                    'paths' => [
+                        __DIR__.'/../assets/controllers' => '@vision/builder-engine-bundle',
+                        __DIR__.'/../assets/js' => '@vision/builder-engine-bundle',
+                        __DIR__.'/../assets/utils' => '@vision/builder-engine-bundle',
+                        __DIR__.'/../assets/libraries' => '@vision/builder-engine-bundle',
+                        __DIR__.'/../assets/css' => '@vision/builder-engine-bundle'
+                    ],
+                ],
+            ]);
+        }
+
+        if ($this->isDoctrineAvailable()) {
+            $container->prependExtensionConfig('doctrine', [
+                'orm' => [
+                    'mappings' => [
+                        'BuilderEngineBundle' => [
+                            'is_bundle' => true,
+                            'type' => 'attribute',
+                            'dir' => 'src',
+                            'prefix' => 'Vision\BuilderEngine',
+                        ],
+                    ],
+                ],
+            ]);
+        }
+
+        if ($this->isTwigAvailable()) {
+            $paths = [
+                '%kernel.project_dir%/vendor/vision/builder-engine-bundle/src/Resources/internal' => 'BuilderEngineInternal',
+                '%kernel.project_dir%/vendor/vision/builder-engine-bundle/src/Resources/views' => 'BuilderEngineBundle',
+            ];
+
+            $filesystem = new Filesystem();
+            $templatesPath = $container
+                ->getParameterBag()
+                ->resolveValue('%kernel.project_dir%/templates/bundles/BuilderEngineBundle');
+
+            if ($filesystem->exists($templatesPath)) {
+                $paths['%kernel.project_dir%/templates/bundles/BuilderEngineBundle'] = 'BuilderEngineBundle';
+                $paths = array_reverse($paths);
+            }
+
+            $container->prependExtensionConfig('twig', [
+                'paths' => $paths
+            ]);
+        }
+
+        $container->addCompilerPass(new GlobalVariablesCompilerPass());
+    }
+
+    public function getPath(): string
+    {
+        return \dirname(__DIR__);
+    }
+
+    private function isAssetMapperAvailable(): bool
+    {
+        return ContainerBuilder::willBeAvailable('symfony/asset-mapper', AssetMapperInterface::class, ['symfony/framework-bundle']);
+    }
+
+    private function isDoctrineAvailable(): bool
+    {
+        return ContainerBuilder::willBeAvailable('doctrine/orm', EntityManager::class, ['doctrine/doctrine-bundle']);
+    }
+
+    private function isTwigAvailable(): bool
+    {
+        return ContainerBuilder::willBeAvailable('twig/environment', Environment::class, ['symfony/framework-bundle']);
+    }
+}
