@@ -11,6 +11,9 @@ class ConfigConstant
     public const CONFIG_FILE_NAME = 'builder_engine';
     public const CONFIG_MODE_DEFAULT = 'default';
     public const CONFIG_MODE_FORM = 'form';
+    public const CONFIG_DEFAULT_DRIVER = 'local';
+    public const CONFIG_DEFAULT_CRUD_PREFIX = '/admin';
+    public const CONFIG_EXTENDED_TEMPLATE = '@BuilderEngineInternal/base.html.twig';
     public const CONFIG_LOCALES = [
         'ad' => 'ca',
         'ae' => 'ar',

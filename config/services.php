@@ -12,6 +12,7 @@ use VeeZions\BuilderEngine\Constant\Crud\ArticleConstant;
 use VeeZions\BuilderEngine\Constant\Crud\CategoryConstant;
 use VeeZions\BuilderEngine\Constant\Crud\NavigationConstant;
 use VeeZions\BuilderEngine\Constant\Crud\PageConstant;
+use VeeZions\BuilderEngine\Manager\HtmlManager;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\abstract_arg;
 
@@ -85,6 +86,8 @@ return static function (ContainerConfigurator $container) {
             service('doctrine.orm.entity_manager'),
         ])
     ;
+
+    $services->set('veezions_builder_engine.navigation_manager', HtmlManager::class);
     
     $services
         ->set('veezions_builder_engine.article_constant', ArticleConstant::class)

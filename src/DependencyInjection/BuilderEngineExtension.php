@@ -48,10 +48,10 @@ class BuilderEngineExtension extends Extension
             ? $container->getParameter('liip_imagine.filter_sets') 
             : [];
         
-        $asyncDefinition = $container->getDefinition('veezions_builder_engine.route_loader');
-        $asyncDefinition->setArgument('$mode', $config['mode']);
-        $asyncDefinition->setArgument('$prefix', $config['crud_prefix']);
-        $asyncDefinition->setArgument('$actionsConfig', $config['actions']);
+        $routeLoaderDefinition = $container->getDefinition('veezions_builder_engine.route_loader');
+        $routeLoaderDefinition->setArgument('$mode', $config['mode']);
+        $routeLoaderDefinition->setArgument('$prefix', $config['crud_prefix']);
+        $routeLoaderDefinition->setArgument('$actionsConfig', $config['actions']);
 
         $importCommandDefinition = $container->getDefinition('veezions_builder_engine.command.import_templates');
         $importCommandDefinition->setArgument('$mode', $config['mode']);
@@ -77,5 +77,9 @@ class BuilderEngineExtension extends Extension
         
         $assetConstantDefinition = $container->getDefinition('veezions_builder_engine.asset_constant');
         $assetConstantDefinition->setArgument('$liipFilters', $liipFilters);
+        
+        $globalVariableDefinition = $container->getDefinition('veezions_builder_engine.twig.global');
+        $globalVariableDefinition->setArgument('$extended_template', $config['extended_template']);
+        $globalVariableDefinition->setArgument('$form_theme', $config['form_theme']);
     }
 }

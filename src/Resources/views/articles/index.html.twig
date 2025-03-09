@@ -1,9 +1,12 @@
-{% extends '@BuilderEngineBundle/builder.html.twig' %}
+{% extends builder_engine.extended_template %}
 
 {% block title %}{{ title }}{% endblock %}
 
 {% block body %}
 
     {{ title }}
+    <div>
+        {{ data|vbe_build_table }}
+    </div>
 
 {% endblock %}

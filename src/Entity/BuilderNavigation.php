@@ -22,7 +22,7 @@ class BuilderNavigation
     private array $content = [];
 
     #[Assert\NotBlank]
-    #[ORM\Column(length: 2)]
+    #[ORM\Column(length: 12)]
     private ?string $locale = null;
 
     public function getId(): ?int

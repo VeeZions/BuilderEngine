@@ -37,7 +37,7 @@ class CategoryController
 
     public function index(Request $request): Response
     {
-        $pagination = $this->getPaginationData(
+        $data = $this->getPaginationData(
             $request,
             BuilderCategory::class,
             $this->constant->getCrudConfig(),
@@ -46,7 +46,7 @@ class CategoryController
         
         return new Response($this->twig->render('@BuilderEngineBundle/categories/index.html.twig', [
             'title' => $this->formManager->translateCrudTitle('categories', 'index'),
-            'pagination' => $pagination,
+            'data' => $data,
         ]));
     }
 

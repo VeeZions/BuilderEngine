@@ -9,6 +9,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Twig\Environment;
 use VeeZions\BuilderEngine\DependencyInjection\Compiler\GlobalVariablesCompilerPass;
+use Gedmo\Sluggable\SluggableListener;
 
 class BuilderEngineBundle extends Bundle
 {
@@ -63,6 +64,23 @@ class BuilderEngineBundle extends Bundle
                 'paths' => $paths
             ]);
         }
+        
+        if ($this->isStofBundleAvailable()) {
+            $container->prependExtensionConfig('stof_doctrine_extensions', [
+                'orm' => [
+                    'default' => [ 
+                        'sluggable' => true,
+                        'timestampable' => true,
+                        'translatable' => true,
+                        'tree' => true,
+                        'sortable' => true,
+                        'loggable' => true,
+                        'blameable' => true,
+                        'softdeleteable' => true,
+                    ]
+                ],
+            ]);
+        }
 
         $container->addCompilerPass(new GlobalVariablesCompilerPass());
     }
@@ -85,5 +103,10 @@ class BuilderEngineBundle extends Bundle
     private function isTwigAvailable(): bool
     {
         return ContainerBuilder::willBeAvailable('twig/environment', Environment::class, ['symfony/framework-bundle']);
+    }
+    
+    private function isStofBundleAvailable(): bool
+    {
+        return ContainerBuilder::willBeAvailable('stof/doctrine-extensions-bundle', SluggableListener::class, ['doctrine/doctrine-bundle']);
     }
 }

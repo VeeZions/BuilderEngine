@@ -26,7 +26,7 @@ class BuilderCategory
     private ?string $slug = null;
 
     #[Assert\NotBlank]
-    #[ORM\Column(length: 2)]
+    #[ORM\Column(length: 12)]
     private ?string $locale = null;
 
     #[Timestampable(on: 'create')]

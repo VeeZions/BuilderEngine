@@ -24,7 +24,7 @@ class BuilderPage
     private ?string $title = null;
 
     #[Assert\NotBlank]
-    #[ORM\Column(length: 2)]
+    #[ORM\Column(length: 12)]
     private ?string $locale = null;
 
     #[Slug(fields: ['title'])]

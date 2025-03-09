@@ -32,18 +32,10 @@ trait PaginationTrait
                 : ['queryKey' => null];
         }, (array) $constant['keys']);
         /**@phpstan-ignore-next-line */
-        $collection = match ($userType) {
-            /**@phpstan-ignore-next-line */
-            'currentAccounts' => $entityManager->getRepository($entityClass)->paginateCurrentAccounts($page, $search, $order, $columns, $searchKeys),
-            /**@phpstan-ignore-next-line */
-            'archivedAccounts' => $entityManager->getRepository($entityClass)->paginateArchivedAccounts($page, $search, $order, $columns, $searchKeys),
-            /**@phpstan-ignore-next-line */
-            'employees' => $entityManager->getRepository($entityClass)->paginateEmployees($page, $search, $order, $columns, $searchKeys),
-            /**@phpstan-ignore-next-line */
-            default => $entityManager->getRepository($entityClass)->paginate($page, $search, $order, $columns, $searchKeys),
-        };
+        $collection = $entityManager->getRepository($entityClass)->paginate($page, $search, $order, $columns, $searchKeys);
 
         return [
+            'entityClass' => $entityClass,
             'collection' => $collection,
             'paginator' => [
                 'maxPage' => (int) ceil($collection->getTotalItemCount() / 10),

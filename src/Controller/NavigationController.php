@@ -36,7 +36,7 @@ class NavigationController
 
     public function index(Request $request): Response
     {
-        $pagination = $this->getPaginationData(
+        $data = $this->getPaginationData(
             $request,
             BuilderNavigation::class,
             $this->constant->getCrudConfig(),
@@ -45,7 +45,7 @@ class NavigationController
         
         return new Response($this->twig->render('@BuilderEngineBundle/navigations/index.html.twig', [
             'title' => $this->formManager->translateCrudTitle('navigations', 'index'),
-            'pagination' => $pagination,
+            'data' => $data,
         ]));
     }
 

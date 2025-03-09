@@ -29,7 +29,7 @@ use VeeZions\BuilderEngine\Form\PageType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface as Security;
 
-class FormManager
+readonly class FormManager
 {
     public function __construct(
         private FormFactory $formFactory,

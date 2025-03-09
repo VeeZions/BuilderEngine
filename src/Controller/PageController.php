@@ -37,7 +37,7 @@ class PageController
 
     public function index(Request $request): Response
     {
-        $pagination = $this->getPaginationData(
+        $data = $this->getPaginationData(
             $request,
             BuilderPage::class,
             $this->constant->getCrudConfig(),
@@ -46,7 +46,7 @@ class PageController
 
         return new Response($this->twig->render('@BuilderEngineBundle/pages/index.html.twig', [
             'title' => $this->formManager->translateCrudTitle('pages', 'index'),
-            'pagination' => $pagination,
+            'data' => $data,
         ]));
     }
 

@@ -17,6 +17,6 @@ final class GlobalVariablesCompilerPass implements CompilerPassInterface
         $twigDefinition = $container->getDefinition('twig');
 
         $twigDefinition
-            ->addMethodCall('addGlobal', ['builder', new Reference('veezions_builder_engine.twig.global')]);
+            ->addMethodCall('addGlobal', ['builder_engine', new Reference('veezions_builder_engine.twig.global')]);
     }
 }

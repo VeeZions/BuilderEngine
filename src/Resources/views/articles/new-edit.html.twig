@@ -1,18 +1,16 @@
-{% extends '@BuilderEngineBundle/builder.html.twig' %}
+{% extends builder_engine.extended_template %}
 
 {% block title %}{{ title }}{% endblock %}
 
-{% block javascripts %}
-    {{ parent() }}
-    <script src="/bundles/builderengine/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
-{% endblock %}
-
 {% block body %}
-    {% form_theme form '@BuilderEngineInternal/forms/builder_form_layout.html.twig' %}
+
+    {% if builder_engine.form_theme is not null %}
+        {% form_theme form builder_engine.form_theme %}
+    {% endif %}
 
     {{ form_start(form) }}
     {{ form_rest(form) }}
-    <button type="submit">{{ 'form.btn.save'|trans({}, 'BuilderEngineBundle-forms') }}</button>
+    <button type="submit" class="btn btn-primary">{{ 'form.btn.save'|trans({}, 'BuilderEngineBundle-forms') }}</button>
     {{ form_end(form) }}
 
 {% endblock %}

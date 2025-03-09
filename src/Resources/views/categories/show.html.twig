@@ -1,11 +1,6 @@
-{% extends '@BuilderEngineBundle/builder.html.twig' %}
+{% extends builder_engine.extended_template %}
 
 {% block title %}{{ title }}{% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
-    <script src="/bundles/builderengine/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
-{% endblock %}
 
 {% block body %}
 
