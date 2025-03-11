@@ -22,6 +22,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->args([
             abstract_arg('Get config.extended_template value'),
             abstract_arg('Get config.form_theme value'),
+            abstract_arg('Get config.custom_routes'),
         ])
         ->tag('twig.global')
     ;
@@ -29,7 +30,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services
         ->set('veezions_builder_engine.twig.page_runtime', FiltersRuntime::class)
         ->args([
-            service('veezions_builder_engine.navigation_manager'),
+            service('veezions_builder_engine.html_manager'),
+            service('request_stack'),
         ])
         ->tag('twig.runtime')
     ;

@@ -13,6 +13,7 @@ use VeeZions\BuilderEngine\Constant\Crud\CategoryConstant;
 use VeeZions\BuilderEngine\Constant\Crud\NavigationConstant;
 use VeeZions\BuilderEngine\Constant\Crud\PageConstant;
 use VeeZions\BuilderEngine\Manager\HtmlManager;
+use VeeZions\BuilderEngine\Constant\TableConstant;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\abstract_arg;
 
@@ -47,6 +48,7 @@ return static function (ContainerConfigurator $container) {
             abstract_arg('Authors provider'),
             abstract_arg('Bundle mode'),
             abstract_arg('Get liipImagine filter sets'),
+            abstract_arg('Get config.custom_routes'),
         ])
     ;
     
@@ -87,27 +89,17 @@ return static function (ContainerConfigurator $container) {
         ])
     ;
 
-    $services->set('veezions_builder_engine.navigation_manager', HtmlManager::class);
-    
     $services
-        ->set('veezions_builder_engine.article_constant', ArticleConstant::class)
+        ->set('veezions_builder_engine.html_manager', HtmlManager::class)
         ->args([
+            service('twig'),
             service('translator'),
-        ])
-    ;
-
-    $services
-        ->set('veezions_builder_engine.category_constant', CategoryConstant::class)
-    ;
-
-    $services
-        ->set('veezions_builder_engine.navigation_constant', NavigationConstant::class)
-    ;
-
-    $services
-        ->set('veezions_builder_engine.page_constant', PageConstant::class)
-        ->args([
-            service('translator'),
+            service('request_stack'),
+            service('veezions_builder_engine.table_constant'),
+            service('security.authorization_checker'),
+            service('router'),
+            abstract_arg('Get config.custom_routes'),
+            abstract_arg('Get config.actions'),
         ])
     ;
 
@@ -117,4 +109,6 @@ return static function (ContainerConfigurator $container) {
             abstract_arg('LiipImagineBundle filters'),
         ])
     ;
+
+    $services->set('veezions_builder_engine.table_constant', TableConstant::class);
 };

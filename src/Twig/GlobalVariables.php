@@ -9,6 +9,7 @@ final class GlobalVariables
     public function __construct(
         private string $extended_template,
         private ?string $form_theme,
+        private array $customRoutes
     )
     {
 
@@ -22,5 +23,10 @@ final class GlobalVariables
     public function getForm_theme(): ?string
     {
         return $this->form_theme;
+    }
+    
+    public function getRoutes(): ?array
+    {
+        return $this->customRoutes;
     }
 }

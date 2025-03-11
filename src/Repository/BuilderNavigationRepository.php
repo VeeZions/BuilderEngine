@@ -14,8 +14,6 @@ use VeeZions\BuilderEngine\Trait\SearchTrait;
  */
 class BuilderNavigationRepository extends ServiceEntityRepository
 {
-    use SearchTrait;
-
     public function __construct(
         ManagerRegistry $registry,
         private readonly PaginatorInterface $paginator,
@@ -23,23 +21,18 @@ class BuilderNavigationRepository extends ServiceEntityRepository
         parent::__construct($registry, BuilderNavigation::class);
     }
 
-    /*
-     * @param array<string, string>                  $search
+    /**
      * @param array<int, string>                     $columns
-     * @param array<int, array<string, string|null>> $searchKeys
      *
      * @return PaginationInterface<int, mixed>
      */
     public function paginate(
         int $page,
-        array $search,
-        string $order,
         array $columns,
-        array $searchKeys,
     ): PaginationInterface {
+        array_unshift($columns, 'n.id');
         $query = $this->createQueryBuilder('n')->select($columns);
-        $query = $this->scopeSearch($query, $search, $searchKeys);
 
-        return $this->paginator->paginate($query->orderBy('n.id', $order), $page, 10);
+        return $this->paginator->paginate($query, $page, 10);
     }
 }

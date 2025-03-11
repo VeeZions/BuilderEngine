@@ -1,0 +1,5 @@
+{% if pagination.getTotalItemCount > 0 %}
+    <div class="vbe-pagination">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+{% endif %}

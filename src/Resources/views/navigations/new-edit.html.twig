@@ -10,7 +10,7 @@
 
     {{ form_start(form) }}
     {{ form_rest(form) }}
-    <button type="submit" class="btn btn-primary">{{ 'form.btn.save'|trans({}, 'BuilderEngineBundle-forms') }}</button>
+    {{ vbe_actions_buttons(form) }}
     {{ form_end(form) }}
 
 {% endblock %}

@@ -1,0 +1,11 @@
+<div class="vbe-form-actions-container">
+    <button type="submit" class="btn btn-primary">
+        {{ 'form.btn.save'|trans({}, 'BuilderEngineBundle-forms') }}
+    </button>
+    <button type="submit" name="vbe_save_and_reload" value="referer" class="btn btn-primary">
+        {{ 'form.btn.save.reload'|trans({}, 'BuilderEngineBundle-forms') }}
+    </button>
+    <a href="{{ path(builder_engine.routes[entities ~ '_routes'].list) }}" class="btn btn-default">
+        {{ 'form.btn.back.list'|trans({}, 'BuilderEngineBundle-forms') }}
+    </a>
+</div>

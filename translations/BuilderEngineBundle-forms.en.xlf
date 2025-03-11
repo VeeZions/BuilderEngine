@@ -117,6 +117,14 @@
         <source>form.btn.save</source>
         <target>Save</target>
       </trans-unit>
+      <trans-unit id="form.btn.save.reload" resname="form.btn.save.reload">
+        <source>form.btn.save.reload</source>
+        <target>Save and stay</target>
+      </trans-unit>
+      <trans-unit id="form.btn.back.list" resname="form.btn.back.list">
+        <source>form.btn.back.list</source>
+        <target>Back to list</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

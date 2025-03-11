@@ -11,7 +11,9 @@ class NavigationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('data', HiddenType::class);
+        $builder->add('data', HiddenType::class, [
+            'mapped' => false,
+        ]);
     }
 
     public function getBlockPrefix(): string

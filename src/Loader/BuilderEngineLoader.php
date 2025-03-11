@@ -4,6 +4,7 @@ namespace VeeZions\BuilderEngine\Loader;
 
 use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\Routing\RouteCollection;
+use VeeZions\BuilderEngine\Constant\ConfigConstant;
 
 class BuilderEngineLoader extends Loader
 {
@@ -19,14 +20,15 @@ class BuilderEngineLoader extends Loader
         $routes = new RouteCollection();
         $type = 'yaml';
 
-        $asyncRoute = $this->import('@BuilderEngineBundle/config/routing/async.yaml', $type);
+        $asyncRoute = $this->import(ConfigConstant::CONFIG_SHARED_TEMPLATE_PATH.'/config/routing/async.yaml', $type);
         $asyncRoute->addPrefix('/_xlxeb');
         $routes->addCollection($asyncRoute);
 
         if ('form' !== $this->mode) {
             foreach ($this->actionsConfig as $entity => $actions) {
                 $index = sprintf(
-                    '@BuilderEngineBundle/config/routing/controllers/%s/index.yaml',
+                    '%s/config/routing/controllers/%s/index.yaml',
+                    ConfigConstant::CONFIG_SHARED_TEMPLATE_PATH,
                     $entity
                 );
                 
@@ -40,7 +42,8 @@ class BuilderEngineLoader extends Loader
                     if (true === $config['enabled'] && $entity !== 'libraries') {
                         
                         $routing = sprintf(
-                            '@BuilderEngineBundle/config/routing/controllers/%s/%s.yaml',
+                            '%s/config/routing/controllers/%s/%s.yaml',
+                            ConfigConstant::CONFIG_SHARED_TEMPLATE_PATH,
                             $entity,
                             $action
                         );

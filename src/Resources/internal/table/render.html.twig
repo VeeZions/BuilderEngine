@@ -1,0 +1,15 @@
+<div class="vbe-render-container">
+    {% for tab in order %}
+        {% if tab is same as constant('VeeZions\\BuilderEngine\\Constant\\TableConstant::VBE_TABLE_CREATE') %}
+            {{ vbe_build_create(data) }}
+        {% elseif tab is same as constant('VeeZions\\BuilderEngine\\Constant\\TableConstant::VBE_TABLE_FILTERS') %}
+            {{ vbe_build_filters(data) }}
+        {% elseif tab is same as constant('VeeZions\\BuilderEngine\\Constant\\TableConstant::VBE_TABLE_COUNTER') %}
+            {{ vbe_build_counter(data) }}
+        {% elseif tab is same as constant('VeeZions\\BuilderEngine\\Constant\\TableConstant::VBE_TABLE_TABLE') %}
+            {{ vbe_build_table(data) }}
+        {% elseif tab is same as constant('VeeZions\\BuilderEngine\\Constant\\TableConstant::VBE_TABLE_PAGINATION') %}
+            {{ vbe_build_pagination(data) }}
+        {% endif %}
+    {% endfor %}
+</div>

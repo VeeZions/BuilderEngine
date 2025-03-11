@@ -4,6 +4,12 @@
 
 {% block body %}
 
-    Categories list
+    <div class="vbe-container" id="{{ vbe_container_id() }}">
+
+        <h1 class="vbe-heading vbe-h1">{{ title }}</h1>
+
+        {{ vbe_build_render(data) }}
+
+    </div>
 
 {% endblock %}

@@ -21,7 +21,7 @@ class BuilderLibraryRepository extends ServiceEntityRepository
         parent::__construct($registry, BuilderLibrary::class);
     }
 
-    /*
+    /**
      * @param array<int, string>|null $types
      *
      * @return PaginationInterface<int, mixed>
@@ -46,7 +46,7 @@ class BuilderLibraryRepository extends ServiceEntityRepository
         return $this->paginator->paginate($query->orderBy('g.id', $order), 1, $count);
     }
 
-    /*
+    /**
      * @param array<int, int> $ids
      *
      * @return array<int, BuilderLibrary>

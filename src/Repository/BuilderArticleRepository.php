@@ -8,15 +8,12 @@ use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use VeeZions\BuilderEngine\Entity\BuilderArticle;
 use VeeZions\BuilderEngine\Entity\BuilderCategory;
-use VeeZions\BuilderEngine\Trait\SearchTrait;
 
 /**
  * @extends ServiceEntityRepository<BuilderArticle>
  */
 class BuilderArticleRepository extends ServiceEntityRepository
 {
-    use SearchTrait;
-
     public function __construct(
         ManagerRegistry $registry,
         private readonly PaginatorInterface $paginator,
@@ -55,23 +52,18 @@ class BuilderArticleRepository extends ServiceEntityRepository
         return is_array($article) ? $article : null;
     }
 
-    /*
-     * @param array<string, string>                  $search
+    /**
      * @param array<int, string>                     $columns
-     * @param array<int, array<string, string|null>> $searchKeys
      *
      * @return PaginationInterface<int, mixed>
      */
     public function paginate(
         int $page,
-        array $search,
-        string $order,
         array $columns,
-        array $searchKeys,
     ): PaginationInterface {
+        array_unshift($columns, 'a.id');
         $query = $this->createQueryBuilder('a')->select($columns);
-        $query = $this->scopeSearch($query, $search, $searchKeys);
 
-        return $this->paginator->paginate($query->orderBy('a.createdAt', $order), $page, 10);
+        return $this->paginator->paginate($query, $page, 10);
     }
 }

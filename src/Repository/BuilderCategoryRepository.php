@@ -7,15 +7,12 @@ use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use VeeZions\BuilderEngine\Entity\BuilderCategory;
-use VeeZions\BuilderEngine\Trait\SearchTrait;
 
 /**
  * @extends ServiceEntityRepository<BuilderCategory>
  */
 class BuilderCategoryRepository extends ServiceEntityRepository
 {
-    use SearchTrait;
-
     public function __construct(
         ManagerRegistry $registry,
         private readonly PaginatorInterface $paginator,
@@ -43,22 +40,19 @@ class BuilderCategoryRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param array<string, string>                  $search
      * @param array<int, string>                     $columns
-     * @param array<int, array<string, string|null>> $searchKeys
      *
      * @return PaginationInterface<int, mixed>
      */
     public function paginate(
         int $page,
-        array $search,
-        string $order,
         array $columns,
-        array $searchKeys,
     ): PaginationInterface {
-        $query = $this->createQueryBuilder('c')->select($columns);
-        $query = $this->scopeSearch($query, $search, $searchKeys);
+        array_unshift($columns, 'c.id');
+        $query = $this->createQueryBuilder('c')
+            ->select($columns)
+            ->leftJoin(BuilderCategory::class, 'cp', 'WITH', 'c.parent = cp.id');
 
-        return $this->paginator->paginate($query->orderBy('c.createdAt', $order), $page, 10);
+        return $this->paginator->paginate($query, $page, 10);
     }
 }

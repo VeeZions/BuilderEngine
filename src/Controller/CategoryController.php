@@ -2,9 +2,9 @@
 
 namespace VeeZions\BuilderEngine\Controller;
 
-use VeeZions\BuilderEngine\Constant\Crud\CategoryConstant;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,16 +12,16 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment as TwigEnvironment;
+use VeeZions\BuilderEngine\Constant\TableConstant;
 use VeeZions\BuilderEngine\Entity\BuilderCategory;
 use VeeZions\BuilderEngine\Form\CategoryType;
 use VeeZions\BuilderEngine\Manager\FormManager;
 use VeeZions\BuilderEngine\Trait\AccessTrait;
-use VeeZions\BuilderEngine\Trait\PaginationTrait;
+use VeeZions\BuilderEngine\Constant\ConfigConstant;
 
 class CategoryController
 {
     use AccessTrait;
-    use PaginationTrait;
 
     public function __construct(
         private TwigEnvironment $twig,
@@ -30,21 +30,19 @@ class CategoryController
         private EntityManagerInterface $entityManager,
         private AuthorizationCheckerInterface $authorizationChecker,
         private FormManager $formManager,
-        private CategoryConstant $constant,
+        private TableConstant $constant,
         private array $actions,
     ) {
     }
 
     public function index(Request $request): Response
     {
-        $data = $this->getPaginationData(
-            $request,
-            BuilderCategory::class,
-            $this->constant->getCrudConfig(),
-            $this->entityManager
+        $data = $this->entityManager->getRepository(BuilderCategory::class)->paginate(
+            max($request->query->getInt('page', 1), 1), 
+            array_keys($this->constant->getColumnsFromTable(BuilderCategory::class))
         );
         
-        return new Response($this->twig->render('@BuilderEngineBundle/categories/index.html.twig', [
+        return new Response($this->twig->render(ConfigConstant::CONFIG_SHARED_TEMPLATE_PATH.'/categories/index.html.twig', [
             'title' => $this->formManager->translateCrudTitle('categories', 'index'),
             'data' => $data,
         ]));
@@ -55,10 +53,14 @@ class CategoryController
         $this->isGranted($this->actions['new']['roles']);
         $form = $this->formManager->form(CategoryType::class);
 
-        return new Response($this->twig->render('@BuilderEngineBundle/categories/new-edit.html.twig', [
-            'title' => $this->formManager->translateCrudTitle('category', 'new'),
-            'form' => $form
-        ]));
+        if ($form instanceof FormView) {
+            return new Response($this->twig->render(ConfigConstant::CONFIG_SHARED_TEMPLATE_PATH.'/categories/new-edit.html.twig', [
+                'title' => $this->formManager->translateCrudTitle('category', 'new'),
+                'form' => $form
+            ]));
+        }
+        
+        return new RedirectResponse($form);
     }
 
     public function show(?BuilderCategory $category): Response
@@ -69,7 +71,7 @@ class CategoryController
             throw new NotFoundHttpException($this->translator->trans('error.category.not.found', [], 'BuilderEngineBundle-errors'));
         }
 
-        return new Response($this->twig->render('@BuilderEngineBundle/categories/show.html.twig', [
+        return new Response($this->twig->render(ConfigConstant::CONFIG_SHARED_TEMPLATE_PATH.'/categories/show.html.twig', [
             'title' => $this->formManager->translateCrudTitle('category', 'show')
         ]));
     }
@@ -83,10 +85,14 @@ class CategoryController
         }
         $form = $this->formManager->form(CategoryType::class, $category);
 
-        return new Response($this->twig->render('@BuilderEngineBundle/categories/new-edit.html.twig', [
-            'title' => $this->formManager->translateCrudTitle('category', 'edit'),
-            'form' => $form
-        ]));
+        if ($form instanceof FormView) {
+            return new Response($this->twig->render(ConfigConstant::CONFIG_SHARED_TEMPLATE_PATH.'/categories/new-edit.html.twig', [
+                'title' => $this->formManager->translateCrudTitle('category', 'edit'),
+                'form' => $form
+            ]));
+        }
+        
+        return new RedirectResponse($form);
     }
 
     public function delete(?BuilderCategory $category): Response

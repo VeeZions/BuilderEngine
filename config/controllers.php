@@ -35,7 +35,7 @@ return static function (ContainerConfigurator $container) {
             service('doctrine.orm.entity_manager'),
             service('security.authorization_checker'),
             service('veezions_builder_engine.form_manager'),
-            service('veezions_builder_engine.category_constant'),
+            service('veezions_builder_engine.table_constant'),
             abstract_arg('Get config.actions'),
         ])
         ->tag('controller.service_arguments')
@@ -50,7 +50,7 @@ return static function (ContainerConfigurator $container) {
             service('doctrine.orm.entity_manager'),
             service('security.authorization_checker'),
             service('veezions_builder_engine.form_manager'),
-            service('veezions_builder_engine.article_constant'),
+            service('veezions_builder_engine.table_constant'),
             abstract_arg('Get config.actions'),
         ])
         ->tag('controller.service_arguments')
@@ -65,7 +65,7 @@ return static function (ContainerConfigurator $container) {
             service('doctrine.orm.entity_manager'),
             service('security.authorization_checker'),
             service('veezions_builder_engine.form_manager'),
-            service('veezions_builder_engine.page_constant'),
+            service('veezions_builder_engine.table_constant'),
             abstract_arg('Get config.actions'),
         ])
         ->tag('controller.service_arguments')
@@ -80,7 +80,7 @@ return static function (ContainerConfigurator $container) {
             service('doctrine.orm.entity_manager'),
             service('security.authorization_checker'),
             service('veezions_builder_engine.form_manager'),
-            service('veezions_builder_engine.navigation_constant'),
+            service('veezions_builder_engine.table_constant'),
             abstract_arg('Get config.actions'),
         ])
         ->tag('controller.service_arguments')

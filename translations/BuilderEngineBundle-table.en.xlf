@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="fr" target-language="en" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="vbe.bookmark" resname="vbe.bookmark">
+        <source>vbe.bookmark</source>
+        <target>%start% to %end% on %total% items</target>
+      </trans-unit>
+      <trans-unit id="vbe.total" resname="vbe.total">
+        <source>vbe.total</source>
+        <target>%total% items</target>
+      </trans-unit>
+      <trans-unit id="vbe.single" resname="vbe.single">
+        <source>vbe.single</source>
+        <target>%total% item</target>
+      </trans-unit>
+      <trans-unit id="vbe.pages" resname="vbe.pages">
+        <source>vbe.pages</source>
+        <target>Page %page% on %pages%</target>
+      </trans-unit>
+      <trans-unit id="vbe.tab.actions" resname="vbe.tab.actions">
+        <source>vbe.tab.actions</source>
+        <target>Actions</target>
+      </trans-unit>
+      <trans-unit id="vbe.new.entity" resname="vbe.new.entity">
+        <source>vbe.new.entity</source>
+        <target>Create</target>
+      </trans-unit>
+      <trans-unit id="vbe.query.title" resname="vbe.query.title">
+        <source>vbe.query.title</source>
+        <target>Title</target>
+      </trans-unit>
+      <trans-unit id="vbe.query.locale" resname="vbe.query.locale">
+        <source>vbe.query.locale</source>
+        <target>Locale</target>
+      </trans-unit>
+      <trans-unit id="vbe.query.type" resname="vbe.query.type">
+        <source>vbe.query.type</source>
+        <target>Type</target>
+      </trans-unit>
+      <trans-unit id="vbe.query.created.at" resname="vbe.query.created.at">
+        <source>vbe.query.created.at</source>
+        <target>Created at</target>
+      </trans-unit>
+      <trans-unit id="vbe.query.author" resname="vbe.query.author">
+        <source>vbe.query.author</source>
+        <target>Author</target>
+      </trans-unit>
+      <trans-unit id="vbe.query.published" resname="vbe.query.published">
+        <source>vbe.query.published</source>
+        <target>Published</target>
+      </trans-unit>
+      <trans-unit id="vbe.query.parent" resname="vbe.query.parent">
+        <source>vbe.query.parent</source>
+        <target>Parent category</target>
+      </trans-unit>
+      <trans-unit id="vbe.query.route" resname="vbe.query.route">
+        <source>vbe.query.route</source>
+        <target>Route</target>
+      </trans-unit>
+      <trans-unit id="vbe.content.empty" resname="vbe.content.empty">
+        <source>vbe.content.empty</source>
+        <target>No data available yet.</target>
+      </trans-unit>
+      <trans-unit id="vbe.filter.btn" resname="vbe.filter.btn">
+        <source>vbe.filter.btn</source>
+        <target>Search</target>
+      </trans-unit>
+      <trans-unit id="vbe.action.label.show" resname="vbe.action.label.show">
+        <source>vbe.action.label.show</source>
+        <target>Show</target>
+      </trans-unit>
+      <trans-unit id="vbe.action.label.edit" resname="vbe.action.label.edit">
+        <source>vbe.action.label.edit</source>
+        <target>Edit</target>
+      </trans-unit>
+      <trans-unit id="vbe.action.label.delete" resname="vbe.action.label.delete">
+        <source>vbe.action.label.delete</source>
+        <target>Delete</target>
+      </trans-unit>
+      <trans-unit id="vbe.action.confirm.delete" resname="vbe.action.confirm.delete">
+        <source>vbe.action.confirm.delete</source>
+        <target>You are going to permanently delete %entity% #%nb%. Please confirm.</target>
+      </trans-unit>
+      <trans-unit id="vbe.entity.category" resname="vbe.entity.category">
+        <source>vbe.entity.category</source>
+        <target>category</target>
+      </trans-unit>
+      <trans-unit id="vbe.entity.article" resname="vbe.entity.article">
+        <source>vbe.entity.article</source>
+        <target>article</target>
+      </trans-unit>
+      <trans-unit id="vbe.entity.page" resname="vbe.entity.page">
+        <source>vbe.entity.page</source>
+        <target>page</target>
+      </trans-unit>
+      <trans-unit id="vbe.entity.navigation" resname="vbe.entity.navigation">
+        <source>vbe.entity.navigation</source>
+        <target>navigation</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

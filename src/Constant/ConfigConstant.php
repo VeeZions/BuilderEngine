@@ -14,6 +14,41 @@ class ConfigConstant
     public const CONFIG_DEFAULT_DRIVER = 'local';
     public const CONFIG_DEFAULT_CRUD_PREFIX = '/admin';
     public const CONFIG_EXTENDED_TEMPLATE = '@BuilderEngineInternal/base.html.twig';
+    public const CONFIG_SHARED_TEMPLATE_PATH = '@BuilderEngineBundle';
+    public const CONFIG_INTERNAL_TEMPLATE_PATH = '@BuilderEngineInternal';
+    public const CONFIG_DEFAULT_ROUTES = [
+        'articles_routes' => [
+            'list' => 'xlxeb_controller_article_index',
+            'show' => 'xlxeb_controller_article_show',
+            'new' => 'xlxeb_controller_article_new',
+            'edit' => 'xlxeb_controller_article_edit',
+            'delete' => 'xlxeb_controller_article_delete'
+        ],
+        'categories_routes' => [
+            'list' => 'xlxeb_controller_category_index',
+            'show' => 'xlxeb_controller_category_show',
+            'new' => 'xlxeb_controller_category_new',
+            'edit' => 'xlxeb_controller_category_edit',
+            'delete' => 'xlxeb_controller_category_delete',
+        ],
+        'pages_routes' => [
+            'list' => 'xlxeb_controller_page_index',
+            'show' => 'xlxeb_controller_page_show',
+            'new' => 'xlxeb_controller_page_new',
+            'edit' => 'xlxeb_controller_page_edit',
+            'delete' => 'xlxeb_controller_page_delete',
+        ],
+        'navigations_routes' => [
+            'list' => 'xlxeb_controller_navigation_index',
+            'show' => 'xlxeb_controller_navigation_show',
+            'new' => 'xlxeb_controller_navigation_new',
+            'edit' => 'xlxeb_controller_navigation_edit',
+            'delete' => 'xlxeb_controller_navigation_delete',
+        ],
+        'libraries_routes' => [
+            'list' => 'xlxeb_controller_library_index',
+        ]
+    ];
     public const CONFIG_LOCALES = [
         'ad' => 'ca',
         'ae' => 'ar',

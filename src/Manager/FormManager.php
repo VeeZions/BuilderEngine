@@ -43,13 +43,14 @@ readonly class FormManager
         private AssetManager $assetManager,
         private array $authors,
         private string $bundleMode,
-        private array $libraryLiipFilters
+        private array $libraryLiipFilters,
+        private array $customRoutes
     )
     {
         
     }
     
-    public function form(string $type, mixed $data = null, ?string $redictionRoute = null): FormView
+    public function form(string $type, mixed $data = null, ?string $redictionRoute = null): FormView|string
     {
         if ($this->bundleMode === ConfigConstant::CONFIG_MODE_FORM) {
             throw new InvalidArgumentException($this::class . '::form() #Argument3 "$redictionRoute" must be set in "'.ConfigConstant::CONFIG_MODE_FORM.'" mode.');
@@ -89,10 +90,9 @@ readonly class FormManager
         
         $form = $this->formFactory->create($type, $data, $options);
         $form->handleRequest($this->requestStack->getCurrentRequest());
-
-        dump($this->bundleMode);
         
         if ($form->isSubmitted() && $form->isValid()) {
+
             $entity = $form->getData();
             $entity = match (true) {
                 $entity instanceof BuilderNavigation =>
@@ -105,7 +105,7 @@ readonly class FormManager
                 ),
             };
 
-            dd($entity);
+            //dd($entity);
 
             if (!$form instanceof LibraryType) {
                 if ($entity->getId() !== null) {
@@ -115,12 +115,19 @@ readonly class FormManager
                 $this->callBackActions($entity);
             }
 
+            $request = $this->requestStack->getCurrentRequest();
+            $toReload = $request->request->get('vbe_save_and_reload') !== null;
+
+            if ($toReload) {
+                return $request->headers->get('referer');
+            }
+
             $routeToRedirect = match ($type) {
-                ArticleType::class => 'xlxeb_controller_article_index',
-                PageType::class => 'xlxeb_controller_page_index',
-                CategoryType::class => 'xlxeb_controller_category_index',
-                NavigationType::class => 'xlxeb_controller_navigation_index',
-                LibraryType::class => 'xlxeb_controller_library_index',
+                ArticleType::class => $this->customRoutes['articles_routes']['list'],
+                PageType::class => $this->customRoutes['pages_routes']['list'],
+                CategoryType::class => $this->customRoutes['categories_routes']['list'],
+                NavigationType::class => $this->customRoutes['navigations_routes']['list'],
+                LibraryType::class => ConfigConstant::CONFIG_DEFAULT_ROUTES['libraries_routes']['list'],
                 default => null,
             };
 
@@ -130,7 +137,7 @@ readonly class FormManager
 
             $routeToRedirect = $redictionRoute ?? $routeToRedirect;
 
-            return new RedirectResponse($this->router->generate($routeToRedirect));
+            return $this->router->generate($routeToRedirect);
         }
 
         return $form->createView();
@@ -267,9 +274,11 @@ readonly class FormManager
             }
         }
 
-        $newLibrary = $this->entityManager->getRepository(BuilderLibrary::class)->find($newLibraryId);
-        if (null !== $newLibrary) {
-            $entity->addLibrary($newLibrary);
+        if (null !== $newLibraryId) {
+            $newLibrary = $this->entityManager->getRepository(BuilderLibrary::class)->find($newLibraryId);
+            if (null !== $newLibrary) {
+                $entity->addLibrary($newLibrary);
+            }
         }
 
         return $entity;

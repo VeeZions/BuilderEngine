@@ -2,7 +2,7 @@
 <div data-saas--navigation--builder-target="stage" class="w-full flex flex-col items-start justify-start p-2 border border-gray-300 rounded-md bg-gray-100 relative{{ loop.index > 1 ? ' mt-4' : '' }}">
     <div data-saas--navigation--builder-target="tabs" class="w-full flex flex-col items-start justify-start droppable pb-4 min-h-[8px]">
         {% for tab in stage %}
-            {% include '@BuilderEngineInternal/navigation/tab.html.twig' %}
+            {% include 'constant('VeeZions\\BuilderEngine\\Constant\\ConfigConstant::CONFIG_INTERNAL_TEMPLATE_PATH') ~ /navigation/tab.html.twig' %}
         {% endfor %}
     </div>
     {% if loop.index > 1 %}

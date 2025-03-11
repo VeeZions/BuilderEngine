@@ -12,13 +12,22 @@ final class FiltersExtension extends AbstractExtension
     public function getFilters(): array
     {
         return [
-            new TwigFilter('vbe_build_table', [FiltersRuntime::class, 'buildTable']),
+            new TwigFilter('vbe_value_mutator', [FiltersRuntime::class, 'valueMutator']),
+            new TwigFilter('vbe_is_sortable', [FiltersRuntime::class, 'isSortable']),
         ];
     }
 
     public function getFunctions(): array
     {
         return [
+            new TwigFunction('vbe_container_id', [FiltersRuntime::class, 'containerId']),
+            new TwigFunction('vbe_build_table', [FiltersRuntime::class, 'buildTable']),
+            new TwigFunction('vbe_build_filters', [FiltersRuntime::class, 'buildFilters']),
+            new TwigFunction('vbe_build_pagination', [FiltersRuntime::class, 'buildPagination']),
+            new TwigFunction('vbe_build_counter', [FiltersRuntime::class, 'buildCounter']),
+            new TwigFunction('vbe_build_create', [FiltersRuntime::class, 'buildCreate']),
+            new TwigFunction('vbe_build_render', [FiltersRuntime::class, 'buildRender']),
+            new TwigFunction('vbe_actions_buttons', [FiltersRuntime::class, 'actionsButtons']),
         ];
     }
 }
