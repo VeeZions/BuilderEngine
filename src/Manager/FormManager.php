@@ -398,22 +398,22 @@ readonly class FormManager
     protected function remove(?object $data = null): Response
     {
         $this->checkIfEntityExists($data);
-        
-        $this->entityManager->remove($data);
-        $this->entityManager->flush();
 
-        $routeToRedirect = match ($type) {
-            BuilderArticle::class => $this->customRoutes['articles_routes']['list'],
-            BuilderPage::class => $this->customRoutes['pages_routes']['list'],
-            BuilderCategory::class => $this->customRoutes['categories_routes']['list'],
-            BuilderNavigation::class => $this->customRoutes['navigations_routes']['list'],
-            BuilderLibrary::class => ConfigConstant::CONFIG_DEFAULT_ROUTES['libraries_routes']['list'],
+        $routeToRedirect = match (true) {
+            $data instanceof BuilderArticle => $this->customRoutes['articles_routes']['list'],
+            $data instanceof BuilderPage => $this->customRoutes['pages_routes']['list'],
+            $data instanceof BuilderCategory => $this->customRoutes['categories_routes']['list'],
+            $data instanceof BuilderNavigation => $this->customRoutes['navigations_routes']['list'],
+            $data instanceof BuilderLibrary => ConfigConstant::CONFIG_DEFAULT_ROUTES['libraries_routes']['list'],
             default => null,
         };
         
         if (null === $routeToRedirect) {
             throw new InvalidArgumentException($this::class . '::remove() expects a valid redirection route');
         }
+
+        $this->entityManager->remove($data);
+        $this->entityManager->flush();
         
         return new RedirectResponse($this->router->generate($routeToRedirect));
     }
