@@ -28,7 +28,9 @@ class AsyncController
     public function index(Request $request, string $slug): Response
     {
         if (!$request->isXmlHttpRequest() || !$request->isMethod('POST') || !isset($this->slugs[$slug])) {
-            throw new NotFoundHttpException($this->translator->trans('error.async.not.found', [], 'BuilderEngineBundle-errors'));
+            throw new NotFoundHttpException(
+                $this->translator->trans('error.async.not.found', [], 'BuilderEngineBundle-errors')
+            );
         }
         $classMethod = $this->slugs[$slug];
         return new JsonResponse(['data' => $this->$classMethod($request)]);

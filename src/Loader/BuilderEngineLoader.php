@@ -40,7 +40,7 @@ class BuilderEngineLoader extends Loader
                 $routes->addCollection($indexRoute);
                 foreach ($actions as $action => $config) {
                     if (true === $config['enabled'] && $entity !== 'libraries') {
-                        
+
                         $routing = sprintf(
                             '%s/config/routing/controllers/%s/%s.yaml',
                             ConfigConstant::CONFIG_SHARED_TEMPLATE_PATH,

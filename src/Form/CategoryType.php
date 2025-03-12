@@ -53,6 +53,7 @@ class CategoryType extends AbstractType
                 'label' => 'form.label.categories.parent',
                 'translation_domain' => 'BuilderEngineBundle-forms',
                 'data' => $entity->getParent(),
+                'required' => false,
                 'placeholder' => 'form.label.categories.parent.placeholder',
             ])
         ;

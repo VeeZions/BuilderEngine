@@ -1,6 +1,6 @@
 {% extends builder_engine.extended_template %}
 
-{% block title %}{{ title }}{% endblock %}
+{% block title %}{{ vbe_title() }}{% endblock %}
 
 {% block body %}
 
@@ -8,9 +8,17 @@
         {% form_theme form builder_engine.form_theme %}
     {% endif %}
 
-    {{ form_start(form) }}
-    {{ form_rest(form) }}
-    <button type="submit" class="btn btn-primary">{{ 'form.btn.save'|trans({}, 'BuilderEngineBundle-forms') }}</button>
-    {{ form_end(form) }}
+    <h1>{{ vbe_title() }}</h1>
+
+    <div {{ stimulus_controller('veezions/builder-engine-bundle/veezions_builder_engine_bundle_media') }}>
+
+        {{ form_start(form) }}
+        {{ form_rest(form) }}
+        <button type="submit" class="btn btn-primary">
+            {{ 'form.btn.save'|trans({}, 'BuilderEngineBundle-forms') }}
+        </button>
+        {{ form_end(form) }}
+
+    </div>
 
 {% endblock %}

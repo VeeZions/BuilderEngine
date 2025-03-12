@@ -55,26 +55,18 @@ class BuilderEngineExtension extends Extension
 
         $importCommandDefinition = $container->getDefinition('veezions_builder_engine.command.import_templates');
         $importCommandDefinition->setArgument('$mode', $config['mode']);
-
-        if (ConfigConstant::CONFIG_MODE_FORM !== $config['mode']) {
-            $articlesDefinition = $container->getDefinition('veezions_builder_engine.article_controller');
-            $articlesDefinition->setArgument('$actions', $config['actions']['articles']);
-
-            $pagesDefinition = $container->getDefinition('veezions_builder_engine.page_controller');
-            $pagesDefinition->setArgument('$actions', $config['actions']['pages']);
-
-            $categoriesDefinition = $container->getDefinition('veezions_builder_engine.category_controller');
-            $categoriesDefinition->setArgument('$actions', $config['actions']['categories']);
-
-            $navigationsDefinition = $container->getDefinition('veezions_builder_engine.navigation_controller');
-            $navigationsDefinition->setArgument('$actions', $config['actions']['navigations']);
-        }
         
         $formManagerDefinition = $container->getDefinition('veezions_builder_engine.form_manager');
         $formManagerDefinition->setArgument('$authors', $config['author_providers']);
         $formManagerDefinition->setArgument('$bundleMode', $config['mode']);
         $formManagerDefinition->setArgument('$libraryLiipFilters', $config['library_config']['liip_filter_sets']);
         $formManagerDefinition->setArgument('$customRoutes', $config['custom_routes']);
+        $formManagerDefinition->setArgument('$actions', $config['actions']);
+
+        $engineManagerDefinition = $container->getDefinition('veezions_builder_engine.engine_manager');
+        $engineManagerDefinition->setArgument('$authors', $config['author_providers']);
+        $engineManagerDefinition->setArgument('$customRoutes', $config['custom_routes']);
+        $engineManagerDefinition->setArgument('$actions', $config['actions']);
         
         $assetConstantDefinition = $container->getDefinition('veezions_builder_engine.asset_constant');
         $assetConstantDefinition->setArgument('$liipFilters', $liipFilters);
@@ -83,6 +75,9 @@ class BuilderEngineExtension extends Extension
         $globalVariableDefinition->setArgument('$extended_template', $config['extended_template']);
         $globalVariableDefinition->setArgument('$form_theme', $config['form_theme']);
         $globalVariableDefinition->setArgument('$customRoutes', $config['custom_routes']);
+        
+        $pageRuntimeDefinition = $container->getDefinition('veezions_builder_engine.twig.page_runtime');
+        $pageRuntimeDefinition->setArgument('$customRoutes', $config['custom_routes']);
 
         $htmlManagerDefinition = $container->getDefinition('veezions_builder_engine.html_manager');
         $htmlManagerDefinition->setArgument('$customRoutes', $config['custom_routes']);

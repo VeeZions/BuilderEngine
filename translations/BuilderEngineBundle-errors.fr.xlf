@@ -25,6 +25,10 @@
         <source>error.library.not.found</source>
         <target>Ce media n'existe pas.</target>
       </trans-unit>
+      <trans-unit id="error.entity.not.found" resname="error.entity.not.found">
+        <source>error.entity.not.found</source>
+        <target>Cette entité n'existe pas.</target>
+      </trans-unit>
       <trans-unit id="error.action.disabled" resname="error.action.disabled">
         <source>error.action.disabled</source>
         <target>Page non trouvée.</target>

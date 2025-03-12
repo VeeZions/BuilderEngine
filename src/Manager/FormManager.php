@@ -3,6 +3,7 @@
 namespace VeeZions\BuilderEngine\Manager;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Exception\InvalidEntityRepository;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Exception\InvalidArgumentException;
@@ -10,10 +11,14 @@ use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Intl\Locales;
 use Symfony\Component\Routing\Router;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment as TwigEnvironment;
 use VeeZions\BuilderEngine\Constant\AssetConstant;
 use VeeZions\BuilderEngine\Constant\ConfigConstant;
 use VeeZions\BuilderEngine\Entity\BuilderArticle;
@@ -28,34 +33,115 @@ use VeeZions\BuilderEngine\Form\NavigationType;
 use VeeZions\BuilderEngine\Form\PageType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface as Security;
+use VeeZions\BuilderEngine\Constant\TableConstant;
+use VeeZions\BuilderEngine\Trait\AccessTrait;
 
 readonly class FormManager
 {
+    use AccessTrait;
+
     public function __construct(
-        private FormFactory $formFactory,
-        private RequestStack $requestStack,
-        private EntityManagerInterface $entityManager,
-        private Security $security,
-        private TranslatorInterface $translator,
-        private Router $router,
+        protected TwigEnvironment $twig,
+        protected FormFactory $formFactory,
+        protected RequestStack $requestStack,
+        protected EntityManagerInterface $entityManager,
+        protected Security $security,
+        protected TranslatorInterface $translator,
+        protected Router $router,
         private GedManager $gedManager,
         private CmsManager $cmsManager,
         private AssetManager $assetManager,
-        private array $authors,
+        protected array $authors,
         private string $bundleMode,
         private array $libraryLiipFilters,
-        private array $customRoutes
+        protected array $customRoutes,
+        protected TableConstant $constant,
+        protected AuthorizationCheckerInterface $authorizationChecker,
+        protected array $actions,
     )
     {
         
     }
     
-    public function form(string $type, mixed $data = null, ?string $redictionRoute = null): FormView|string
+    protected function provide(string $class, array $twigVars = []): Response
     {
-        if ($this->bundleMode === ConfigConstant::CONFIG_MODE_FORM) {
-            throw new InvalidArgumentException($this::class . '::form() #Argument3 "$redictionRoute" must be set in "'.ConfigConstant::CONFIG_MODE_FORM.'" mode.');
+        $type = $this->typeProvider($class);
+        $data = $this->entityManager->getRepository($class)->paginate(
+            max($this->requestStack->getCurrentRequest()->query->getInt('page', 1), 1),
+            array_keys($this->constant->getColumnsFromTable($class))
+        );
+
+        return new Response($this->twig->render(
+            $this->getTwigTemplate($type, 'index'),
+            array_merge(['data' => $data], $twigVars)
+        ));
+    }
+
+    private function typeProvider(?string $class): string
+    {
+        $type = match ($class) {
+            BuilderArticle::class => ArticleType::class,
+            BuilderPage::class => PageType::class,
+            BuilderCategory::class => CategoryType::class,
+            BuilderNavigation::class => NavigationType::class,
+            BuilderLibrary::class => LibraryType::class,
+            default => null,
+        };
+
+        if (null === $type) {
+            throw new InvalidArgumentException($this::class . '::provide() expects a valid className');
+        }
+
+        return $type;
+    }
+    
+    protected function engine(
+        string $type, 
+        mixed $data = null,
+        array $twigVars = [],
+        ?string $redirectionRoute = null,
+    ): Response
+    {
+        $options = $this->setOptions($type);
+        $data = $this->setData($data, $type);
+        
+        $form = $this->formFactory->create($type, $data, $options);
+        $form->handleRequest($this->requestStack->getCurrentRequest());
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $this->saveData($form);
+            return new RedirectResponse($this->compileRedirectionRoute($redirectionRoute, $type));
+        }
+
+        return new Response($this->twig->render(
+            $this->getTwigTemplate($type, 'new-edit'),
+            array_merge(['form' => $form->createView()], $twigVars)
+        ));
+    }
+    
+    private function getTwigTemplate(string $type, string $action): string
+    {
+        return match ($type) {
+            ArticleType::class => ConfigConstant::CONFIG_SHARED_TEMPLATE_PATH.'/articles/'.$action.'.html.twig',
+            PageType::class => ConfigConstant::CONFIG_SHARED_TEMPLATE_PATH.'/pages/'.$action.'.html.twig',
+            CategoryType::class => ConfigConstant::CONFIG_SHARED_TEMPLATE_PATH.'/categories/'.$action.'.html.twig',
+            NavigationType::class => ConfigConstant::CONFIG_SHARED_TEMPLATE_PATH.'/navigations/'.$action.'.html.twig',
+            LibraryType::class => ConfigConstant::CONFIG_INTERNAL_TEMPLATE_PATH.'/libraries/index.html.twig',
+            default => null,
+        };
+        
+        $formMethod = $type === 'index' ? '::provide()' : '::engine()';
+        
+        if (null === $template) {
+            throw new InvalidArgumentException($this::class . $formMethod . ' expects a valid form type');
         }
         
+        return $template;
+    }
+
+    private function setOptions(string $type): array
+    {
         $options = [];
         $authors = match ($type) {
             ArticleType::class => $this->provideAuthors($this->authors['articles'], 'articles'),
@@ -72,7 +158,12 @@ readonly class FormManager
         if (in_array($type, [ArticleType::class, PageType::class, NavigationType::class, CategoryType::class], true)) {
             $options['locale_fallback'] = $this->requestStack->getCurrentRequest()->getLocale();
         }
-        
+
+        return $options;
+    }
+
+    private function setData(mixed $data, string $type): object
+    {
         if (null === $data) {
             $data = match ($type) {
                 ArticleType::class => new BuilderArticle(),
@@ -83,64 +174,63 @@ readonly class FormManager
                 default => null,
             };
         }
-        
+
         if (null === $data) {
-            throw new InvalidArgumentException($this::class . '::form() expects a valid form type');
-        }
-        
-        $form = $this->formFactory->create($type, $data, $options);
-        $form->handleRequest($this->requestStack->getCurrentRequest());
-        
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $entity = $form->getData();
-            $entity = match (true) {
-                $entity instanceof BuilderNavigation =>
-                $this->prepareNavigationData($form, $entity),
-                $entity instanceof BuilderPage, $entity instanceof BuilderArticle, $entity instanceof BuilderCategory =>
-                $this->prepareCmsEntitiesData($form, $entity),
-                $form instanceof LibraryType => $this->assetManager->upload(
-                    $form->get('file')->getData(),
-                    $this->libraryLiipFilters
-                ),
-            };
-
-            //dd($entity);
-
-            if (!$form instanceof LibraryType) {
-                if ($entity->getId() !== null) {
-                    $this->entityManager->persist($entity);
-                }
-                $this->entityManager->flush();
-                $this->callBackActions($entity);
-            }
-
-            $request = $this->requestStack->getCurrentRequest();
-            $toReload = $request->request->get('vbe_save_and_reload') !== null;
-
-            if ($toReload) {
-                return $request->headers->get('referer');
-            }
-
-            $routeToRedirect = match ($type) {
-                ArticleType::class => $this->customRoutes['articles_routes']['list'],
-                PageType::class => $this->customRoutes['pages_routes']['list'],
-                CategoryType::class => $this->customRoutes['categories_routes']['list'],
-                NavigationType::class => $this->customRoutes['navigations_routes']['list'],
-                LibraryType::class => ConfigConstant::CONFIG_DEFAULT_ROUTES['libraries_routes']['list'],
-                default => null,
-            };
-
-            if (null === $routeToRedirect) {
-                throw new InvalidArgumentException($this::class . '::form() expects a valid redirection route');
-            }
-
-            $routeToRedirect = $redictionRoute ?? $routeToRedirect;
-
-            return $this->router->generate($routeToRedirect);
+            throw new InvalidArgumentException($this::class . '::engine() expects a valid form type');
         }
 
-        return $form->createView();
+        return $data;
+    }
+
+    private function saveData(FormInterface $form): void
+    {
+        $entity = $form->getData();
+        $entity = match (true) {
+            $entity instanceof BuilderNavigation =>
+            $this->prepareNavigationData($form, $entity),
+            $entity instanceof BuilderPage, $entity instanceof BuilderArticle, $entity instanceof BuilderCategory =>
+            $this->prepareCmsEntitiesData($form, $entity),
+            $form instanceof LibraryType => $this->assetManager->upload(
+                $form->get('file')->getData(),
+                $this->libraryLiipFilters
+            ),
+        };
+
+        //dd($entity);
+
+        if (!$form instanceof LibraryType) {
+            if ($entity->getId() !== null) {
+                $this->entityManager->persist($entity);
+            }
+            $this->entityManager->flush();
+            $this->callBackActions($entity);
+        }
+    }
+
+    private function compileRedirectionRoute(?string $redirectionRoute, string $type): string
+    {
+        $request = $this->requestStack->getCurrentRequest();
+
+        if ($request->request->get('vbe_save_and_reload') !== null) {
+            return $request->headers->get('referer');
+        }
+
+        $routeToRedirect = match ($type) {
+            ArticleType::class => $this->customRoutes['articles_routes']['list'],
+            PageType::class => $this->customRoutes['pages_routes']['list'],
+            CategoryType::class => $this->customRoutes['categories_routes']['list'],
+            NavigationType::class => $this->customRoutes['navigations_routes']['list'],
+            LibraryType::class => ConfigConstant::CONFIG_DEFAULT_ROUTES['libraries_routes']['list'],
+            default => null,
+        };
+
+        if (null === $routeToRedirect) {
+            throw new InvalidArgumentException($this::class . '::engine() expects a valid redirection route');
+        }
+
+        return $redirectionRoute ?
+            $this->router->generate($redirectionRoute) : 
+            $this->router->generate($routeToRedirect);
     }
     
     private function provideAuthors(array $authors, string $type): ?array
@@ -228,6 +318,10 @@ readonly class FormManager
     
     public function translateCrudTitle(string $entity, string $type): string
     {
+        if ($entity === 'libraries' && $type === 'index') {
+            return $this->translator->trans('form.media.library', [], 'BuilderEngineBundle-forms');
+        }
+        
         return $this->translator->trans(
             'form.title.'.$type,
             ['%entity%' => $this->translator->trans(
@@ -282,5 +376,60 @@ readonly class FormManager
         }
 
         return $entity;
+    }
+
+    protected function checkIfEntityExists(?object $data = null, ?string $class = null): void
+    {
+        if (null === $data) {
+            $entity = match ($class) {
+                BuilderArticle::class => 'article',
+                BuilderCategory::class => 'category',
+                BuilderPage::class => 'page',
+                BuilderNavigation::class => 'navigation',
+                default => 'entity',
+            };
+
+            throw new InvalidEntityRepository(
+                $this->translator->trans('error.'.$entity.'.not.found', [], 'BuilderEngineBundle-errors')
+            );
+        }
+    }
+    
+    protected function remove(?object $data = null): Response
+    {
+        $this->checkIfEntityExists($data);
+        
+        $this->entityManager->remove($data);
+        $this->entityManager->flush();
+
+        $routeToRedirect = match ($type) {
+            BuilderArticle::class => $this->customRoutes['articles_routes']['list'],
+            BuilderPage::class => $this->customRoutes['pages_routes']['list'],
+            BuilderCategory::class => $this->customRoutes['categories_routes']['list'],
+            BuilderNavigation::class => $this->customRoutes['navigations_routes']['list'],
+            BuilderLibrary::class => ConfigConstant::CONFIG_DEFAULT_ROUTES['libraries_routes']['list'],
+            default => null,
+        };
+        
+        if (null === $routeToRedirect) {
+            throw new InvalidArgumentException($this::class . '::remove() expects a valid redirection route');
+        }
+        
+        return new RedirectResponse($this->router->generate($routeToRedirect));
+    }
+    
+    protected function checkPermissions(): void
+    {
+        $currentRoute = $this->requestStack->getCurrentRequest()->attributes->get('_route');
+
+        foreach ($this->customRoutes as $entity => $routes) {
+            foreach ($routes as $action => $route) {
+
+                if ($currentRoute === $route) {
+                    $index = str_replace('_routes', '' ,$entity);
+                    $this->isGranted($this->actions[$index][$action]['roles']);
+                }
+            }
+        }
     }
 }

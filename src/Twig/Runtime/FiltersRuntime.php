@@ -6,11 +6,13 @@ use DateTimeInterface;
 use Symfony\Component\Form\FormView;
 use Twig\Extension\RuntimeExtensionInterface;
 use Twig\Markup;
+use VeeZions\BuilderEngine\Constant\ConfigConstant;
 use VeeZions\BuilderEngine\Entity\BuilderArticle;
 use VeeZions\BuilderEngine\Entity\BuilderCategory;
 use VeeZions\BuilderEngine\Entity\BuilderLibrary;
 use VeeZions\BuilderEngine\Entity\BuilderNavigation;
 use VeeZions\BuilderEngine\Entity\BuilderPage;
+use VeeZions\BuilderEngine\Manager\FormManager;
 use VeeZions\BuilderEngine\Manager\HtmlManager;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Knp\Component\Pager\Pagination\PaginationInterface;
@@ -21,6 +23,8 @@ final class FiltersRuntime implements RuntimeExtensionInterface
     public function __construct(
         private HtmlManager $htmlManager,
         private RequestStack $requestStack,
+        private FormManager $formManager,
+        private array $customRoutes
     )
     {
         
@@ -109,5 +113,40 @@ final class FiltersRuntime implements RuntimeExtensionInterface
         }
 
         return new Markup($this->htmlManager->buildActions($entity), 'UTF-8');
+    }
+
+    public function getPageTitle(): ?string
+    {
+        $route = $this->requestStack->getCurrentRequest()->attributes->get('_route');
+        if ($route === ConfigConstant::CONFIG_DEFAULT_ROUTES['libraries_routes']['list']) {
+            return $this->formManager->translateCrudTitle('libraries', 'index');
+        }
+        $entity = null;
+        $controller = null;
+        foreach ($this->customRoutes as $type => $list) {
+            foreach ($list as $action => $customRoute) {
+                if ($route === $customRoute) {
+                    $controller = $action === 'list' ? 'index' : $action;
+                    $entity = str_replace('_routes', '', $type);
+                    
+                    if ($controller !== 'index') {
+                        $entity = match ($entity) {
+                            'articles' => 'article',
+                            'pages' => 'page',
+                            'categories' => 'category',
+                            'navigations' => 'navigation',
+                            'libraries' => 'library',
+                            default => null,
+                        };
+                    }
+                }
+            }
+        }
+
+        if (null === $entity || null === $controller) {
+            return null;
+        }
+
+        return $this->formManager->translateCrudTitle($entity, $controller);
     }
 }

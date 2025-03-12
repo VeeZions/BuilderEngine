@@ -1,0 +1,124 @@
+{% import 'macros/svg.html.twig' as icons %}
+{% if data.items is not empty %}
+    <div class="w-full flex items-center justify-between pb-4">
+        <div class="flex items-center justify-center w-auto">
+            <twig:Cta
+                text="{{ 'saas.media.label.delete.all'|trans({}, 'saas') }}"
+                type="button"
+                style="default"
+                width="full"
+                controller="saas--media"
+                stimulus_target="deleteBtn"
+                disabled="{{ true }}"
+            />
+        </div>
+        <p data-saas--media-target="counter" class="erp-text-secondary text-xs px-2 py-1 rounded-md bg-white border border-gray-300">
+            {{ 'saas.media.label.total'|trans({}, 'saas') }} : <span>{{ data.items|length }}/<b>{{ data.getTotalItemCount }}</b></span>
+        </p>
+    </div>
+    <div
+        class="gap-4 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8"
+        data-saas--media-target="info"
+        data-total="{{ data.getTotalItemCount }}"
+        data-page="{{ data.getCurrentPageNumber }}"
+    >
+        {% for media in data.items %}
+            <div class="flex flex-col items-center justify-center relative cursor-pointer">
+                {% set extension = media.url|file_extension %}
+                <p class="absolute z-10 top-2 left-2 px-2 border border-gray-300 py-1 rounded shadow text-xs font-lato_bold text-white bg-[{{ extension.color }}]">{{ extension.ext }}</p>
+                {% if media.type.value is same as enum('App\\Constant\\GedTypeEnum').IMAGE.value %}
+                    <div
+                        class="flex items-center justify-center w-full min-h-20 bg-cover bg-center bg-no-repeat bg-gray-100 border border-gray-300 rounded-md media-grid-item cursor-pointer relative"
+                        style="background-image: url({{ media.url|imagine_filter(constant('App\\Constant\\AssetManagerConstant::THUMBNAILS')) }});"
+                        data-saas--media-target="items"
+                    >
+                        <span class="absolute z-10 bottom-2 left-2 bg-white size-[30px] p-1 rounded-[5px] shadow flex items-center border border-gray-300 cursor-pointer justify-center" data-saas--media-target="edit" data-id="{{ media.id }}">
+                            {{ icons.crud_icon('edit', 'medium', 'text-cyan-700') }}
+                        </span>
+                        <span class="bg-white rounded-[5px] absolute z-10 right-2 bottom-2">
+                            <twig:Checkbox
+                                name="media_items[]"
+                                value="{{ media.id }}"
+                                label="{{ null }}"
+                            />
+                        </span>
+                    </div>
+                {% elseif media.type.value is same as enum('App\\Constant\\GedTypeEnum').VIDEO.value %}
+                    <div
+                        class="flex items-center justify-center min-h-20 bg-gray-100 border border-gray-300 rounded-md media-grid-item w-full cursor-pointer relative"
+                        data-saas--media-target="items"
+                    >
+                        <span class="flex items-center justify-center w-full h-full overflow-hidden">
+                            {{ icons.ged(enum('App\\Constant\\GedTypeEnum').VIDEO.value, 'text-cyan-700') }}
+                        </span>
+                        <span class="absolute z-10 bottom-2 left-2 bg-white size-[30px] p-1 rounded-[5px] shadow flex items-center border border-gray-300 cursor-pointer justify-center" data-saas--media-target="edit" data-id="{{ media.id }}">
+                            {{ icons.crud_icon('edit', 'medium', 'text-cyan-700') }}
+                        </span>
+                        <span class="bg-white rounded-[5px] absolute z-10 right-2 bottom-2">
+                            <twig:Checkbox
+                                name="media_items[]"
+                                value="{{ media.id }}"
+                                label="{{ null }}"
+                            />
+                        </span>
+                    </div>
+                {% elseif media.type.value is same as enum('App\\Constant\\GedTypeEnum').DOCUMENT.value %}
+                    <div
+                        class="flex items-center justify-center min-h-20 bg-gray-100 border border-gray-300 rounded-md media-grid-item w-full cursor-pointer relative"
+                        data-saas--media-target="items"
+                    >
+                        <span class="flex items-center justify-center w-full h-full overflow-hidden">
+                            {{ icons.ged(enum('App\\Constant\\GedTypeEnum').DOCUMENT.value, 'text-cyan-700') }}
+                        </span>
+                        <span class="absolute z-10 bottom-2 left-2 bg-white size-[30px] p-1 rounded-[5px] shadow flex items-center border border-gray-300 cursor-pointer justify-center" data-saas--media-target="edit" data-id="{{ media.id }}">
+                            {{ icons.crud_icon('edit', 'medium', 'text-cyan-700') }}
+                        </span>
+                        <span class="bg-white rounded-[5px] absolute z-10 right-2 bottom-2">
+                            <twig:Checkbox
+                                name="media_items[]"
+                                value="{{ media.id }}"
+                                label="{{ null }}"
+                            />
+                        </span>
+                    </div>
+                {% else %}
+                    <div
+                        class="flex items-center justify-center min-h-20 bg-gray-100 border border-gray-300 rounded-md media-grid-item w-full cursor-pointer relative"
+                        data-saas--media-target="items"
+                    >
+                        <span class="flex items-center justify-center w-full h-full overflow-hidden">
+                            {{ icons.ged(enum('App\\Constant\\GedTypeEnum').UNKNOWN.value, 'text-cyan-700') }}
+                        </span>
+                        <span class="absolute z-10 bottom-2 left-2 bg-white size-[30px] p-1 rounded-[5px] shadow flex items-center border border-gray-300 cursor-pointer justify-center" data-saas--media-target="edit" data-id="{{ media.id }}">
+                            {{ icons.crud_icon('edit', 'medium', 'text-cyan-700') }}
+                        </span>
+                        <span class="bg-white rounded-[5px] absolute z-10 right-2 bottom-2">
+                            <twig:Checkbox
+                                name="media_items[]"
+                                value="{{ media.id }}"
+                                label="{{ null }}"
+                            />
+                        </span>
+                    </div>
+                {% endif %}
+                <p class="w-full truncate text-center text-xs mt-1 erp-text-secondary">{{ media.title }}</p>
+            </div>
+        {% endfor %}
+    </div>
+    {% if data.items|length < data.getTotalItemCount %}
+        <div class="flex items-center justify-center w-max mt-8 mx-auto">
+            <twig:Cta
+                text="{{ 'saas.media.label.load.more'|trans({}, 'saas') }}"
+                type="button"
+                style="default"
+                width="full"
+                controller="saas--media"
+                stimulus_target="loadMore"
+            />
+        </div>
+    {% endif %}
+{% else %}
+    <p class="w-full text-center text-sm italic erp-text-primary">
+        {{ 'saas.media.label.no.media'|trans({}, 'saas') }}
+    </p>
+{% endif %}

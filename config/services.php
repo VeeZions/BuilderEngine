@@ -14,6 +14,7 @@ use VeeZions\BuilderEngine\Constant\Crud\NavigationConstant;
 use VeeZions\BuilderEngine\Constant\Crud\PageConstant;
 use VeeZions\BuilderEngine\Manager\HtmlManager;
 use VeeZions\BuilderEngine\Constant\TableConstant;
+use VeeZions\BuilderEngine\Manager\EngineManager;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\abstract_arg;
 
@@ -36,6 +37,7 @@ return static function (ContainerConfigurator $container) {
     $services
         ->set('veezions_builder_engine.form_manager', FormManager::class)
         ->args([
+            service('twig'),
             service('form.factory'),
             service('request_stack'),
             service('doctrine.orm.entity_manager'),
@@ -49,6 +51,9 @@ return static function (ContainerConfigurator $container) {
             abstract_arg('Bundle mode'),
             abstract_arg('Get liipImagine filter sets'),
             abstract_arg('Get config.custom_routes'),
+            service('veezions_builder_engine.table_constant'),
+            service('security.authorization_checker'),
+            abstract_arg('Get config.actions'),
         ])
     ;
     
@@ -111,4 +116,22 @@ return static function (ContainerConfigurator $container) {
     ;
 
     $services->set('veezions_builder_engine.table_constant', TableConstant::class);
+
+    $services
+        ->set('veezions_builder_engine.engine_manager', EngineManager::class)
+        ->args([
+            service('twig'),
+            service('form.factory'),
+            service('request_stack'),
+            service('doctrine.orm.entity_manager'),
+            service('security.token_storage'),
+            service('translator'),
+            service('router'),
+            abstract_arg('Authors provider'),
+            abstract_arg('Get config.custom_routes'),
+            service('veezions_builder_engine.table_constant'),
+            service('security.authorization_checker'),
+            abstract_arg('Get config.actions'),
+        ])
+    ;
 };

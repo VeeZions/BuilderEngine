@@ -1,12 +1,12 @@
 {% extends builder_engine.extended_template %}
 
-{% block title %}{{ title }}{% endblock %}
+{% block title %}{{ vbe_title() }}{% endblock %}
 
 {% block body %}
 
     <div class="vbe-container" id="{{ vbe_container_id() }}">
 
-        <h1 class="vbe-heading vbe-h1">{{ title }}</h1>
+        <h1 class="vbe-heading vbe-h1">{{ vbe_title() }}</h1>
 
         {{ vbe_build_render(data) }}
 

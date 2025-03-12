@@ -22,14 +22,14 @@ class LibraryType extends AbstractType
             ->add('file', FileType::class, [
                 'label' => 'form.label.libraries.upload',
                 'label_attr' => [
-                    'class' => 'erp-link underline cursor-pointer',
+                    'class' => 'vbe-link underline cursor-pointer',
                 ],
                 'translation_domain' => 'BuilderEngineBundle-forms',
                 'mapped' => false,
                 'attr' => [
                     'accept' => implode(',', $accepted),
-                    'style' => 'display:none',
-                    'data-saas--media-target' => 'input',
+                    'style' => 'display:none;',
+                    'data-veezions--builder-engine-bundle--veezions-builder-engine-bundle-media-target' => 'input',
                 ],
                 'help' => 'form.label.libraries.help',
                 'help_translation_parameters' => [],

@@ -1,0 +1,163 @@
+{% import 'macros/svg.html.twig' as icons %}
+<div class="flex items-center justify-center w-full h-full top-0 left-0 fixed z-[999999] bg-white/30" data-saas--media-target="modal">
+    <div class="erp-card p-2 sm:p-4 flex flex-wrap justify-center items-stretch w-[90%] sm:w-[85%] h-[95%] sm:h-[75%] border border-gray-300 shadow-md relative">
+        <span class="absolute z-10 top-2 right-2 sm:top-4 sm:right-4 flex items-center justify-center cursor-pointer bg-white rounded-full" data-saas--media-target="close">
+            {{ icons.crud_icon('close', 'medium', 'erp-link') }}
+        </span>
+        <div class="flex flex-col items-center justify-center h-1/2 w-full sm:h-full sm:w-1/2 pb-2 sm:pb-0 sm:pr-2">
+            {% if media.type.value is same as enum('App\\Constant\\GedTypeEnum').IMAGE.value %}
+                <img
+                    class="w-auto max-w-full h-auto max-h-full"
+                    src="{{ media.url|imagine_filter(constant('App\\Constant\\AssetManagerConstant::LOW_QUALITY')) }}"
+                    alt="{{ media.title }}"
+                >
+            {% elseif media.type.value is same as enum('App\\Constant\\GedTypeEnum').VIDEO.value %}
+                <video class="w-full" src="{{ s3(media.url) }}" controls></video>
+            {% elseif media.type.value is same as enum('App\\Constant\\GedTypeEnum').DOCUMENT.value %}
+                <span class="flex items-center justify-center w-full h-full overflow-hidden">
+                    {{ icons.ged(enum('App\\Constant\\GedTypeEnum').DOCUMENT.value, 'text-cyan-700') }}
+                </span>
+            {% elseif media.type.value is same as enum('App\\Constant\\GedTypeEnum').UNKNOWN.value %}
+                <span class="flex items-center justify-center w-full h-full overflow-hidden">
+                    {{ icons.ged(enum('App\\Constant\\GedTypeEnum').UNKNOWN.value, 'text-cyan-700') }}
+                </span>
+            {% endif %}
+        </div>
+        <div class="flex flex-col items-start justify-start w-full h-1/2 sm:h-full sm:w-1/2 pt-2 sm:pt-0 sm:pl-2 erp-scroller overflow-x-hidden overflow-y-auto">
+            <h3 class="erp-text-secondary text-lg font-lato_bold">{{ 'saas.media.modal.title'|trans({}, 'saas') }}</h3>
+            <ul class="my-4 mx-0 p-0 w-full">
+                <li class="w-full text-xs erp-text-secondary truncate mb-1"><b class="erp-text-primary">{{ 'saas.media.modal.label.size'|trans({}, 'saas') }}:</b> {{ media.size|humanize_size }}</li>
+                {% if media.width is not null and media.height is not null %}
+                    <li class="w-full text-xs erp-text-secondary truncate mb-1"><b class="erp-text-primary">{{ 'saas.media.modal.label.dimensions'|trans({}, 'saas') }}:</b> {{ media.width }} x {{ media.height }}</li>
+                {% endif %}
+                <li class="w-full text-xs erp-text-secondary truncate mb-1"><b class="erp-text-primary">{{ 'saas.media.modal.label.date'|trans({}, 'saas') }}:</b> {{ media.createdAt|format_datetime('full', 'short')|capitalize }}</li>
+                <li class="w-full text-xs erp-text-secondary truncate mb-1"><b class="erp-text-primary">{{ 'saas.media.modal.label.mime'|trans({}, 'saas') }}:</b> {{ media.mime }}</li>
+                <li class="w-full text-xs erp-text-secondary truncate"><b class="erp-text-primary">{{ 'saas.media.modal.label.url'|trans({}, 'saas') }}:</b> <a href="{{ s3(media.url )}}" target="_blank" download="{{ media.title }}">{{ s3(media.url )}}</a></li>
+            </ul>
+            <div class="w-full px-2 pb-4 pt-2 sm:px-4 rounded-md bg-gray-100 border border-gray-300 flex flex-col items-start justify-start">
+                <div class="w-full">
+                    <input type="hidden" name="media_modal_id" value="{{ media.id }}">
+                    <twig:Input
+                        name="media_modal_title"
+                        type="text"
+                        value="{{ media.title }}"
+                        autocomplete="media_modal_title"
+                        label="{{ 'saas.media.modal.label.title'|trans({}, 'saas') }}"
+                    />
+                </div>
+                <div class="w-full mt-4">
+                    <twig:Input
+                        name="media_modal_legend"
+                        type="text"
+                        value="{{ media.legend }}"
+                        autocomplete="media_modal_legend"
+                        label="{{ 'saas.media.modal.label.legend'|trans({}, 'saas') }}"
+                    />
+                </div>
+                <div class="w-full flex items-center justify-center sm:justify-end mt-4">
+                    <twig:Cta
+                        text="{{ 'saas.cms.navigation.save'|trans({}, 'saas') }}"
+                        type="button"
+                        style="default"
+                        width="full sm:w-max"
+                        controller="saas--media"
+                        stimulus_target="save"
+                    />
+                </div>
+            </div>
+            <h3 class="erp-text-secondary text-lg font-lato_bold mt-6 mb-4">{{ 'saas.media.modal.used'|trans({}, 'saas') }}</h3>
+            {% set articles = iterator_to_array(media.article) %}
+            {% set categories = iterator_to_array(media.category) %}
+            {% set pages = iterator_to_array(media.page) %}
+            {% set elements = iterator_to_array(media.elements) %}
+            {% if articles|length < 1 and categories|length < 1 and pages|length < 1 and elements|length < 1 %}
+                <i class="erp-text-primary text-sm mt-2">{{ 'saas.media.modal.no.use'|trans({}, 'saas') }}</i>
+            {% elseif articles|length > 0 %}
+                <p class="text-xs font-lato_bold">
+                    {{ articles|length > 1
+                    ? 'saas.media.modal.label.count.entities'|trans({'%nb%': articles|length, '%entity%': 'saas.media.modal.label.articles'|trans({}, 'saas')}, 'saas')
+                    : 'saas.media.modal.label.count.entities'|trans({'%nb%': 1, '%entity%': 'saas.media.modal.label.article'|trans({}, 'saas')}, 'saas')
+                    }}:
+                </p>
+                <ul class="w-full mt-2 mx-0 mb-4 py-0 pr-0 pl-2">
+                    {% for article in articles %}
+                        <li class="flex items-center justify-start truncate w-full">
+                            <a
+                                class="erp-text-secondary text-xs"
+                                href="{{ path('app_web_blog_article', {category: app.request.getLocale() is same as 'fr' ? article.category.slugFr : article.category.slugEn, article: app.request.getLocale() is same as 'fr' ? article.slugFr : article.slugEn}) }}"
+                                target="_blank"
+                            >
+                                - {{ app.request.getLocale() is same as 'fr' ? article.titleFr : article.titleEn }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% elseif categories|length > 0 %}
+                <p class="text-xs font-lato_bold">
+                    {{ categories|length > 1
+                    ? 'saas.media.modal.label.count.entities'|trans({'%nb%': categories|length, '%entity%': 'saas.media.modal.label.categories'|trans({}, 'saas')}, 'saas')
+                    : 'saas.media.modal.label.count.entities'|trans({'%nb%': 1, '%entity%': 'saas.media.modal.label.category'|trans({}, 'saas')}, 'saas')
+                    }}:
+                </p>
+                <ul class="w-full mt-2 mx-0 mb-4 py-0 pr-0 pl-2">
+                    {% for category in categories %}
+                        <li class="flex items-center justify-start truncate w-full">
+                            <a
+                                class="erp-text-secondary text-xs"
+                                href="{{ path('app_web_blog_category', {category: app.request.getLocale() is same as 'fr' ? category.slugFr : category.slugEn}) }}"
+                                target="_blank"
+                            >
+                                - {{ app.request.getLocale() is same as 'fr' ? category.titleFr : category.titleEn }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% elseif pages|length > 0 %}
+                <p class="text-xs font-lato_bold">
+                    {{ pages|length > 1
+                    ? 'saas.media.modal.label.count.entities'|trans({'%nb%': pages|length, '%entity%': 'saas.media.modal.label.pages'|trans({}, 'saas')}, 'saas')
+                    : 'saas.media.modal.label.count.entities'|trans({'%nb%': 1, '%entity%': 'saas.media.modal.label.page'|trans({}, 'saas')}, 'saas')
+                    }}:
+                </p>
+                <ul class="w-full mt-2 mx-0 mb-4 py-0 pr-0 pl-2">
+                    {% for page in pages %}
+                        <li class="flex items-center justify-start truncate w-full">
+                            <a
+                                class="erp-text-secondary text-xs"
+                                href="{{ path(page.route) }}"
+                                target="_blank"
+                            >
+                                - {{ app.request.getLocale() is same as 'fr' ? page.titleFr : page.titleEn }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% elseif elements|length > 0 %}
+                <p class="text-xs font-lato_bold">
+                    {{ elements|get_real_elements_length > 1
+                    ? 'saas.media.modal.label.count.entities'|trans({'%nb%': elements|get_real_elements_length, '%entity%': 'saas.media.modal.label.elements'|trans({}, 'saas')}, 'saas')
+                    : 'saas.media.modal.label.count.entities'|trans({'%nb%': 1, '%entity%': 'saas.media.modal.label.element'|trans({}, 'saas')}, 'saas')
+                    }}:
+                </p>
+                <ul class="w-full mt-2 mx-0 mb-4 py-0 pr-0 pl-2">
+                    {% for element in elements %}
+                        <li class="flex flex-col items-start justify-start truncate w-full">
+                            <a
+                                class="erp-text-secondary text-xs"
+                                href="{{ path(element.page.route) }}"
+                                target="_blank"
+                            >
+                                - {{ app.request.getLocale() is same as 'fr' ? element.page.titleFr : element.page.titleEn }}
+                            </a>
+                            <ul class="m-0 py-0 pr-0 pl-2 w-full">
+                                {% for elmt in element.page|get_all_elements_from_page %}
+                                    <li class="text-xs italic erp-text-primary">- {{ elmt }}</li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+</div>

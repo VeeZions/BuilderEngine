@@ -125,6 +125,10 @@
         <source>form.btn.back.list</source>
         <target>Retour à la liste</target>
       </trans-unit>
+      <trans-unit id="form.media.library" resname="form.media.library">
+        <source>form.media.library</source>
+        <target>Médiathèque</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

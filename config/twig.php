@@ -32,6 +32,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->args([
             service('veezions_builder_engine.html_manager'),
             service('request_stack'),
+            service('veezions_builder_engine.form_manager'),
+            abstract_arg('Get config.custom_routes'),
         ])
         ->tag('twig.runtime')
     ;
