@@ -81,7 +81,16 @@ readonly class HtmlManager
             $id = $row['id'];
             array_shift($row); // remove ID column from $row
             $r = [
-                'cells' => array_values($row),
+                'cells' => (function() use ($row) {
+                    $cells = [];
+                    foreach ($row as $key => $value) {
+                        $cells[] = [
+                            'label' => $key,
+                            'value' => $value,
+                        ];
+                    }
+                    return $cells;
+                })(),
                 'actions' => $this->setActions($id),
             ];
             return $r;

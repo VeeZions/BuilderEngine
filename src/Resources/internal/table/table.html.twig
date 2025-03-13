@@ -5,29 +5,30 @@
                 {% for tab in head %}
                     {% if tab.column|vbe_is_sortable %}
                         <th class="vbe-table-heading{% if data.isSorted(tab.column) %} sorted{% else %} unsorted{% endif %}">
-                            {{ knp_pagination_sortable(data, tab.label, tab.column) }}
+                            <p>{{ knp_pagination_sortable(data, tab.label, tab.column) }}</p>
                         </th>
                     {% else %}
-                        <th class="vbe-table-heading">{{ tab.label }}</th>
+                        <th class="vbe-table-heading"><p>{{ tab.label }}</p></th>
                     {% endif %}
                 {% endfor %}
                 <th class="vbe-table-heading">{{ 'vbe.tab.actions'|trans({}, 'BuilderEngineBundle-table') }}</th>
             </tr>
         </thead>
         <tbody>
+            {% set flags = vbe_flags() %}
             {% for row in rows %}
                 <tr class="vbe-table-row">
                     {% for cell in row.cells %}
-                        <td class="vbe-table-cell">{{ cell|vbe_value_mutator }}</td>
+                        <td class="vbe-table-cell"><p>{{ cell|vbe_value_mutator(flags) }}</p></td>
                     {% endfor %}
                     <td class="vbe-table-cell">
-                        <div class="vbe-actions-wrapper">
+                        <p class="vbe-actions-wrapper">
                             {% for action in row.actions %}
                                 <a href="{{ action.url }}" class="vbe-action-btn {{ action.class }}"{% if action.onclick is not null %} onclick="{{ action.onclick }}"{% endif %}>
                                     {{ action.label|trans({}, 'BuilderEngineBundle-table') }}
                                 </a>
                             {% endfor %}
-                        </div>
+                        </p>
                     </td>
                 </tr>
             {% else %}

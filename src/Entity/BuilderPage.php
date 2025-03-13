@@ -9,6 +9,7 @@ use Gedmo\Mapping\Annotation\Slug;
 use Gedmo\Mapping\Annotation\Timestampable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use VeeZions\BuilderEngine\Repository\BuilderPageRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[UniqueEntity(fields: ['route'])]
 #[ORM\Entity(repositoryClass: BuilderPageRepository::class)]

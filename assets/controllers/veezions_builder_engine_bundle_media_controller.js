@@ -25,7 +25,6 @@ export default class extends Controller {
     maxFileSize = 0;
 
     connect() {
-        console.log('wesh')
         this.itemsPerLoad = parseInt(this.element.dataset.perload);
         this.maxFileSize = parseInt(this.element.dataset.maxfilesize);
         this.setCounter();
@@ -67,7 +66,6 @@ export default class extends Controller {
     }
 
     inputTargetConnected(input) {
-        console.log('toto')
         input.oninput = (e) => {
             const files = e.currentTarget.files;
 

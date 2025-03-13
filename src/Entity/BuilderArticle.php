@@ -9,6 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Gedmo\Mapping\Annotation\Timestampable;
 use VeeZions\BuilderEngine\Repository\BuilderArticleRepository;
 use Gedmo\Mapping\Annotation\Slug;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: BuilderArticleRepository::class)]
 class BuilderArticle

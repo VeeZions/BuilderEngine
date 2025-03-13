@@ -4,7 +4,7 @@ namespace VeeZions\BuilderEngine\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\InvalidConfigurationException;
-use Symfony\Component\Form\Extension\Core\Type\LocaleType;
+use VeeZions\BuilderEngine\Form\Type\LocaleType;
 use VeeZions\BuilderEngine\Form\Type\SeoType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

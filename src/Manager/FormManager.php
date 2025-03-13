@@ -4,8 +4,6 @@ namespace VeeZions\BuilderEngine\Manager;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\InvalidEntityRepository;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Exception\InvalidArgumentException;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormView;
@@ -35,6 +33,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface as Security;
 use VeeZions\BuilderEngine\Constant\TableConstant;
 use VeeZions\BuilderEngine\Trait\AccessTrait;
+use VeeZions\BuilderEngine\Provider\LocaleProvider;
 
 readonly class FormManager
 {
@@ -58,6 +57,7 @@ readonly class FormManager
         protected TableConstant $constant,
         protected AuthorizationCheckerInterface $authorizationChecker,
         protected array $actions,
+        protected LocaleProvider $localeProvider,
     )
     {
         
@@ -196,8 +196,6 @@ readonly class FormManager
             ),
         };
 
-        //dd($entity);
-
         if (!$form instanceof LibraryType) {
             if ($entity->getId() !== null) {
                 $this->entityManager->persist($entity);
@@ -287,33 +285,7 @@ readonly class FormManager
 
     public function getAvailableLocales(): array
     {
-        $flagsFolder = __DIR__.'/../../assets/media/flags';
-        $filesystem = new Filesystem();
-
-        if ($filesystem->exists($flagsFolder)) {
-            $finder = new Finder();
-            $files = $finder->files()->in($flagsFolder);
-            $locales = [];
-
-            foreach ($files as $file) {
-                $locale = $file->getBasename('.png');
-
-                if (strlen($locale) === 2
-                    && isset(ConfigConstant::CONFIG_LOCALES[strtolower($locale)])
-                    && Countries::exists($locale))
-                {
-                    $locales[$locale] = [
-                        'alpha2' => $locale,
-                        'name' => Countries::getName($locale),
-                        'flag' => base64_encode($flagsFolder.'/'.$file->getBasename()),
-                        'locale' => ConfigConstant::CONFIG_LOCALES[strtolower($locale)],
-                    ];
-                }
-            }
-        }
-        ksort($locales);
-
-        return $locales;
+        return $this->localeProvider->getList(false);
     }
     
     public function translateCrudTitle(string $entity, string $type): string
@@ -431,5 +403,15 @@ readonly class FormManager
                 }
             }
         }
+    }
+
+    public function getFlagFromLocale(string $locale, array $flags): ?string
+    {
+        if (isset($flags[$locale])) {
+            $data = $flags[$locale];
+            return sprintf('<span title="%s">%s</span>', $data['language'], $data['flag']);
+        }
+
+        return null;
     }
 }

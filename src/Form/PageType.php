@@ -13,7 +13,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use VeeZions\BuilderEngine\Entity\BuilderPage;
-use Symfony\Component\Form\Extension\Core\Type\LocaleType;
+use VeeZions\BuilderEngine\Form\Type\LocaleType;
 use Symfony\Component\Form\Event\PostSubmitEvent as FormEvent;
 
 class PageType extends AbstractType

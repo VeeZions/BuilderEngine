@@ -15,6 +15,8 @@ use VeeZions\BuilderEngine\Constant\Crud\PageConstant;
 use VeeZions\BuilderEngine\Manager\HtmlManager;
 use VeeZions\BuilderEngine\Constant\TableConstant;
 use VeeZions\BuilderEngine\Manager\EngineManager;
+use VeeZions\BuilderEngine\Provider\LocaleProvider;
+use VeeZions\BuilderEngine\Form\Type\LocaleType;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\abstract_arg;
 
@@ -54,6 +56,7 @@ return static function (ContainerConfigurator $container) {
             service('veezions_builder_engine.table_constant'),
             service('security.authorization_checker'),
             abstract_arg('Get config.actions'),
+            service('veezions_builder_engine.locale_provider'),
         ])
     ;
     
@@ -134,4 +137,6 @@ return static function (ContainerConfigurator $container) {
             abstract_arg('Get config.actions'),
         ])
     ;
+
+    $services->set('veezions_builder_engine.locale_provider', LocaleProvider::class);
 };

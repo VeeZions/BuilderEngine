@@ -17,6 +17,7 @@ use VeeZions\BuilderEngine\Manager\HtmlManager;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Carbon\Carbon;
+use Symfony\Component\Intl\Locales;
 
 final class FiltersRuntime implements RuntimeExtensionInterface
 {
@@ -77,15 +78,28 @@ final class FiltersRuntime implements RuntimeExtensionInterface
         return new Markup($this->htmlManager->buildCreate($data), 'UTF-8');
     }
 
-    public function valueMutator(mixed $value): ?string
+    public function valueMutator(array $cell, array $flags): ?Markup
     {
+        $value = $cell['value'];
+
+        if ($cell['label'] === 'locale') {
+            $flag = $this->formManager->getFlagFromLocale($value, $flags);
+            return new Markup($flag, 'UTF-8');
+        }
+
         if ($value instanceof DateTimeInterface) {
             Carbon::setLocale($this->requestStack->getCurrentRequest()->getLocale());
-            return Carbon::parse($value)->isoFormat('lll');
+            return new Markup(Carbon::parse($value)->isoFormat('lll'), 'UTF-8');
+        }
+
+        if (is_bool($value)) {
+            return new Markup($value
+                ? '<svg width="16" class="vbe-boolean-table-icons vbe-booleans-true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-111 111-47-47c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l64 64c9.4 9.4 24.6 9.4 33.9 0L369 209z"/></svg>'
+                : '<svg width="16" class="vbe-boolean-table-icons vbe-booleans-false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c-9.4 9.4-9.4 24.6 0 33.9l47 47-47 47c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l47-47 47 47c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-47-47 47-47c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-47 47-47-47c-9.4-9.4-24.6-9.4-33.9 0z"/></svg>', 'UTF-8');
         }
 
         if (is_scalar($value)) {
-            return (string) $value;
+            return new Markup((string) $value, 'UTF-8');
         }
 
         return null;
@@ -128,7 +142,7 @@ final class FiltersRuntime implements RuntimeExtensionInterface
                 if ($route === $customRoute) {
                     $controller = $action === 'list' ? 'index' : $action;
                     $entity = str_replace('_routes', '', $type);
-                    
+
                     if ($controller !== 'index') {
                         $entity = match ($entity) {
                             'articles' => 'article',
@@ -148,5 +162,10 @@ final class FiltersRuntime implements RuntimeExtensionInterface
         }
 
         return $this->formManager->translateCrudTitle($entity, $controller);
+    }
+
+    public function getFlags(): array
+    {
+        return $this->formManager->getAvailableLocales();
     }
 }
