@@ -67,11 +67,16 @@ class ArticleType extends AbstractType
         ;
 
         if ($options['authors'] !== null && !empty($options['authors'])) {
+            $choices = [];
+            foreach ($options['authors'] as $author) {
+                $choices[$author['label']] = $author['id'];
+            }
             $builder
                 ->add('author', ChoiceType::class, [
                     'label' => 'form.label.author',
                     'translation_domain' => 'BuilderEngineBundle-forms',
                     'required' => true,
+                    'choices' => $choices
                 ])
             ;
         }
@@ -91,12 +96,12 @@ class ArticleType extends AbstractType
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($options) {
                 if ($options['authors'] !== null && !empty($options['authors'])) {
                     $data = $event->getData();
+                    $form = $event->getForm()->getData();
                     if ($data->getCreatedAt() === null) {
-                        $data->setCreatedBy($options['user_id']);
+                        $form->setCreatedBy($options['user_id']);
                     } else {
-                        $data->setUpdatedBy($options['user_id']);
+                        $form->setUpdatedBy($options['user_id']);
                     }
-                    $event->setData($data);
                 }
             })
         ;

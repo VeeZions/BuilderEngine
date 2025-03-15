@@ -64,6 +64,9 @@ class BuilderPage
     #[ORM\Column]
     private bool $published = false;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $author = null;
+
     /**
      * @var Collection<int, BuilderElement>
      */
@@ -229,6 +232,18 @@ class BuilderPage
     public function setPublished(bool $published): static
     {
         $this->published = $published;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?int
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?int $author): static
+    {
+        $this->author = $author;
 
         return $this;
     }

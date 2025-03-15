@@ -32,6 +32,7 @@ use VeeZions\BuilderEngine\Form\PageType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface as Security;
 use VeeZions\BuilderEngine\Constant\TableConstant;
+use VeeZions\BuilderEngine\Provider\AuthorProvider;
 use VeeZions\BuilderEngine\Trait\AccessTrait;
 use VeeZions\BuilderEngine\Provider\LocaleProvider;
 
@@ -58,6 +59,7 @@ readonly class FormManager
         protected AuthorizationCheckerInterface $authorizationChecker,
         protected array $actions,
         protected LocaleProvider $localeProvider,
+        protected AuthorProvider $authorProvider,
     )
     {
         
@@ -144,8 +146,8 @@ readonly class FormManager
     {
         $options = [];
         $authors = match ($type) {
-            ArticleType::class => $this->provideAuthors($this->authors['articles'], 'articles'),
-            PageType::class => $this->provideAuthors($this->authors['pages'], 'pages'),
+            ArticleType::class => $this->authorProvider->provideAuthors($this->authors['articles'], 'articles'),
+            PageType::class => $this->authorProvider->provideAuthors($this->authors['pages'], 'pages'),
             default => null,
         };
 
@@ -229,58 +231,6 @@ readonly class FormManager
         return $redirectionRoute ?
             $this->router->generate($redirectionRoute) : 
             $this->router->generate($routeToRedirect);
-    }
-    
-    private function provideAuthors(array $authors, string $type): ?array
-    {
-        $class = $authors['author_class'];
-        if ($class === null) {
-            return null;
-        }
-
-        if (!class_exists($class)) {
-            throw new InvalidArgumentException(sprintf(
-                'Author provider class "%s" for %s does not exist.',
-                $class,
-                $type
-            ));
-        }
-        
-        $authors = $this->entityManager->getRepository($class)::findAll();
-        $roles = $authors['author_roles'];
-
-        if (is_array($roles) && !empty($roles) && method_exists($class, 'getRoles')) {
-            $authors = array_filter($authors, function($author) use ($roles) {
-                foreach ($author->getRoles() as $role) {
-                    if (in_array($role, $roles, true)) {
-                        return true;
-                    }
-                }
-                return false;
-            });
-        }
-
-        $placeholder = $authors['author_placeholder'];
-
-        return array_map(function($author) use ($placeholder, $class, $type) {
-
-            $label = [];
-            foreach ($placeholder as $segment) {
-                $segment = 'get' . ucfirst($segment);
-                if (method_exists($author, $segment)) {
-                    $label[] = $author->$segment();
-                } else {
-                    throw new InvalidArgumentException(sprintf(
-                        'Author provider class "%s" for %s does not have a "%s()" method.',
-                        $class,
-                        $type,
-                        $segment
-                    ));
-                }
-            }
-
-            return ['id' => $author->getId(), 'label' => implode(' ', $label)];
-        }, $authors);
     }
 
     public function getAvailableLocales(): array

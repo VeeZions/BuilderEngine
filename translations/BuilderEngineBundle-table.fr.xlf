@@ -29,6 +29,10 @@
         <source>vbe.new.entity</source>
         <target>Créer</target>
       </trans-unit>
+      <trans-unit id="vbe.query.id" resname="vbe.query.id">
+        <source>vbe.query.id</source>
+        <target>ID</target>
+      </trans-unit>
       <trans-unit id="vbe.query.title" resname="vbe.query.title">
         <source>vbe.query.title</source>
         <target>Titre</target>

@@ -168,4 +168,14 @@ final class FiltersRuntime implements RuntimeExtensionInterface
     {
         return $this->formManager->getAvailableLocales();
     }
+
+    public function removeAlias(?string $colName): ?string
+    {
+        if (null === $colName) {
+            return null;
+        }
+
+        $split = explode(' as ', $colName);
+        return $split[0];
+    }
 }

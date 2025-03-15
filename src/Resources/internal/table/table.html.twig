@@ -1,40 +1,45 @@
+{% import '@BuilderEngineInternal/macros/sort.html.twig' as icons %}
 <div class="vbe-table-container">
     <table class="vbe-table">
         <thead>
-            <tr>
+            <tr class="vbe-table-row">
                 {% for tab in head %}
-                    {% if tab.column|vbe_is_sortable %}
-                        <th class="vbe-table-heading{% if data.isSorted(tab.column) %} sorted{% else %} unsorted{% endif %}">
-                            <p>{{ knp_pagination_sortable(data, tab.label, tab.column) }}</p>
-                        </th>
-                    {% else %}
-                        <th class="vbe-table-heading"><p>{{ tab.label }}</p></th>
-                    {% endif %}
+                    {% set colName = tab.column|vbe_remove_alias %}
+                    <th class="vbe-table-heading{% if data.isSorted(colName) %} sorted{% else %} unsorted{% endif %}">
+                        <p>{{ knp_pagination_sortable(data, tab.label, colName) }}{{ icons.sort(colName) }}</p>
+                    </th>
                 {% endfor %}
-                <th class="vbe-table-heading">{{ 'vbe.tab.actions'|trans({}, 'BuilderEngineBundle-table') }}</th>
+                <th class="vbe-table-heading vbe-table-heading-actions">
+                    {{ 'vbe.tab.actions'|trans({}, 'BuilderEngineBundle-table') }}
+                </th>
             </tr>
         </thead>
         <tbody>
             {% set flags = vbe_flags() %}
+            {% set centeredLabels = ['locale', 'createdAt', 'published'] %}
             {% for row in rows %}
                 <tr class="vbe-table-row">
                     {% for cell in row.cells %}
-                        <td class="vbe-table-cell"><p>{{ cell|vbe_value_mutator(flags) }}</p></td>
+                        <td class="vbe-table-cell{% if cell.label in centeredLabels %} vbe-center{% endif %}"><p>{{ cell|vbe_value_mutator(flags) }}</p></td>
                     {% endfor %}
                     <td class="vbe-table-cell">
-                        <p class="vbe-actions-wrapper">
+                        <div class="vbe-actions-wrapper">
                             {% for action in row.actions %}
                                 <a href="{{ action.url }}" class="vbe-action-btn {{ action.class }}"{% if action.onclick is not null %} onclick="{{ action.onclick }}"{% endif %}>
-                                    {{ action.label|trans({}, 'BuilderEngineBundle-table') }}
+                                    {% if action.label is same as 'vbe.action.label.edit' %}
+                                        {{ builder_engine.crud_edit_button }}
+                                    {% else %}
+                                        {{ builder_engine.crud_delete_button }}
+                                    {% endif %}
                                 </a>
                             {% endfor %}
-                        </p>
+                        </div>
                     </td>
                 </tr>
             {% else %}
                 <tr class="vbe-table-row">
-                    <td colspan="{{ head|length + 1 }}" class="vbe-table-row vbe-table-empty">
-                        {{ 'vbe.content.empty'|trans({}, 'BuilderEngineBundle-table') }}
+                    <td align="middle" colspan="{{ head|length + 1 }}" class="vbe-table-cell vbe-table-empty">
+                        <i>{{ 'vbe.content.empty'|trans({}, 'BuilderEngineBundle-table') }}</i>
                     </td>
                 </tr>
             {% endfor %}

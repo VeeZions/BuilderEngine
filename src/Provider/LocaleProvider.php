@@ -3,10 +3,31 @@
 namespace VeeZions\BuilderEngine\Provider;
 
 use Symfony\Component\Intl\Locales;
+use Symfony\Component\Filesystem\Filesystem;
 
 class LocaleProvider
 {
     public function getList(bool $provider = false, ?string $choicedLocale = null): array
+    {
+        $filesystem = new Filesystem();
+        $path = __DIR__.'/../../assets/libraries/complided_locales.json';
+        if (!$filesystem->exists($path)) {
+            $this->generateList($choicedLocale);
+        }
+
+        $results = json_decode(file_get_contents($path), true);
+        if ($provider) {
+            $list = [];
+            foreach ($results as $l => $n) {
+                $list[$l] = $n['language'];
+            }
+            return $list;
+        }
+
+        return $results;
+    }
+
+    private function generateList(?string $choicedLocale): void
     {
         $jsonFile = __DIR__.'/../../assets/libraries/locales.json';
         $json = json_decode(file_get_contents($jsonFile), true);
@@ -89,14 +110,8 @@ class LocaleProvider
 
         ksort($results);
 
-        if ($provider) {
-            $list = [];
-            foreach ($results as $l => $n) {
-                $list[$l] = $n['language'];
-            }
-            return $list;
-        }
-
-        return $results;
+        $filesystem = new Filesystem();
+        $path = __DIR__.'/../../assets/libraries/complided_locales.json';
+        $filesystem->dumpFile($path, json_encode($results, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
     }
 }

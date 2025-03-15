@@ -13,6 +13,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment as TwigEnvironment;
 use VeeZions\BuilderEngine\Constant\TableConstant;
 use VeeZions\BuilderEngine\Manager\FormManager;
+use VeeZions\BuilderEngine\Provider\AuthorProvider;
 
 readonly class EngineManager extends FormManager
 {
@@ -29,6 +30,7 @@ readonly class EngineManager extends FormManager
         protected TableConstant $constant,
         protected AuthorizationCheckerInterface $authorizationChecker,
         protected array $actions,
+        protected AuthorProvider $authorProvider,
     )
     {
 

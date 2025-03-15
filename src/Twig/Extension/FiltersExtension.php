@@ -14,6 +14,7 @@ final class FiltersExtension extends AbstractExtension
         return [
             new TwigFilter('vbe_value_mutator', [FiltersRuntime::class, 'valueMutator']),
             new TwigFilter('vbe_is_sortable', [FiltersRuntime::class, 'isSortable']),
+            new TwigFilter('vbe_remove_alias', [FiltersRuntime::class, 'removeAlias']),
         ];
     }
 

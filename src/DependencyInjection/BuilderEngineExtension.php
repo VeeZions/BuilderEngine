@@ -7,6 +7,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use VeeZions\BuilderEngine\Constant\ConfigConstant;
+use VeeZions\BuilderEngine\Repository\BuilderPageRepository;
+use VeeZions\BuilderEngine\Repository\BuilderArticleRepository;
 
 class BuilderEngineExtension extends Extension
 {
@@ -75,6 +77,8 @@ class BuilderEngineExtension extends Extension
         $globalVariableDefinition->setArgument('$extended_template', $config['extended_template']);
         $globalVariableDefinition->setArgument('$form_theme', $config['form_theme']);
         $globalVariableDefinition->setArgument('$customRoutes', $config['custom_routes']);
+        $globalVariableDefinition->setArgument('$pagination_templates', $config['pagination_buttons']);
+        $globalVariableDefinition->setArgument('$crud_buttons', $config['crud_buttons']);
         
         $pageRuntimeDefinition = $container->getDefinition('veezions_builder_engine.twig.page_runtime');
         $pageRuntimeDefinition->setArgument('$customRoutes', $config['custom_routes']);
@@ -82,5 +86,14 @@ class BuilderEngineExtension extends Extension
         $htmlManagerDefinition = $container->getDefinition('veezions_builder_engine.html_manager');
         $htmlManagerDefinition->setArgument('$customRoutes', $config['custom_routes']);
         $htmlManagerDefinition->setArgument('$actions', $config['actions']);
+
+        $tableConstantDefinition = $container->getDefinition('veezions_builder_engine.table_constant');
+        $tableConstantDefinition->setArgument('$authors', $config['author_providers']);
+
+        $articleRepositoryDefinition = $container->getDefinition(BuilderArticleRepository::class);
+        $articleRepositoryDefinition->setArgument('$authors', $config['author_providers']['articles']);
+
+        $pageRepositoryDefinition = $container->getDefinition(BuilderPageRepository::class);
+        $pageRepositoryDefinition->setArgument('$authors', $config['author_providers']['articles']);
     }
 }

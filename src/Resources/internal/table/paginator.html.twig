@@ -1,0 +1,45 @@
+{% if pageCount > 1 %}
+    <div class="vbe-pagination">
+        {% if first is defined and current != first %}
+            <span class="vbe-pagination-icon-container vbe-first">
+                <a href="{{ path(route, knp_pagination_query(query, first, options)) }}">
+                    {{ builder_engine.pagination_first_button }}
+                </a>
+            </span>
+        {% endif %}
+
+        {% if previous is defined %}
+            <span class="vbe-pagination-icon-container vbe-previous">
+                <a rel="prev" href="{{ path(route, knp_pagination_query(query, previous, options)) }}">
+                    {{ builder_engine.pagination_previous_button }}
+                </a>
+            </span>
+        {% endif %}
+
+        {% for page in pagesInRange %}
+            {% if page != current %}
+                <span class="vbe-pagination-page">
+                    <a href="{{ path(route, knp_pagination_query(query, page, options)) }}">{{ page }}</a>
+                </span>
+            {% else %}
+                <span class="vbe-pagination-page vbe-pagination-current"><b>{{ page }}</b></span>
+            {% endif %}
+        {% endfor %}
+
+        {% if next is defined %}
+            <span class="vbe-pagination-icon-container vbe-next">
+                <a rel="next" href="{{ path(route, knp_pagination_query(query, next, options)) }}">
+                    {{ builder_engine.pagination_next_button }}
+                </a>
+            </span>
+        {% endif %}
+
+        {% if last is defined and current != last %}
+            <span class="vbe-pagination-icon-container vbe-last">
+                <a href="{{ path(route, knp_pagination_query(query, last, options)) }}">
+                    {{ builder_engine.pagination_last_button }}
+                </a>
+            </span>
+        {% endif %}
+    </div>
+{% endif %}

@@ -20,9 +20,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services
         ->set('veezions_builder_engine.twig.global', GlobalVariables::class)
         ->args([
+            service('twig'),
             abstract_arg('Get config.extended_template value'),
             abstract_arg('Get config.form_theme value'),
             abstract_arg('Get config.custom_routes'),
+            abstract_arg('Get config.pagination_buttons'),
+            abstract_arg('Get config.crud_buttons'),
         ])
         ->tag('twig.global')
     ;

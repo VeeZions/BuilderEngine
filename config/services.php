@@ -15,6 +15,7 @@ use VeeZions\BuilderEngine\Constant\Crud\PageConstant;
 use VeeZions\BuilderEngine\Manager\HtmlManager;
 use VeeZions\BuilderEngine\Constant\TableConstant;
 use VeeZions\BuilderEngine\Manager\EngineManager;
+use VeeZions\BuilderEngine\Provider\AuthorProvider;
 use VeeZions\BuilderEngine\Provider\LocaleProvider;
 use VeeZions\BuilderEngine\Form\Type\LocaleType;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
@@ -57,6 +58,7 @@ return static function (ContainerConfigurator $container) {
             service('security.authorization_checker'),
             abstract_arg('Get config.actions'),
             service('veezions_builder_engine.locale_provider'),
+            service('veezions_builder_engine.author_provider'),
         ])
     ;
     
@@ -118,7 +120,13 @@ return static function (ContainerConfigurator $container) {
         ])
     ;
 
-    $services->set('veezions_builder_engine.table_constant', TableConstant::class);
+    $services
+        ->set('veezions_builder_engine.table_constant', TableConstant::class)
+        ->args([
+            service('veezions_builder_engine.author_provider'),
+            abstract_arg('Authors provider'),
+        ])
+    ;
 
     $services
         ->set('veezions_builder_engine.engine_manager', EngineManager::class)
@@ -135,6 +143,14 @@ return static function (ContainerConfigurator $container) {
             service('veezions_builder_engine.table_constant'),
             service('security.authorization_checker'),
             abstract_arg('Get config.actions'),
+            service('veezions_builder_engine.author_provider'),
+        ])
+    ;
+
+    $services
+        ->set('veezions_builder_engine.author_provider', AuthorProvider::class)
+        ->args([
+            service('doctrine.orm.entity_manager'),
         ])
     ;
 

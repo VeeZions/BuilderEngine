@@ -6,6 +6,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use VeeZions\BuilderEngine\Constant\AssetConstant;
 use VeeZions\BuilderEngine\Entity\BuilderLibrary;
 
@@ -17,33 +18,29 @@ class BuilderLibraryRepository extends ServiceEntityRepository
     public function __construct(
         ManagerRegistry $registry,
         private readonly PaginatorInterface $paginator,
+        private readonly RequestStack $requestStack,
     ) {
         parent::__construct($registry, BuilderLibrary::class);
     }
 
     /**
-     * @param array<int, string>|null $types
+     * @param array<int, string>                     $columns
      *
      * @return PaginationInterface<int, mixed>
      */
-    public function paginate(
-        ?int $count = null,
-        ?string $search = null,
-        ?array $types = [],
-        string $order = 'DESC',
-    ): PaginationInterface {
-        $query = $this->createQueryBuilder('g');
-        if (null !== $search && strlen($search) > 0) {
-            $query->andWhere('g.url LIKE :search OR g.mime LIKE :search OR g.legend LIKE :search')
-                ->setParameter('search', '%'.$search.'%');
-        }
-        if (!empty($types)) {
-            $query->andWhere('g.type IN (:types)')
-                ->setParameter('types', $types);
-        }
-        $count = null === $count ? AssetConstant::ITEMS_PER_LOAD : $count;
+    public function paginate(): PaginationInterface {
+        $query = $this->createQueryBuilder('l');
+        $page = $this->requestStack->getCurrentRequest()->query->getInt('page', 1);
 
-        return $this->paginator->paginate($query->orderBy('g.id', $order), 1, $count);
+        $searchField = $this->requestStack->getCurrentRequest()->query->get('vbeFilterField');
+        $searchValue = $this->requestStack->getCurrentRequest()->query->get('vbeFilterValue');
+        if ($searchField !== null && $searchValue !== null) {
+            $query->where($searchField.' LIKE :search')
+                ->setParameter('search', '%'.$searchValue.'%')
+            ;
+        }
+
+        return $this->paginator->paginate($query, $page, 10);
     }
 
     /**

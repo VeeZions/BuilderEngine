@@ -6,6 +6,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use VeeZions\BuilderEngine\Constant\TableConstant;
 use VeeZions\BuilderEngine\Entity\BuilderPage;
 
 /**
@@ -16,6 +18,9 @@ class BuilderPageRepository extends ServiceEntityRepository
     public function __construct(
         ManagerRegistry $registry,
         private readonly PaginatorInterface $paginator,
+        private readonly RequestStack $requestStack,
+        private readonly array $authors,
+        private readonly TableConstant $tableConstant,
     ) {
         parent::__construct($registry, BuilderPage::class);
     }
@@ -53,8 +58,18 @@ class BuilderPageRepository extends ServiceEntityRepository
         int $page,
         array $columns,
     ): PaginationInterface {
-        array_unshift($columns, 'p.id');
         $query = $this->createQueryBuilder('p')->select($columns);
+        if ($this->authors['author_class'] !== null) {
+            $query->leftJoin($this->authors['author_class'], 'pr', 'WITH', 'p.author = pr.id');
+        }
+
+        $searchField = $this->requestStack->getCurrentRequest()->query->get('vbeFilterField');
+        $searchValue = $this->requestStack->getCurrentRequest()->query->get('vbeFilterValue');
+        if ($searchField !== null && $searchValue !== null && strlen($searchValue) > 0) {
+            $query->where($searchField.' LIKE :search')
+                ->setParameter('search', '%'.$searchValue.'%')
+            ;
+        }
 
         return $this->paginator->paginate($query, $page, 10);
     }

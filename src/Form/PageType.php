@@ -5,6 +5,7 @@ namespace VeeZions\BuilderEngine\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use VeeZions\BuilderEngine\Form\Type\SeoType;
@@ -46,16 +47,31 @@ class PageType extends AbstractType
                 'translation_domain' => 'BuilderEngineBundle-forms',
             ])
         ;
+        if ($options['authors'] !== null && !empty($options['authors'])) {
+            $choices = [];
+            foreach ($options['authors'] as $author) {
+                $choices[$author['label']] = $author['id'];
+            }
+            $builder
+                ->add('author', ChoiceType::class, [
+                    'label' => 'form.label.author',
+                    'translation_domain' => 'BuilderEngineBundle-forms',
+                    'required' => true,
+                    'choices' => $choices
+                ])
+            ;
+        }
         if (null === $entity->getRoute()) {
             $builder
                 ->add('route', TextType::class, [
                     'label' => 'form.label.route',
-                    'translation_domain' => 'crud',
+                    'translation_domain' => 'BuilderEngineBundle-forms',
                 ]);
         }
         $builder
             ->add('content', BuilderType::class, [
                 'label' => 'form.label.builder',
+                'translation_domain' => 'BuilderEngineBundle-forms',
                 'required' => false,
                 'data' => $entity->getContent(),
             ])
@@ -75,11 +91,10 @@ class PageType extends AbstractType
                 if ($options['authors'] !== null && !empty($options['authors'])) {
                     $data = $event->getData();
                     if ($data->getCreatedAt() === null) {
-                        $data->setCreatedBy($options['user_id']);
+                        $form->setCreatedBy($options['user_id']);
                     } else {
-                        $data->setUpdatedBy($options['user_id']);
+                        $form->setUpdatedBy($options['user_id']);
                     }
-                    $event->setData($data);
                 }
                 $content = $event->getForm()->get('content')->getData();
                 if ($form instanceof BuilderPage && is_array($content)) {

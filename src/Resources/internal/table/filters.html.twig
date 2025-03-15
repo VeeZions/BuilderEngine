@@ -1,3 +1,12 @@
 <div class="vbe-filters-container">
-    {{ knp_pagination_filter(data, filters, {translationDomain: 'BuilderEngineBundle-table', button: 'vbe.filter.btn'}) }}
+    <form method="get" action="{{ path(app.request.get('_route'), {page: data.getCurrentPageNumber()}) }}" enctype="application/x-www-form-urlencoded">
+        <select name="vbeFilterField">
+            {% for key,filter in filters %}
+                {% set colName = key|vbe_remove_alias %}
+                <option{% if app.request.query.get('vbeFilterField') is same as colName or loop.index is same as 1 %} selected{% endif %} value="{{ colName }}">{{ filter|trans({}, 'BuilderEngineBundle-table') }}</option>
+            {% endfor %}
+        </select>
+        <input type="text" value="{{ app.request.query.get('vbeFilterValue') }}" name="vbeFilterValue">
+        <button type="submit">{{ 'vbe.filter.btn'|trans({}, 'BuilderEngineBundle-table') }}</button>
+    </form>
 </div>

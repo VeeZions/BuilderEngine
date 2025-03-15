@@ -35,7 +35,7 @@ readonly class HtmlManager
         private AuthorizationCheckerInterface $authorizationChecker,
         private Router $router,
         private array $customRoutes,
-        private array $actions,
+        private array $actions
     )
     {
         
@@ -78,8 +78,6 @@ readonly class HtmlManager
     public function buildTable(PaginationInterface $data): string
     {
         $rows = array_map(function($row) {
-            $id = $row['id'];
-            array_shift($row); // remove ID column from $row
             $r = [
                 'cells' => (function() use ($row) {
                     $cells = [];
@@ -91,7 +89,7 @@ readonly class HtmlManager
                     }
                     return $cells;
                 })(),
-                'actions' => $this->setActions($id),
+                'actions' => $this->setActions($row['id']),
             ];
             return $r;
         }, $data->getItems());
@@ -107,17 +105,18 @@ readonly class HtmlManager
     {
         return $this->twig->render(ConfigConstant::CONFIG_INTERNAL_TEMPLATE_PATH.'/table/filters.html.twig', [
             'data' => $data,
-            'filters' => $this->removeAliasedColumns($this->getConstantsByEntity($this->getDataFromRoute()['entity'])),
+            'filters' => $this->getConstantsByEntity($this->getDataFromRoute()['entity']),
         ]);
     }
     
     public function buildCounter(PaginationInterface $data): string
     {
+        $firstItem = $data->getItemNumberPerPage() * ($data->getCurrentPageNumber() - 1) + 1;
         return $this->twig->render(ConfigConstant::CONFIG_INTERNAL_TEMPLATE_PATH.'/table/counter.html.twig', [
             'pages' => (int) ceil($data->getTotalItemCount() / $data->getItemNumberPerPage()),
             'page' => $data->getCurrentPageNumber(),
-            'bookmark_start' => $data->getItemNumberPerPage() * ($data->getCurrentPageNumber() - 1) + 1,
-            'bookmark_end' => $data->getItemNumberPerPage() * $data->getCurrentPageNumber(),
+            'bookmark_start' => $firstItem,
+            'bookmark_end' => $firstItem + count($data->getItems()) - 1,
             'totalItems' => $data->getTotalItemCount(),
         ]);
     }
@@ -226,18 +225,6 @@ readonly class HtmlManager
             ];
         }
         return $head;
-    }
-
-    private function removeAliasedColumns(array $columns): array
-    {
-        $filtered = [];
-        foreach ($columns as $key => $value) {
-            if (!str_contains($key, ' as ')) {
-                $filtered[$key] = $value;
-            }
-        }
-
-        return $filtered;
     }
 
     private function setActions(int $id): array

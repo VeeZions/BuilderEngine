@@ -22,7 +22,7 @@ class LibraryType extends AbstractType
             ->add('file', FileType::class, [
                 'label' => 'form.label.libraries.upload',
                 'label_attr' => [
-                    'class' => 'vbe-link underline cursor-pointer',
+                    'class' => 'vbe-builder-file-upload-link',
                 ],
                 'translation_domain' => 'BuilderEngineBundle-forms',
                 'mapped' => false,
@@ -35,7 +35,7 @@ class LibraryType extends AbstractType
                 'help_translation_parameters' => [],
                 'help_html' => true,
                 'help_attr' => [
-                    'class' => 'builder-libraries-help',
+                    'class' => 'vbe-builder-libraries-help',
                 ],
                 'row_attr' => [
                     'class' => 'builder-libraries-row',
