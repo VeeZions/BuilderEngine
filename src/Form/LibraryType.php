@@ -53,6 +53,8 @@ class LibraryType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => null,
+            'list_url' => null,
+            'message' => null
         ]);
     }
 }
