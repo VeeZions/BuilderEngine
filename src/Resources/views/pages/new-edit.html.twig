@@ -1,16 +1,1 @@
-{% extends builder_engine.extended_template %}
-
-{% block title %}{{ vbe_title() }}{% endblock %}
-
-{% block body %}
-
-    {% if builder_engine.form_theme is not null %}
-        {% form_theme form builder_engine.form_theme %}
-    {% endif %}
-
-    {{ form_start(form) }}
-    {{ form_rest(form) }}
-    {{ vbe_actions_buttons(form) }}
-    {{ form_end(form) }}
-
-{% endblock %}
+{% include '@BuilderEngineInternal/common/new-edit.html.twig' %}

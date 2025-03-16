@@ -110,25 +110,6 @@ final class FiltersRuntime implements RuntimeExtensionInterface
         return !str_contains($column, ' as ');
     }
 
-    public function actionsButtons(FormView $form): Markup
-    {
-        $data = $form->vars['data'];
-        $entity = match (true) {
-            $data instanceof BuilderCategory => 'categories',
-            $data instanceof BuilderArticle => 'articles',
-            $data instanceof BuilderPage => 'pages',
-            $data instanceof BuilderNavigation => 'navigations',
-            $data instanceof BuilderLibrary => 'libraries',
-            default => null,
-        };
-
-        if (null === $entity) {
-            throw new \Exception('Entity not found');
-        }
-
-        return new Markup($this->htmlManager->buildActions($entity), 'UTF-8');
-    }
-
     public function getPageTitle(): ?string
     {
         $route = $this->requestStack->getCurrentRequest()->attributes->get('_route');

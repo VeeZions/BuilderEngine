@@ -35,7 +35,7 @@
       "@veezions/builder-engine-jquery": "path:%PACKAGE%/libraries/jquery.min.js",
       "@veezions/builder-engine-jquery-ui": "path:%PACKAGE%/libraries/jquery-ui.min.js",
       "@veezions/builder-engine-bundle-logic": "path:%PACKAGE%/js/logic.js",
-      "@veezions/builder-engine-bundle-css": "path:%PACKAGE%/css/builder.css",
+      "@veezions/builder-engine-bundle-table": "path:%PACKAGE%/css/table.css",
       "@veezions/builder-engine-utils-components": "path:%PACKAGE%/utils/components.js",
       "@veezions/builder-engine-utils-modules": "path:%PACKAGE%/utils/modules.js",
       "@veezions/builder-engine-utils-navigation": "path:%PACKAGE%/utils/navigation.js"

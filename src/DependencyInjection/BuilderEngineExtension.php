@@ -79,6 +79,7 @@ class BuilderEngineExtension extends Extension
         $globalVariableDefinition->setArgument('$customRoutes', $config['custom_routes']);
         $globalVariableDefinition->setArgument('$pagination_templates', $config['pagination_buttons']);
         $globalVariableDefinition->setArgument('$crud_buttons', $config['crud_buttons']);
+        $globalVariableDefinition->setArgument('$internal_css', $config['internal_css']);
         
         $pageRuntimeDefinition = $container->getDefinition('veezions_builder_engine.twig.page_runtime');
         $pageRuntimeDefinition->setArgument('$customRoutes', $config['custom_routes']);

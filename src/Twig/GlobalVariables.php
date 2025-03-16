@@ -5,6 +5,8 @@ namespace VeeZions\BuilderEngine\Twig;
 use Symfony\Component\Form\FormInterface;
 use Twig\Markup;
 use Twig\Environment;
+use VeeZions\BuilderEngine\Constant\ConfigConstant;
+use VeeZions\BuilderEngine\Constant\TableConstant;
 
 final class GlobalVariables
 {
@@ -14,7 +16,8 @@ final class GlobalVariables
         private ?string $form_theme,
         private array $customRoutes,
         private array $pagination_templates,
-        private array $crud_buttons
+        private array $crud_buttons,
+        private bool $internal_css
     )
     {
 
@@ -63,5 +66,15 @@ final class GlobalVariables
     public function getCrud_delete_button(): Markup
     {
         return new Markup($this->twig->render($this->crud_buttons['delete_label']), 'UTF-8');
+    }
+    
+    public function getIs_original_form_theme(): bool
+    {
+        return $this->form_theme === ConfigConstant::CONFIG_DEFAULT_FORM_THEME;
+    }
+    
+    public function getIs_internal_css(): bool
+    {
+        return $this->internal_css;
     }
 }

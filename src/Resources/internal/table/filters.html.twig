@@ -1,4 +1,4 @@
-<div class="vbe-filters-container">
+<div class="{% if builder_engine.is_internal_css %}vbe-{% endif %}filters-container">
     <form method="get" action="{{ path(app.request.get('_route'), {page: data.getCurrentPageNumber()}) }}" enctype="application/x-www-form-urlencoded">
         <select name="vbeFilterField">
             {% for key,filter in filters %}

@@ -161,6 +161,22 @@ readonly class FormManager
             $options['locale_fallback'] = $this->requestStack->getCurrentRequest()->getLocale();
         }
 
+        $listUrl = match ($type) {
+            ArticleType::class => $this->customRoutes['articles_routes']['list'],
+            PageType::class => $this->customRoutes['pages_routes']['list'],
+            CategoryType::class => $this->customRoutes['categories_routes']['list'],
+            NavigationType::class => $this->customRoutes['navigations_routes']['list'],
+            LibraryType::class => ConfigConstant::CONFIG_DEFAULT_ROUTES['libraries_routes']['list'],
+            default => null,
+        };
+        
+        if (null === $listUrl) {
+            throw new InvalidArgumentException($this::class . '::engine() expects a valid $type value');
+        }
+        
+        $options['list_url'] = $this->router->generate($listUrl);
+        $options['message'] = $this->translator->trans('form.message.back.list', [], 'BuilderEngineBundle-forms');
+
         return $options;
     }
 
@@ -211,7 +227,7 @@ readonly class FormManager
     {
         $request = $this->requestStack->getCurrentRequest();
 
-        if ($request->request->get('vbe_save_and_reload') !== null) {
+        if ($this->isReloaded($request->request->all())) {
             return $request->headers->get('referer');
         }
 
@@ -231,6 +247,15 @@ readonly class FormManager
         return $redirectionRoute ?
             $this->router->generate($redirectionRoute) : 
             $this->router->generate($routeToRedirect);
+    }
+
+    private function isReloaded(array $request): bool
+    {
+        foreach ($request as $row) {
+            return isset($row['buttons']['save_and_stay']);
+        }
+
+        return false;
     }
 
     public function getAvailableLocales(): array

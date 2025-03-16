@@ -4,6 +4,7 @@ namespace VeeZions\BuilderEngine\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\InvalidConfigurationException;
+use VeeZions\BuilderEngine\Form\Type\ButtonsType;
 use VeeZions\BuilderEngine\Form\Type\LocaleType;
 use VeeZions\BuilderEngine\Form\Type\SeoType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -69,6 +70,12 @@ class CategoryType extends AbstractType
                 'data' => $entity->getSeo(),
                 'required' => true,
             ])
+            ->add('buttons', ButtonsType::class, [
+                'mapped' => false,
+                'label' => false,
+                'list_url' => $options['list_url'],
+                'message' => $options['message'],
+            ])
         ;
     }
 
@@ -81,6 +88,8 @@ class CategoryType extends AbstractType
     {
         $resolver->setDefaults([
             'locale_fallback' => null,
+            'list_url' => null,
+            'message' => null
         ]);
     }
 }

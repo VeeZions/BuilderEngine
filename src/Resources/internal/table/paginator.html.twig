@@ -1,7 +1,7 @@
 {% if pageCount > 1 %}
-    <div class="vbe-pagination">
+    <div class="{% if builder_engine.is_internal_css %}vbe-{% endif %}pagination">
         {% if first is defined and current != first %}
-            <span class="vbe-pagination-icon-container vbe-first">
+            <span class="{% if builder_engine.is_internal_css %}vbe-{% endif %}pagination-icon-container {% if builder_engine.is_internal_css %}vbe-{% endif %}first">
                 <a href="{{ path(route, knp_pagination_query(query, first, options)) }}">
                     {{ builder_engine.pagination_first_button }}
                 </a>
@@ -9,7 +9,7 @@
         {% endif %}
 
         {% if previous is defined %}
-            <span class="vbe-pagination-icon-container vbe-previous">
+            <span class="{% if builder_engine.is_internal_css %}vbe-{% endif %}pagination-icon-container {% if builder_engine.is_internal_css %}vbe-{% endif %}previous">
                 <a rel="prev" href="{{ path(route, knp_pagination_query(query, previous, options)) }}">
                     {{ builder_engine.pagination_previous_button }}
                 </a>
@@ -18,16 +18,16 @@
 
         {% for page in pagesInRange %}
             {% if page != current %}
-                <span class="vbe-pagination-page">
+                <span class="{% if builder_engine.is_internal_css %}vbe-{% endif %}pagination-page">
                     <a href="{{ path(route, knp_pagination_query(query, page, options)) }}">{{ page }}</a>
                 </span>
             {% else %}
-                <span class="vbe-pagination-page vbe-pagination-current"><b>{{ page }}</b></span>
+                <span class="{% if builder_engine.is_internal_css %}vbe-{% endif %}pagination-page {% if builder_engine.is_internal_css %}vbe-{% endif %}pagination-current"><b>{{ page }}</b></span>
             {% endif %}
         {% endfor %}
 
         {% if next is defined %}
-            <span class="vbe-pagination-icon-container vbe-next">
+            <span class="{% if builder_engine.is_internal_css %}vbe-{% endif %}pagination-icon-container {% if builder_engine.is_internal_css %}vbe-{% endif %}next">
                 <a rel="next" href="{{ path(route, knp_pagination_query(query, next, options)) }}">
                     {{ builder_engine.pagination_next_button }}
                 </a>
@@ -35,7 +35,7 @@
         {% endif %}
 
         {% if last is defined and current != last %}
-            <span class="vbe-pagination-icon-container vbe-last">
+            <span class="{% if builder_engine.is_internal_css %}vbe-{% endif %}pagination-icon-container {% if builder_engine.is_internal_css %}vbe-{% endif %}last">
                 <a href="{{ path(route, knp_pagination_query(query, last, options)) }}">
                     {{ builder_engine.pagination_last_button }}
                 </a>

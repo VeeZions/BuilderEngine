@@ -145,6 +145,10 @@
         <source>form.label.libraries.help</source>
         <target><![CDATA[<i class="vbe-media-help-size">Max file size 2Mo</i><span class="vbe-media-help-preview" data-veezions--builder-engine-bundle--veezions-builder-engine-bundle-media-target="preview"></span>]]></target>
       </trans-unit>
+      <trans-unit id="form.message.back.list" resname="form.message.back.list">
+        <source>form.message.back.list</source>
+        <target>Leaving this page will lose your changes. Are you sure you want to leave ?</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -139,13 +139,6 @@ readonly class HtmlManager
             ]
         ]);
     }
-    
-    public function buildActions(string $entities): string
-    {
-        return $this->twig->render(ConfigConstant::CONFIG_INTERNAL_TEMPLATE_PATH.'/actions.html.twig', [
-            'entities' => $entities
-        ]);
-    }
 
     private function getDataFromRoute(): array
     {

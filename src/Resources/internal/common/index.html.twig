@@ -1,0 +1,19 @@
+{% extends builder_engine.extended_template %}
+
+{% block title %}{{ vbe_title() }}{% endblock %}
+
+{% block body %}
+
+    <div
+        class="{% if builder_engine.is_original_form_theme %}vbe-{% endif %}form-container"
+        {% if builder_engine.is_original_form_theme %}id="{{ vbe_container_id() }}"{% endif %}
+    >
+        <h1
+            class="{% if builder_engine.is_original_form_theme %}vbe-{% endif %}heading{% if builder_engine.is_original_form_theme %} vbe-{% endif %}h1"
+        >
+            {{ vbe_title() }}
+        </h1>
+        {{ vbe_build_render(data) }}
+    </div>
+
+{% endblock %}

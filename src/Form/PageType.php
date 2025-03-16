@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use VeeZions\BuilderEngine\Form\Type\ButtonsType;
 use VeeZions\BuilderEngine\Form\Type\SeoType;
 use VeeZions\BuilderEngine\Form\Type\BuilderType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -87,6 +88,12 @@ class PageType extends AbstractType
                 'data' => $entity->getSeo(),
                 'required' => true,
             ])
+            ->add('buttons', ButtonsType::class, [
+                'mapped' => false,
+                'label' => false,
+                'list_url' => $options['list_url'],
+                'message' => $options['message'],
+            ])
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
                 $form = $event->getForm()->getData();
                 if ($options['authors'] !== null && !empty($options['authors'])) {
@@ -121,6 +128,8 @@ class PageType extends AbstractType
             'authors' => null,
             'locale_fallback' => null,
             'user_id' => null,
+            'list_url' => null,
+            'message' => null
         ]);
     }
 }

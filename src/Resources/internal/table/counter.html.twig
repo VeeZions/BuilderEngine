@@ -1,14 +1,14 @@
 {% if pages > 0 %}
-    <div class="vbe-counter-container">
+    <div class="{% if builder_engine.is_internal_css %}vbe-{% endif %}counter-container">
         {% if pages > 1 %}
-            <p class="vbe-pages">
+            <p class="{% if builder_engine.is_internal_css %}vbe-{% endif %}pages">
                 {{ 'vbe.pages'|trans({'%page%': page, '%pages%': pages}, 'BuilderEngineBundle-table') }}
             </p>
-            <p class="vbe-bookmark">
+            <p class="{% if builder_engine.is_internal_css %}vbe-{% endif %}bookmark">
                 {{ 'vbe.bookmark'|trans({'%start%': bookmark_start, '%end%': bookmark_end, '%total%': totalItems}, 'BuilderEngineBundle-table') }}
             </p>
         {% else %}
-            <p class="vbe-bookmark">
+            <p class="{% if builder_engine.is_internal_css %}vbe-{% endif %}bookmark">
                 {{ (totalItems > 1 ? 'vbe.total' : 'vbe.single')|trans({'%total%': totalItems}, 'BuilderEngineBundle-table') }}
             </p>
         {% endif %}

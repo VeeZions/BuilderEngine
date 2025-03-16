@@ -18,6 +18,7 @@ use VeeZions\BuilderEngine\Manager\EngineManager;
 use VeeZions\BuilderEngine\Provider\AuthorProvider;
 use VeeZions\BuilderEngine\Provider\LocaleProvider;
 use VeeZions\BuilderEngine\Form\Type\LocaleType;
+use VeeZions\BuilderEngine\Form\Type\ButtonsType;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\abstract_arg;
 

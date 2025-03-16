@@ -28,7 +28,6 @@ final class FiltersExtension extends AbstractExtension
             new TwigFunction('vbe_build_counter', [FiltersRuntime::class, 'buildCounter']),
             new TwigFunction('vbe_build_create', [FiltersRuntime::class, 'buildCreate']),
             new TwigFunction('vbe_build_render', [FiltersRuntime::class, 'buildRender']),
-            new TwigFunction('vbe_actions_buttons', [FiltersRuntime::class, 'actionsButtons']),
             new TwigFunction('vbe_title', [FiltersRuntime::class, 'getPageTitle']),
             new TwigFunction('vbe_flags', [FiltersRuntime::class, 'getFlags']),
         ];

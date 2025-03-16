@@ -1,0 +1,223 @@
+{% extends "form_div_layout.html.twig" %}
+
+{# Widgets #}
+
+{% block form_widget_simple -%}
+    {% if errors|length > 0 -%}
+        {% set attr = attr|merge({class: (attr.class|default('') ~ ' vbe-form-theme-error')|trim}) %}
+    {% endif %}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' vbe-form-theme-input')|trim}) %}
+    {{- parent() -}}
+{%- endblock form_widget_simple %}
+
+{% block textarea_widget -%}
+    {% if errors|length > 0 -%}
+        {% set attr = attr|merge({class: (attr.class|default('') ~ ' vbe-form-theme-error')|trim}) %}
+    {% endif %}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' vbe-form-theme-textarea')|trim}) %}
+    {{- parent() -}}
+{%- endblock textarea_widget %}
+
+{%- block button_widget -%}
+    {%- set attr = attr|merge({class: (attr.class|default('vbe-form-action-btn-secondary') ~ ' vbe-form-theme-button')|trim}) -%}
+    {{- parent() -}}
+{%- endblock button_widget %}
+
+{%- block submit_widget -%}
+    {%- set attr = attr|merge({class: (attr.class|default('vbe-form-action-btn-primary'))|trim}) -%}
+    {{- parent() -}}
+{%- endblock submit_widget %}
+
+{% block choice_widget_collapsed -%}
+    {% if errors|length > 0 -%}
+        {% set attr = attr|merge({class: (attr.class|default('') ~ ' vbe-form-theme-error')|trim}) %}
+    {% endif %}
+
+    {% if multiple -%}
+        {% set attr = attr|merge({style: (attr.style|default('') ~ ' height: auto; background-image: none;')|trim}) %}
+    {% endif %}
+
+    {% if required and placeholder is none and not placeholder_in_choices and not multiple -%}
+        {% set required = false %}
+    {%- endif -%}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' vbe-form-theme-select')|trim}) %}
+    <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple" data-customforms="disabled"{% endif %}>
+        {% if placeholder is not none -%}
+            <option value=""{% if placeholder_attr|default({}) %}{% with { attr: placeholder_attr } %}{{ block('attributes') }}{% endwith %}{% endif %}{% if required and value is empty %} selected="selected"{% endif %}>{{ translation_domain is same as(false) ? placeholder : placeholder|trans({}, translation_domain) }}</option>
+        {%- endif %}
+        {%- if preferred_choices|length > 0 -%}
+            {% set options = preferred_choices %}
+            {% set render_preferred_choices = true %}
+            {{- block('choice_widget_options') -}}
+            {% if choices|length > 0 and separator is not none -%}
+                {%- if separator_html is not defined or separator_html is same as(false) -%}
+                    <option disabled="disabled">{{ separator }}</option>
+                {% else %}
+                    {{ separator|raw }}
+                {% endif %}
+            {%- endif %}
+        {%- endif -%}
+        {% set options = choices -%}
+        {%- set render_preferred_choices = false -%}
+        {{- block('choice_widget_options') -}}
+    </select>
+{%- endblock choice_widget_collapsed %}
+
+{% block choice_widget_expanded -%}
+    {% if '-inline' in label_attr.class|default('') %}
+        <ul class="vbe-form-theme-list vbe-form-theme-list-inline">
+            {% for child in form %}
+                <li>{{ form_widget(child, { parent_label_class: label_attr.class|default('') ~ ' vbe-form-theme-child-label' }) }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        {% set attr = attr|merge({class: (attr.class|default('') ~ ' vbe-form-theme-expanded')|trim}) %}
+        <div {{ block('widget_container_attributes') }}>
+            {% for child in form %}
+                {{ form_widget(child, {
+                    parent_label_class: label_attr.class|default('') ~ ' vbe-form-theme-child-label',
+                    attr: {
+                        class: attr.class|default('') ~ ' vbe-form-theme-checkbox-input'
+                    } })
+                }}
+            {% endfor %}
+        </div>
+    {% endif %}
+{%- endblock choice_widget_expanded %}
+
+{% block checkbox_widget -%}
+    {% set parent_label_class = parent_label_class|default('') ~ ' vbe-form-theme-checkbox' %}
+    {% if errors|length > 0 -%}
+        {% set attr = attr|merge({class: (attr.class|default('') ~ ' vbe-form-theme-error')|trim}) %}
+    {% endif %}
+    {% if 'checkbox-inline' in parent_label_class %}
+        {{ form_label(form, null, { widget: parent() }) }}
+    {% else %}
+        <div class="vbe-form-theme-checkbox-container">
+            {{ form_label(form, null, { widget: parent() }) }}
+        </div>
+    {% endif %}
+{%- endblock checkbox_widget %}
+
+{# Labels #}
+
+{% block form_label -%}
+    {% if errors|length > 0 -%}
+        {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' vbe-form-theme-label vbe-form-theme-error')|trim}) %}
+    {% endif %}
+    {{- parent() -}}
+{%- endblock form_label %}
+
+{% block choice_label -%}
+    {% if errors|length > 0 -%}
+        {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' vbe-form-theme-choice-label vbe-form-theme-error')|trim}) %}
+    {% endif %}
+    {# remove the checkbox-inline and radio-inline class, it's only useful for embed labels #}
+    {% set label_attr = label_attr|merge({class: label_attr.class|default('') ~ ' vbe-form-theme-choice-label'|replace({'checkbox-inline': '', 'radio-inline': ''})|trim}) %}
+    {{- block('form_label') -}}
+{%- endblock choice_label %}
+
+{% block checkbox_label -%}
+    {{- block('checkbox_radio_label') -}}
+{%- endblock checkbox_label %}
+
+{% block checkbox_radio_label -%}
+    {% if required %}
+        {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' vbe-form-theme-checkbox-label required')|trim}) %}
+    {% endif %}
+    {% if errors|length > 0 -%}
+        {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' vbe-form-theme-checkbox-label vbe-form-theme-error')|trim}) %}
+    {% endif %}
+    {%- if parent_label_class is defined -%}
+        {% set embed_label_classes = parent_label_class|split(' ')|filter(class => class in ['checkbox-inline', 'radio-inline']) %}
+        {%- set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' vbe-form-theme-checkbox-label ' ~ embed_label_classes|join(' '))|trim}) -%}
+    {% endif %}
+    {% if label is empty %}
+        {%- if label_format is not empty -%}
+            {% set label = label_format|replace({
+                '%name%': name,
+                '%id%': id,
+            }) %}
+        {%- else -%}
+            {% set label = name|humanize %}
+        {%- endif -%}
+    {% endif %}
+    <label{% with { attr: label_attr|merge({class: 'vbe-form-theme-checkbox-label'}) } %}{{ block('attributes') }}{% endwith %}>
+        {{ widget|raw }}
+        {%- if label is not same as(false) -%}
+            {{- block('form_label_content') -}}
+        {%- endif -%}
+    </label>
+{%- endblock checkbox_radio_label %}
+
+{# Rows #}
+
+{% block form_row -%}
+    {%- set widget_attr = {} -%}
+    {%- if help is not empty -%}
+        {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}
+    {%- endif -%}
+    <div{% with {attr: row_attr|merge({class: (row_attr.class|default('') ~ ' vbe-form-theme-row')|trim})} %}{{ block('attributes') }}{% endwith %}>
+        <div class="vbe-form-theme-columns{% if (not compound or force_error|default(false)) and not valid %} vbe-form-theme-error{% endif %}">
+            {{- form_label(form) -}}
+            {{- form_widget(form, widget_attr) -}}
+            {{- form_help(form) -}}
+            {{- form_errors(form) -}}
+        </div>
+    </div>
+{%- endblock form_row %}
+
+{% block choice_row -%}
+    {% set force_error = true %}
+    {{ block('form_row') }}
+{%- endblock choice_row %}
+
+{% block checkbox_row -%}
+    <div{% with {attr: row_attr|merge({class: (row_attr.class|default('') ~ ' vbe-form-theme-row')|trim})} %}{{ block('attributes') }}{% endwith %}>
+        <div class="vbe-form-theme-columns{% if not valid %} error{% endif %}">
+            {{ form_widget(form) }}
+            {{- form_help(form) -}}
+            {{ form_errors(form) }}
+        </div>
+    </div>
+{%- endblock checkbox_row %}
+
+{% block radio_row -%}
+    <div{% with {attr: row_attr|merge({class: (row_attr.class|default('') ~ ' vbe-form-theme-row')|trim})} %}{{ block('attributes') }}{% endwith %}>
+        <div class="vbe-form-theme-columns{% if not valid %} error{% endif %}">
+            {{ form_widget(form) }}
+            {{- form_help(form) -}}
+            {{ form_errors(form) }}
+        </div>
+    </div>
+{%- endblock radio_row %}
+
+{# Errors #}
+
+{% block form_errors -%}
+    {% if errors|length > 0 -%}
+        {% if form is not rootform %}
+            <small class="vbe-form-theme-error">
+                {%- for error in errors -%}
+                    {% if rawErrorMessage is defined and rawErrorMessage is same as true %}
+                        {{ error.message|raw }}
+                    {% else %}
+                        {{ error.message }}
+                        {% if not loop.last %}, {% endif %}
+                    {% endif %}
+                {%- endfor -%}
+            </small>
+        {% else %}
+            <div data-alert class="vbe-form-theme-alert-box vbe-form-theme-alert">
+                {%- for error in errors -%}
+                    {% if rawErrorMessage is defined and rawErrorMessage is same as true %}
+                        {{ error.message|raw }}
+                    {% else %}
+                        {{ error.message }}
+                        {% if not loop.last %}, {% endif %}
+                    {% endif %}
+                {%- endfor -%}
+            </div>
+        {% endif %}
+    {%- endif %}
+{%- endblock form_errors %}

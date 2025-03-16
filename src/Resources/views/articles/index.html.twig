@@ -1,15 +1,1 @@
-{% extends builder_engine.extended_template %}
-
-{% block title %}{{ vbe_title() }}{% endblock %}
-
-{% block body %}
-
-    <div class="vbe-container" id="{{ vbe_container_id() }}">
-
-        <h1 class="vbe-heading vbe-h1">{{ vbe_title() }}</h1>
-
-        {{ vbe_build_render(data) }}
-
-    </div>
-
-{% endblock %}
+{% include '@BuilderEngineInternal/common/index.html.twig' %}
