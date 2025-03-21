@@ -17,7 +17,8 @@ final class GlobalVariables
         private array $customRoutes,
         private array $pagination_templates,
         private array $crud_buttons,
-        private bool $internal_css
+        private bool $internal_css,
+        private bool $page_title
     )
     {
 
@@ -76,5 +77,10 @@ final class GlobalVariables
     public function getIs_internal_css(): bool
     {
         return $this->internal_css;
+    }
+    
+    public function getPage_title(): bool
+    {
+        return $this->page_title;
     }
 }

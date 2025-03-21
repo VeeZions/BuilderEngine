@@ -17,6 +17,7 @@ class ConfigConstant
     public const CONFIG_SHARED_TEMPLATE_PATH = '@BuilderEngineBundle';
     public const CONFIG_INTERNAL_TEMPLATE_PATH = '@BuilderEngineInternal';
     public const CONFIG_DEFAULT_FORM_THEME = '@BuilderEngineInternal/form/builder_form_theme.html.twig';
+    public const CONFIG_MEDIA_LIST_ROUTE = 'xlxeb_controller_library_list';
     public const CONFIG_DEFAULT_ROUTES = [
         'articles_routes' => [
             'list' => 'xlxeb_controller_article_index',

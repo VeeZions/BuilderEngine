@@ -27,6 +27,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             abstract_arg('Get config.pagination_buttons'),
             abstract_arg('Get config.crud_buttons'),
             abstract_arg('Get config.internal_css'),
+            abstract_arg('Get config.page_title'),
         ])
         ->tag('twig.global')
     ;
@@ -38,6 +39,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             service('request_stack'),
             service('veezions_builder_engine.form_manager'),
             abstract_arg('Get config.custom_routes'),
+            abstract_arg('Get config.page_title'),
+            service('veezions_builder_engine.asset_manager'),
         ])
         ->tag('twig.runtime')
     ;

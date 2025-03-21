@@ -8,10 +8,7 @@ use VeeZions\BuilderEngine\Manager\FormManager;
 use VeeZions\BuilderEngine\Manager\GedManager;
 use VeeZions\BuilderEngine\Manager\NavigationManager;
 use VeeZions\BuilderEngine\Constant\AssetConstant;
-use VeeZions\BuilderEngine\Constant\Crud\ArticleConstant;
-use VeeZions\BuilderEngine\Constant\Crud\CategoryConstant;
-use VeeZions\BuilderEngine\Constant\Crud\NavigationConstant;
-use VeeZions\BuilderEngine\Constant\Crud\PageConstant;
+use VeeZions\BuilderEngine\Constant\NavigationConstant;
 use VeeZions\BuilderEngine\Manager\HtmlManager;
 use VeeZions\BuilderEngine\Constant\TableConstant;
 use VeeZions\BuilderEngine\Manager\EngineManager;
@@ -60,6 +57,9 @@ return static function (ContainerConfigurator $container) {
             abstract_arg('Get config.actions'),
             service('veezions_builder_engine.locale_provider'),
             service('veezions_builder_engine.author_provider'),
+            abstract_arg('Get config.form_theme'),
+            service('veezions_builder_engine.navigation_constant'),
+            abstract_arg('Get config.locale_fallback'),
         ])
     ;
     
@@ -129,6 +129,8 @@ return static function (ContainerConfigurator $container) {
         ])
     ;
 
+    $services->set('veezions_builder_engine.navigation_constant', NavigationConstant::class);
+
     $services
         ->set('veezions_builder_engine.engine_manager', EngineManager::class)
         ->args([
@@ -145,6 +147,9 @@ return static function (ContainerConfigurator $container) {
             service('security.authorization_checker'),
             abstract_arg('Get config.actions'),
             service('veezions_builder_engine.author_provider'),
+            abstract_arg('Get config.form_theme'),
+            service('veezions_builder_engine.navigation_constant'),
+            abstract_arg('Get config.locale_fallback'),
         ])
     ;
 

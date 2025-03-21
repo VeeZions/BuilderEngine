@@ -5,6 +5,7 @@ namespace VeeZions\BuilderEngine\Form;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\InvalidConfigurationException;
+use VeeZions\BuilderEngine\Constant\ConfigConstant;
 use VeeZions\BuilderEngine\Form\Type\ButtonsType;
 use VeeZions\BuilderEngine\Form\Type\SeoType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -30,8 +31,17 @@ class ArticleType extends AbstractType
             throw new InvalidConfigurationException('Entity must be an instance of BuilderArticle');
         }
         $libraries = $entity->getLibraries()->toArray();
+        $isOriginalFormTheme = $options['form_theme'] === ConfigConstant::CONFIG_DEFAULT_FORM_THEME;
 
         $builder
+            ->add('published', CheckboxType::class, [
+                'label' => 'form.label.published',
+                'required' => false,
+                'translation_domain' => 'BuilderEngineBundle-forms',
+                'row_attr' => [
+                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-published-row' : 'published-row'
+                ]
+            ])
             ->add('locale', LocaleType::class, [
                 'label' => 'form.label.locale',
                 'translation_domain' => 'BuilderEngineBundle-forms',
@@ -43,27 +53,10 @@ class ArticleType extends AbstractType
             ->add('title', TextType::class, [
                 'label' => 'form.label.title',
                 'translation_domain' => 'BuilderEngineBundle-forms',
-            ])
-            ->add('published', CheckboxType::class, [
-                'label' => 'form.label.published',
-                'required' => false,
-                'translation_domain' => 'BuilderEngineBundle-forms',
-            ])
-            ->add('categories', EntityType::class, [
-                'label' => 'form.label.categories',
-                'required' => false,
-                'translation_domain' => 'BuilderEngineBundle-forms',
-                'class' => BuilderCategory::class,
-                'choice_label' => 'title',
-                'multiple' => true,
-                'expanded' => true,
-            ])
-            ->add('libraries', HiddenType::class, [
-                'label' => 'form.label.libraries',
-                'translation_domain' => 'BuilderEngineBundle-forms',
-                'data' => !empty($libraries) ? $libraries[0]->getId() : null,
-                'mapped' => false,
-                'required' => false,
+                'attr' => [
+                    'spellcheck' => 'false',
+                    'autocorrect' => 'off',
+                ]
             ])
         ;
 
@@ -84,21 +77,59 @@ class ArticleType extends AbstractType
         }
 
         $builder
+            ->add('categories', EntityType::class, [
+                'label' => 'form.label.categories',
+                'required' => false,
+                'translation_domain' => 'BuilderEngineBundle-forms',
+                'class' => BuilderCategory::class,
+                'choice_label' => 'title',
+                'multiple' => true,
+                'expanded' => true,
+            ])
+            ->add('libraries', HiddenType::class, [
+                'label' => 'form.label.libraries',
+                'translation_domain' => 'BuilderEngineBundle-forms',
+                'data' => !empty($libraries) ? $libraries[0]->getId() : null,
+                'mapped' => false,
+                'required' => false,
+            ])
             ->add('content', TextareaType::class, [
                 'label' => 'form.label.content',
                 'translation_domain' => 'BuilderEngineBundle-forms',
+                'attr' => [
+                    'rows' => 3,
+                    'spellcheck' => 'false',
+                    'autocorrect' => 'off',
+                ],
+                'row_attr' => [
+                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-textarea-row' : 'textarea-row'
+                ]
             ])
             ->add('seo', SeoType::class, [
                 'label' => 'form.label.seo',
                 'translation_domain' => 'BuilderEngineBundle-forms',
                 'data' => $entity->getSeo(),
                 'required' => true,
+                'form_theme' => $options['form_theme'],
+                'attr' => [
+                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-seo-container' : 'seo-container'
+                ],
+                'row_attr' => [
+                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-seo-row' : 'seo-row'
+                ]
             ])
             ->add('buttons', ButtonsType::class, [
                 'mapped' => false,
                 'label' => false,
                 'list_url' => $options['list_url'],
                 'message' => $options['message'],
+                'form_theme' => $options['form_theme'],
+                'attr' => [
+                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-btns' : 'btns'
+                ],
+                'row_attr' => [
+                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-btns-container' : 'btns-container'
+                ]
             ])
 
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($options) {
@@ -127,7 +158,8 @@ class ArticleType extends AbstractType
             'locale_fallback' => null,
             'user_id' => null,
             'list_url' => null,
-            'message' => null
+            'message' => null,
+            'form_theme' => null,
         ]);
     }
 }

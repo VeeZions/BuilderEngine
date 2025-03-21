@@ -4,6 +4,7 @@ namespace VeeZions\BuilderEngine\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\InvalidConfigurationException;
+use VeeZions\BuilderEngine\Constant\ConfigConstant;
 use VeeZions\BuilderEngine\Form\Type\ButtonsType;
 use VeeZions\BuilderEngine\Form\Type\LocaleType;
 use VeeZions\BuilderEngine\Form\Type\SeoType;
@@ -27,6 +28,7 @@ class CategoryType extends AbstractType
         }
         $libraries = $entity->getLibraries()->toArray();
         $id = $entity->getId();
+        $isOriginalFormTheme = $options['form_theme'] === ConfigConstant::CONFIG_DEFAULT_FORM_THEME;
 
         $builder
             ->add('locale', LocaleType::class, [
@@ -40,6 +42,10 @@ class CategoryType extends AbstractType
             ->add('title', TextType::class, [
                 'label' => 'form.label.title',
                 'translation_domain' => 'BuilderEngineBundle-forms',
+                'attr' => [
+                    'spellcheck' => 'false',
+                    'autocomplete' => 'off',
+                ]
             ])
         ;
         $builder
@@ -69,12 +75,26 @@ class CategoryType extends AbstractType
                 'translation_domain' => 'BuilderEngineBundle-forms',
                 'data' => $entity->getSeo(),
                 'required' => true,
+                'form_theme' => $options['form_theme'],
+                'attr' => [
+                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-seo-container' : 'seo-container'
+                ],
+                'row_attr' => [
+                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-seo-row' : 'seo-row'
+                ]
             ])
             ->add('buttons', ButtonsType::class, [
                 'mapped' => false,
                 'label' => false,
                 'list_url' => $options['list_url'],
                 'message' => $options['message'],
+                'form_theme' => $options['form_theme'],
+                'attr' => [
+                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-btns' : 'btns'
+                ],
+                'row_attr' => [
+                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-btns-container' : 'btns-container'
+                ]
             ])
         ;
     }
@@ -89,7 +109,8 @@ class CategoryType extends AbstractType
         $resolver->setDefaults([
             'locale_fallback' => null,
             'list_url' => null,
-            'message' => null
+            'message' => null,
+            'form_theme' => null,
         ]);
     }
 }

@@ -139,7 +139,7 @@
       </trans-unit>
       <trans-unit id="form.label.libraries.upload" resname="form.label.libraries.upload">
         <source>form.label.libraries.upload</source>
-        <target>Téléverser un fichier</target>
+        <target>Choisir un fichier</target>
       </trans-unit>
       <trans-unit id="form.label.libraries.help" resname="form.label.libraries.help">
         <source>form.label.libraries.help</source>
@@ -148,6 +148,78 @@
       <trans-unit id="form.message.back.list" resname="form.message.back.list">
         <source>form.message.back.list</source>
         <target>En quittant cette page vous perdrez vos modifications. Souhaitez-vous vraiment quitter la page ?</target>
+      </trans-unit>
+      <trans-unit id="form.label.navigation-type" resname="form.label.navigation-type">
+        <source>form.label.navigation-type</source>
+        <target>Type de navigation</target>
+      </trans-unit>
+      <trans-unit id="form.navigation.type.header" resname="form.navigation.type.header">
+        <source>form.navigation.type.header</source>
+        <target>Menu principal haut de page</target>
+      </trans-unit>
+      <trans-unit id="form.navigation.type.footer" resname="form.navigation.type.footer">
+        <source>form.navigation.type.footer</source>
+        <target>Menu principal pied de page</target>
+      </trans-unit>
+      <trans-unit id="form.navigation.type.sup_header" resname="form.navigation.type.sup_header">
+        <source>form.navigation.type.sup_header</source>
+        <target>Menu secondaire haut de page</target>
+      </trans-unit>
+      <trans-unit id="form.navigation.type.sub_footer" resname="form.navigation.type.sub_footer">
+        <source>form.navigation.type.sub_footer</source>
+        <target>Menu secondaire pied de page</target>
+      </trans-unit>
+      <trans-unit id="form.btn.upload" resname="form.btn.upload">
+        <source>form.btn.upload</source>
+        <target>Charger le fichier</target>
+      </trans-unit>
+      <trans-unit id="form.label.media.empty" resname="form.label.media.empty">
+        <source>form.label.media.empty</source>
+        <target>Aucun média disponible pour le moment.</target>
+      </trans-unit>
+      <trans-unit id="form.label.order.by" resname="form.label.order.by">
+        <source>form.label.order.by</source>
+        <target>Trier par ordre</target>
+      </trans-unit>
+      <trans-unit id="form.label.order.by.asc" resname="form.label.order.by.asc">
+        <source>form.label.order.by.asc</source>
+        <target>Croissant</target>
+      </trans-unit>
+      <trans-unit id="form.label.order.by.desc" resname="form.label.order.by.desc">
+        <source>form.label.order.by.desc</source>
+        <target>Décroissant</target>
+      </trans-unit>
+      <trans-unit id="form.label.media.types" resname="form.label.media.types">
+        <source>form.label.media.types</source>
+        <target>Types de fichiers</target>
+      </trans-unit>
+      <trans-unit id="form.label.media.types.images" resname="form.label.media.types.images">
+        <source>form.label.media.types.images</source>
+        <target>Images</target>
+      </trans-unit>
+      <trans-unit id="form.label.media.types.videos" resname="form.label.media.types.videos">
+        <source>form.label.media.types.videos</source>
+        <target>Vidéos</target>
+      </trans-unit>
+      <trans-unit id="form.label.media.types.documents" resname="form.label.media.types.documents">
+        <source>form.label.media.types.documents</source>
+        <target>Documents</target>
+      </trans-unit>
+      <trans-unit id="form.label.media.types.unknown" resname="form.label.media.types.unknown">
+        <source>form.label.media.types.unknown</source>
+        <target>Autres</target>
+      </trans-unit>
+      <trans-unit id="form.label.search" resname="form.label.search">
+        <source>form.label.search</source>
+        <target>Rechercher</target>
+      </trans-unit>
+      <trans-unit id="form.label.media.search" resname="form.label.media.search">
+        <source>form.label.media.search</source>
+        <target>Votre recherche</target>
+      </trans-unit>
+      <trans-unit id="form.label.media.search.placeholder" resname="form.label.media.search.placeholder">
+        <source>form.label.media.search.placeholder</source>
+        <target>Votre recherche...</target>
       </trans-unit>
     </body>
   </file>

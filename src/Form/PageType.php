@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use VeeZions\BuilderEngine\Constant\ConfigConstant;
 use VeeZions\BuilderEngine\Form\Type\ButtonsType;
 use VeeZions\BuilderEngine\Form\Type\SeoType;
 use VeeZions\BuilderEngine\Form\Type\BuilderType;
@@ -28,8 +29,17 @@ class PageType extends AbstractType
             throw new InvalidConfigurationException('Entity must be an instance of BuilderPage');
         }
         $libraries = $entity->getLibraries()->toArray();
+        $isOriginalFormTheme = $options['form_theme'] === ConfigConstant::CONFIG_DEFAULT_FORM_THEME;
         
         $builder
+            ->add('published', CheckboxType::class, [
+                'label' => 'form.label.published',
+                'required' => false,
+                'translation_domain' => 'BuilderEngineBundle-forms',
+                'row_attr' => [
+                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-published-row' : 'published-row'
+                ]
+            ])
             ->add('locale', LocaleType::class, [
                 'label' => 'form.label.locale',
                 'translation_domain' => 'BuilderEngineBundle-forms',
@@ -41,11 +51,10 @@ class PageType extends AbstractType
             ->add('title', TextType::class, [
                 'label' => 'form.label.title',
                 'translation_domain' => 'BuilderEngineBundle-forms',
-            ])
-            ->add('published', CheckboxType::class, [
-                'label' => 'form.label.published',
-                'required' => false,
-                'translation_domain' => 'BuilderEngineBundle-forms',
+                'attr' => [
+                    'spellcheck' => 'false',
+                    'autocorrect' => 'off',
+                ]
             ])
         ;
         if ($options['authors'] !== null && !empty($options['authors'])) {
@@ -68,6 +77,10 @@ class PageType extends AbstractType
                 ->add('route', TextType::class, [
                     'label' => 'form.label.route',
                     'translation_domain' => 'BuilderEngineBundle-forms',
+                    'attr' => [
+                        'spellcheck' => 'false',
+                        'autocorrect' => 'off',
+                    ]
                 ]);
         }
         $builder
@@ -87,12 +100,26 @@ class PageType extends AbstractType
                 'translation_domain' => 'BuilderEngineBundle-forms',
                 'data' => $entity->getSeo(),
                 'required' => true,
+                'form_theme' => $options['form_theme'],
+                'attr' => [
+                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-seo-container' : 'seo-container'
+                ],
+                'row_attr' => [
+                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-seo-row' : 'seo-row'
+                ]
             ])
             ->add('buttons', ButtonsType::class, [
                 'mapped' => false,
                 'label' => false,
                 'list_url' => $options['list_url'],
                 'message' => $options['message'],
+                'form_theme' => $options['form_theme'],
+                'attr' => [
+                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-btns' : 'btns'
+                ],
+                'row_attr' => [
+                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-btns-container' : 'btns-container'
+                ]
             ])
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
                 $form = $event->getForm()->getData();
@@ -129,7 +156,8 @@ class PageType extends AbstractType
             'locale_fallback' => null,
             'user_id' => null,
             'list_url' => null,
-            'message' => null
+            'message' => null,
+            'form_theme' => null,
         ]);
     }
 }

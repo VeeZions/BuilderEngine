@@ -26,6 +26,7 @@ use VeeZions\BuilderEngine\Entity\BuilderLibrary;
 use VeeZions\BuilderEngine\Entity\BuilderNavigation;
 use VeeZions\BuilderEngine\Form\ArticleType;
 use VeeZions\BuilderEngine\Form\CategoryType;
+use VeeZions\BuilderEngine\Form\LibrarySearchType;
 use VeeZions\BuilderEngine\Form\LibraryType;
 use VeeZions\BuilderEngine\Form\NavigationType;
 use VeeZions\BuilderEngine\Form\PageType;
@@ -35,6 +36,7 @@ use VeeZions\BuilderEngine\Constant\TableConstant;
 use VeeZions\BuilderEngine\Provider\AuthorProvider;
 use VeeZions\BuilderEngine\Trait\AccessTrait;
 use VeeZions\BuilderEngine\Provider\LocaleProvider;
+use VeeZions\BuilderEngine\Constant\NavigationConstant;
 
 readonly class FormManager
 {
@@ -60,6 +62,9 @@ readonly class FormManager
         protected array $actions,
         protected LocaleProvider $localeProvider,
         protected AuthorProvider $authorProvider,
+        protected string $formTheme,
+        protected NavigationConstant $navigationConstant,
+        protected ?string $localeFallback,
     )
     {
         
@@ -95,6 +100,22 @@ readonly class FormManager
         }
 
         return $type;
+    }
+
+    public function createLibrarySearchForm(): FormView
+    {
+        return $this->formFactory->create(LibrarySearchType::class, null, [
+            'action' => $this->router->generate(ConfigConstant::CONFIG_MEDIA_LIST_ROUTE),
+            'method' => 'POST',
+            'form_theme' => $this->formTheme
+        ])->createView();
+    }
+    
+    public function renderMediaList(): string
+    {
+        return $this->twig->render('@BuilderEngineInternal/libraries/list.html.twig', [
+            'data' => $this->entityManager->getRepository(BuilderLibrary::class)->paginate(),
+        ]);
     }
     
     protected function engine(
@@ -158,7 +179,7 @@ readonly class FormManager
         }
 
         if (in_array($type, [ArticleType::class, PageType::class, NavigationType::class, CategoryType::class], true)) {
-            $options['locale_fallback'] = $this->requestStack->getCurrentRequest()->getLocale();
+            $options['locale_fallback'] = $this->localeFallback;
         }
 
         $listUrl = match ($type) {
@@ -173,9 +194,14 @@ readonly class FormManager
         if (null === $listUrl) {
             throw new InvalidArgumentException($this::class . '::engine() expects a valid $type value');
         }
+
+        if ($type === NavigationType::class) {
+            $options['navigation_types'] = array_flip($this->navigationConstant->getTypes());
+        }
         
         $options['list_url'] = $this->router->generate($listUrl);
         $options['message'] = $this->translator->trans('form.message.back.list', [], 'BuilderEngineBundle-forms');
+        $options['form_theme'] = $this->formTheme;
 
         return $options;
     }

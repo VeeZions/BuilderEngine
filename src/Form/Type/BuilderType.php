@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use VeeZions\BuilderEngine\Constant\ConfigConstant;
 
 class BuilderType extends AbstractType
 {
@@ -15,6 +16,7 @@ class BuilderType extends AbstractType
     {
         $content = $options['data'];
         $content = is_array($content) ? $content : [];
+        $isOriginalFormTheme = $options['form_theme'] === ConfigConstant::CONFIG_DEFAULT_FORM_THEME;
 
         $builder
             ->add('builder', TextType::class, [
@@ -23,6 +25,8 @@ class BuilderType extends AbstractType
                     'class' => 'hidden',
                     'data-saas--builder-target' => 'hidden',
                     'readonly' => true,
+                    'spellcheck' => 'false',
+                    'autocomplete' => 'off',
                 ],
                 'data' => json_encode($content),
             ])
@@ -38,6 +42,7 @@ class BuilderType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => null,
+            'form_theme' => null
         ]);
     }
 }

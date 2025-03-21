@@ -77,7 +77,7 @@
                 {{ form_widget(child, {
                     parent_label_class: label_attr.class|default('') ~ ' vbe-form-theme-child-label',
                     attr: {
-                        class: attr.class|default('') ~ ' vbe-form-theme-checkbox-input'
+                        class: attr.class|replace({'vbe-form-theme-expanded': ''})|default('') ~ ' vbe-form-theme-checkbox-input'
                     } })
                 }}
             {% endfor %}
@@ -87,6 +87,7 @@
 
 {% block checkbox_widget -%}
     {% set parent_label_class = parent_label_class|default('') ~ ' vbe-form-theme-checkbox' %}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' vbe-form-theme-checkbox-simple')|trim}) %}
     {% if errors|length > 0 -%}
         {% set attr = attr|merge({class: (attr.class|default('') ~ ' vbe-form-theme-error')|trim}) %}
     {% endif %}
@@ -99,18 +100,34 @@
     {% endif %}
 {%- endblock checkbox_widget %}
 
+{% block radio_widget -%}
+    {% set parent_label_class = parent_label_class|default('') ~ ' vbe-form-theme-radio' %}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' vbe-form-theme-radio-simple')|trim}) %}
+    {% if 'radio-inline' in parent_label_class %}
+        {{ form_label(form, null, { widget: parent() }) }}
+    {% else %}
+        {% if errors|length > 0 -%}
+            {% set attr = attr|merge({class: (attr.class|default('') ~ ' vbe-form-theme-error')|trim}) %}
+        {% endif %}
+        <div class="vbe-form-theme-radio-container">
+            {{ form_label(form, null, { widget: parent() }) }}
+        </div>
+    {% endif %}
+{%- endblock radio_widget %}
+
 {# Labels #}
 
 {% block form_label -%}
+    {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' vbe-form-theme-label')|trim}) %}
     {% if errors|length > 0 -%}
-        {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' vbe-form-theme-label vbe-form-theme-error')|trim}) %}
+        {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' vbe-form-theme-error')|trim}) %}
     {% endif %}
     {{- parent() -}}
 {%- endblock form_label %}
 
 {% block choice_label -%}
     {% if errors|length > 0 -%}
-        {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' vbe-form-theme-choice-label vbe-form-theme-error')|trim}) %}
+        {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' vbe-form-theme-error')|trim}) %}
     {% endif %}
     {# remove the checkbox-inline and radio-inline class, it's only useful for embed labels #}
     {% set label_attr = label_attr|merge({class: label_attr.class|default('') ~ ' vbe-form-theme-choice-label'|replace({'checkbox-inline': '', 'radio-inline': ''})|trim}) %}
@@ -118,19 +135,20 @@
 {%- endblock choice_label %}
 
 {% block checkbox_label -%}
+    {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' vbe-form-theme-checkbox-label')|trim}) %}
     {{- block('checkbox_radio_label') -}}
 {%- endblock checkbox_label %}
 
 {% block checkbox_radio_label -%}
     {% if required %}
-        {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' vbe-form-theme-checkbox-label required')|trim}) %}
+        {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' vbe-form-theme-radio-label required')|trim}) %}
     {% endif %}
     {% if errors|length > 0 -%}
-        {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' vbe-form-theme-checkbox-label vbe-form-theme-error')|trim}) %}
+        {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' vbe-form-theme-radio-label vbe-form-theme-error')|trim}) %}
     {% endif %}
     {%- if parent_label_class is defined -%}
         {% set embed_label_classes = parent_label_class|split(' ')|filter(class => class in ['checkbox-inline', 'radio-inline']) %}
-        {%- set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' vbe-form-theme-checkbox-label ' ~ embed_label_classes|join(' '))|trim}) -%}
+        {%- set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' vbe-form-theme-radio-label ' ~ embed_label_classes|join(' '))|trim}) -%}
     {% endif %}
     {% if label is empty %}
         {%- if label_format is not empty -%}
@@ -142,7 +160,7 @@
             {% set label = name|humanize %}
         {%- endif -%}
     {% endif %}
-    <label{% with { attr: label_attr|merge({class: 'vbe-form-theme-checkbox-label'}) } %}{{ block('attributes') }}{% endwith %}>
+    <label{% with { attr: label_attr|merge({class: 'vbe-form-theme-choice-label'}) } %}{{ block('attributes') }}{% endwith %}>
         {{ widget|raw }}
         {%- if label is not same as(false) -%}
             {{- block('form_label_content') -}}

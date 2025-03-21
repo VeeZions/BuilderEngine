@@ -1,5 +1,8 @@
 import { Controller } from '@hotwired/stimulus';
 import { resizeGridItems, humanizeSize } from '@veezions/builder-engine-utils-components';
+import Dropzone from "dropzone";
+
+Dropzone.autoDiscover = false;
 
 stimulusFetch: 'lazy'
 
@@ -40,7 +43,7 @@ export default class extends Controller {
 
             const form = new FormData(this.searchFormTarget);
 
-            fetch('/saas/xhr/media/search', {
+            fetch(this.searchFormTarget.action, {
                 method: 'POST',
                 body: form,
                 headers: {'X-Requested-With': 'XMLHttpRequest'}
@@ -66,24 +69,46 @@ export default class extends Controller {
     }
 
     inputTargetConnected(input) {
+
+        const container = this.element.querySelector('#vbe-library-page-container');
+
+        if (container) {
+            const drop = new Dropzone("#"+container.id, {
+                url: "#",
+                disablePreviews: true,
+            });
+            drop.on("addedfile", file => {
+                container.classList.remove('vbe-library-page-drag-on');
+                this.chooseFile(file);
+            });
+            drop.on("dragover", (e) => {
+                container.classList.add('vbe-library-page-drag-on');
+            })
+            drop.on("dragleave", (e) => {
+                container.classList.remove('vbe-library-page-drag-on');
+            })
+        }
+
         input.oninput = (e) => {
             const files = e.currentTarget.files;
-
             if (files.length > 0) {
-
-                const file = files[0];
-                this.previewTarget.innerHTML = `${file.name} <i><b>${humanizeSize(file.size)}</b></i>`;
-                this.previewTarget.title = file.name;
-                this.previewTarget.classList.add('mt-6');
-
-                if (file.size > this.maxFileSize) {
-                    this.previewTarget.classList.add('text-red-400');
-                    this.uploadTarget.disabled = true;
-                } else {
-                    this.previewTarget.classList.remove('text-red-400');
-                    this.uploadTarget.disabled = false;
-                }
+                this.chooseFile(files[0]);
             }
+        }
+    }
+
+    chooseFile(file) {
+
+        this.previewTarget.innerHTML = `<span>${file.name}</span><i><b>${humanizeSize(file.size)}</b></i>`;
+        this.previewTarget.title = file.name;
+        this.previewTarget.classList.add('vbe-library-page-loaded');
+
+        if (file.size >= this.maxFileSize) {
+            this.previewTarget.classList.add('vbe-error');
+            this.uploadTarget.disabled = true;
+        } else {
+            this.previewTarget.classList.remove('vbe-error');
+            this.uploadTarget.disabled = false;
         }
     }
 

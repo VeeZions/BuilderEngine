@@ -15,6 +15,7 @@ final class FiltersExtension extends AbstractExtension
             new TwigFilter('vbe_value_mutator', [FiltersRuntime::class, 'valueMutator']),
             new TwigFilter('vbe_is_sortable', [FiltersRuntime::class, 'isSortable']),
             new TwigFilter('vbe_remove_alias', [FiltersRuntime::class, 'removeAlias']),
+            new TwigFilter('vbe_file_extension', [FiltersRuntime::class, 'fileExtension']),
         ];
     }
 
@@ -30,6 +31,7 @@ final class FiltersExtension extends AbstractExtension
             new TwigFunction('vbe_build_render', [FiltersRuntime::class, 'buildRender']),
             new TwigFunction('vbe_title', [FiltersRuntime::class, 'getPageTitle']),
             new TwigFunction('vbe_flags', [FiltersRuntime::class, 'getFlags']),
+            new TwigFunction('vbe_aws_s3', [FiltersRuntime::class, 'awsS3']),
         ];
     }
 }

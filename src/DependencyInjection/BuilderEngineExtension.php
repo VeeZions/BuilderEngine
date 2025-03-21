@@ -36,7 +36,7 @@ class BuilderEngineExtension extends Extension
         $loader->load('twig.php');
         $loader->load('command.php');
 
-        $this->setControllersArgumentsFromConfig($config, $container);
+        $this->setDefinitions($config, $container);
     }
 
     public function getConfiguration(array $config, ContainerBuilder $container): BuilderEngineConfiguration
@@ -44,57 +44,109 @@ class BuilderEngineExtension extends Extension
         return new BuilderEngineConfiguration();
     }
 
-    private function setControllersArgumentsFromConfig(array $config, ContainerBuilder $container): void
+    private function setDefinitions(array $config, ContainerBuilder $container): void
     {
-        $liipFilters = $container->hasParameter('liip_imagine.filter_sets') 
-            ? $container->getParameter('liip_imagine.filter_sets') 
-            : [];
-        
-        $routeLoaderDefinition = $container->getDefinition('veezions_builder_engine.route_loader');
-        $routeLoaderDefinition->setArgument('$mode', $config['mode']);
-        $routeLoaderDefinition->setArgument('$prefix', $config['crud_prefix']);
-        $routeLoaderDefinition->setArgument('$actionsConfig', $config['actions']);
+        $this->setRouteLoaderDefinition($config, $container);
+        $this->setCommandsDefinition($config, $container);
+        $this->setformManagerDefinition($config, $container);
+        $this->setEngineManagerDefinition($config, $container);
+        $this->setAssetConstantDefinition($config, $container);
+        $this->setGlobalVariableDefinition($config, $container);
+        $this->setPageRuntimeDefinition($config, $container);
+        $this->setHtmlManagerDefinition($config, $container);
+        $this->setTableConstantDefinition($config, $container);
+        $this->setArticleRepositoryDefinition($config, $container);
+        $this->setPageRepositoryDefinition($config, $container);
+    }
 
-        $importCommandDefinition = $container->getDefinition('veezions_builder_engine.command.import_templates');
-        $importCommandDefinition->setArgument('$mode', $config['mode']);
-        
-        $formManagerDefinition = $container->getDefinition('veezions_builder_engine.form_manager');
-        $formManagerDefinition->setArgument('$authors', $config['author_providers']);
-        $formManagerDefinition->setArgument('$bundleMode', $config['mode']);
-        $formManagerDefinition->setArgument('$libraryLiipFilters', $config['library_config']['liip_filter_sets']);
-        $formManagerDefinition->setArgument('$customRoutes', $config['custom_routes']);
-        $formManagerDefinition->setArgument('$actions', $config['actions']);
+    private function setRouteLoaderDefinition(array $config, ContainerBuilder $container): void
+    {
+        $def = $container->getDefinition('veezions_builder_engine.route_loader');
+        $def->setArgument('$mode', $config['mode']);
+        $def->setArgument('$prefix', $config['crud_prefix']);
+        $def->setArgument('$actionsConfig', $config['actions']);
+    }
 
-        $engineManagerDefinition = $container->getDefinition('veezions_builder_engine.engine_manager');
-        $engineManagerDefinition->setArgument('$authors', $config['author_providers']);
-        $engineManagerDefinition->setArgument('$customRoutes', $config['custom_routes']);
-        $engineManagerDefinition->setArgument('$actions', $config['actions']);
-        
-        $assetConstantDefinition = $container->getDefinition('veezions_builder_engine.asset_constant');
-        $assetConstantDefinition->setArgument('$liipFilters', $liipFilters);
-        
-        $globalVariableDefinition = $container->getDefinition('veezions_builder_engine.twig.global');
-        $globalVariableDefinition->setArgument('$extended_template', $config['extended_template']);
-        $globalVariableDefinition->setArgument('$form_theme', $config['form_theme']);
-        $globalVariableDefinition->setArgument('$customRoutes', $config['custom_routes']);
-        $globalVariableDefinition->setArgument('$pagination_templates', $config['pagination_buttons']);
-        $globalVariableDefinition->setArgument('$crud_buttons', $config['crud_buttons']);
-        $globalVariableDefinition->setArgument('$internal_css', $config['internal_css']);
-        
-        $pageRuntimeDefinition = $container->getDefinition('veezions_builder_engine.twig.page_runtime');
-        $pageRuntimeDefinition->setArgument('$customRoutes', $config['custom_routes']);
+    private function setCommandsDefinition(array $config, ContainerBuilder $container): void
+    {
+        $def = $container->getDefinition('veezions_builder_engine.command.import_templates');
+        $def->setArgument('$mode', $config['mode']);
+    }
 
-        $htmlManagerDefinition = $container->getDefinition('veezions_builder_engine.html_manager');
-        $htmlManagerDefinition->setArgument('$customRoutes', $config['custom_routes']);
-        $htmlManagerDefinition->setArgument('$actions', $config['actions']);
+    private function setformManagerDefinition(array $config, ContainerBuilder $container): void
+    {
+        $def = $container->getDefinition('veezions_builder_engine.form_manager');
+        $def->setArgument('$authors', $config['author_providers']);
+        $def->setArgument('$bundleMode', $config['mode']);
+        $def->setArgument('$libraryLiipFilters', $config['library_config']['liip_filter_sets']);
+        $def->setArgument('$customRoutes', $config['custom_routes']);
+        $def->setArgument('$actions', $config['actions']);
+        $def->setArgument('$formTheme', $config['form_theme']);
+        $def->setArgument('$localeFallback', $config['locale_fallback']);
+    }
 
-        $tableConstantDefinition = $container->getDefinition('veezions_builder_engine.table_constant');
-        $tableConstantDefinition->setArgument('$authors', $config['author_providers']);
+    private function setEngineManagerDefinition(array $config, ContainerBuilder $container): void
+    {
+        $def = $container->getDefinition('veezions_builder_engine.engine_manager');
+        $def->setArgument('$authors', $config['author_providers']);
+        $def->setArgument('$customRoutes', $config['custom_routes']);
+        $def->setArgument('$actions', $config['actions']);
+        $def->setArgument('$formTheme', $config['form_theme']);
+        $def->setArgument('$localeFallback', $config['locale_fallback']);
+    }
 
-        $articleRepositoryDefinition = $container->getDefinition(BuilderArticleRepository::class);
-        $articleRepositoryDefinition->setArgument('$authors', $config['author_providers']['articles']);
+    private function setAssetConstantDefinition(array $config, ContainerBuilder $container): void
+    {
+        $def = $container->getDefinition('veezions_builder_engine.asset_constant');
+        $def->setArgument(
+            '$liipFilters',
+            $container->hasParameter('liip_imagine.filter_sets')
+                ? $container->getParameter('liip_imagine.filter_sets')
+                : []
+        );
+    }
 
-        $pageRepositoryDefinition = $container->getDefinition(BuilderPageRepository::class);
-        $pageRepositoryDefinition->setArgument('$authors', $config['author_providers']['articles']);
+    private function setGlobalVariableDefinition(array $config, ContainerBuilder $container): void
+    {
+        $def = $container->getDefinition('veezions_builder_engine.twig.global');
+        $def->setArgument('$extended_template', $config['extended_template']);
+        $def->setArgument('$form_theme', $config['form_theme']);
+        $def->setArgument('$customRoutes', $config['custom_routes']);
+        $def->setArgument('$pagination_templates', $config['pagination_buttons']);
+        $def->setArgument('$crud_buttons', $config['crud_buttons']);
+        $def->setArgument('$internal_css', $config['internal_css']);
+        $def->setArgument('$page_title', $config['page_title_display']);
+    }
+
+    private function setPageRuntimeDefinition(array $config, ContainerBuilder $container): void
+    {
+        $def = $container->getDefinition('veezions_builder_engine.twig.page_runtime');
+        $def->setArgument('$customRoutes', $config['custom_routes']);
+        $def->setArgument('$page_title', $config['page_title_display']);
+    }
+
+    private function setHtmlManagerDefinition(array $config, ContainerBuilder $container): void
+    {
+        $def = $container->getDefinition('veezions_builder_engine.html_manager');
+        $def->setArgument('$customRoutes', $config['custom_routes']);
+        $def->setArgument('$actions', $config['actions']);
+    }
+
+    private function setTableConstantDefinition(array $config, ContainerBuilder $container): void
+    {
+        $def = $container->getDefinition('veezions_builder_engine.table_constant');
+        $def->setArgument('$authors', $config['author_providers']);
+    }
+
+    private function setArticleRepositoryDefinition(array $config, ContainerBuilder $container): void
+    {
+        $def = $container->getDefinition(BuilderArticleRepository::class);
+        $def->setArgument('$authors', $config['author_providers']['articles']);
+    }
+
+    private function setPageRepositoryDefinition(array $config, ContainerBuilder $container): void
+    {
+        $def = $container->getDefinition(BuilderPageRepository::class);
+        $def->setArgument('$authors', $config['author_providers']['articles']);
     }
 }

@@ -12,6 +12,7 @@ use VeeZions\BuilderEngine\Entity\BuilderCategory;
 use VeeZions\BuilderEngine\Entity\BuilderLibrary;
 use VeeZions\BuilderEngine\Entity\BuilderNavigation;
 use VeeZions\BuilderEngine\Entity\BuilderPage;
+use VeeZions\BuilderEngine\Manager\AssetManager;
 use VeeZions\BuilderEngine\Manager\FormManager;
 use VeeZions\BuilderEngine\Manager\HtmlManager;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -25,7 +26,9 @@ final class FiltersRuntime implements RuntimeExtensionInterface
         private HtmlManager $htmlManager,
         private RequestStack $requestStack,
         private FormManager $formManager,
-        private array $customRoutes
+        private array $customRoutes,
+        private bool $page_title,
+        private AssetManager $manageAsset,
     )
     {
         
@@ -112,6 +115,10 @@ final class FiltersRuntime implements RuntimeExtensionInterface
 
     public function getPageTitle(): ?string
     {
+        if (!$this->page_title) {
+            return null;
+        }
+        
         $route = $this->requestStack->getCurrentRequest()->attributes->get('_route');
         if ($route === ConfigConstant::CONFIG_DEFAULT_ROUTES['libraries_routes']['list']) {
             return $this->formManager->translateCrudTitle('libraries', 'index');
@@ -158,5 +165,44 @@ final class FiltersRuntime implements RuntimeExtensionInterface
 
         $split = explode(' as ', $colName);
         return $split[0];
+    }
+
+    public function awsS3(?string $value, bool $fromCdn = true): ?string
+    {
+        return false === $fromCdn
+            ? $this->manageAsset->getUrlFromAwsS3($value)
+            : $this->manageAsset->getUrlFromCdn($value);
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function fileExtension(string $url): array
+    {
+        $split = explode('.', $url);
+        $ext = end($split);
+        $color = match ($ext) {
+            'jpg', 'jpeg', 'png', 'gif' => '#bb99ff',
+            'avi', 'mpeg', 'mov', 'mp4', 'wmv' => '#e68a00',
+            'pdf' => '#cc3300',
+            'xls', 'xlsx', 'csv' => '#009933',
+            'doc', 'docx' => '#3366cc',
+            default => 'inherit',
+        };
+
+        return [
+            'ext' => strtoupper(end($split)),
+            'color' => $color,
+        ];
+    }
+
+    public function getMediaName(string $url): string
+    {
+        $split = explode(DIRECTORY_SEPARATOR, $url);
+        $name = end($split);
+        $split2 = explode('.', $name);
+        $ext = end($split2);
+
+        return str_replace('.'.$ext, '', $name);
     }
 }
