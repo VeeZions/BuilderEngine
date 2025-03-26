@@ -221,6 +221,62 @@
         <source>form.label.media.search.placeholder</source>
         <target>Votre recherche...</target>
       </trans-unit>
+      <trans-unit id="form.label.media.delete.all" resname="form.label.media.delete.all">
+        <source>form.label.media.delete.all</source>
+        <target>Supprimer la sélection</target>
+      </trans-unit>
+      <trans-unit id="form.label.media.load.more" resname="form.label.media.load.more">
+        <source>form.label.media.load.more</source>
+        <target>Charger plus</target>
+      </trans-unit>
+      <trans-unit id="form.label.media.total" resname="form.label.media.total">
+        <source>form.label.media.total</source>
+        <target>Nombre de fichiers</target>
+      </trans-unit>
+      <trans-unit id="form.label.media.modal.title" resname="form.label.media.modal.title">
+        <source>form.label.media.modal.title</source>
+        <target>Informations</target>
+      </trans-unit>
+      <trans-unit id="form.label.media.modal.size" resname="form.label.media.modal.size">
+        <source>form.label.media.modal.size</source>
+        <target>Taille</target>
+      </trans-unit>
+      <trans-unit id="form.label.media.modal.dimensions" resname="form.label.media.modal.dimensions">
+        <source>form.label.media.modal.dimensions</source>
+        <target>Dimensions</target>
+      </trans-unit>
+      <trans-unit id="form.label.media.modal.date" resname="form.label.media.modal.date">
+        <source>form.label.media.modal.date</source>
+        <target>Téléversé le</target>
+      </trans-unit>
+      <trans-unit id="form.label.media.modal.mime" resname="form.label.media.modal.mime">
+        <source>form.label.media.modal.mime</source>
+        <target>Type MIME</target>
+      </trans-unit>
+      <trans-unit id="form.label.media.modal.url" resname="form.label.media.modal.url">
+        <source>form.label.media.modal.url</source>
+        <target>URL</target>
+      </trans-unit>
+      <trans-unit id="form.label.media.modal.used" resname="form.label.media.modal.used">
+        <source>form.label.media.modal.used</source>
+        <target>Utilisation</target>
+      </trans-unit>
+      <trans-unit id="form.label.media.modal.no.use" resname="form.label.media.modal.no.use">
+        <source>form.label.media.modal.no.use</source>
+        <target>Aucune utilisation pour le moment.</target>
+      </trans-unit>
+      <trans-unit id="form.label.media.modal.edit.title" resname="form.label.media.modal.edit.title">
+        <source>form.label.media.modal.edit.title</source>
+        <target>Titre</target>
+      </trans-unit>
+      <trans-unit id="form.label.media.modal.edit.legend" resname="form.label.media.modal.edit.legend">
+        <source>form.label.media.modal.edit.legend</source>
+        <target>Légende</target>
+      </trans-unit>
+      <trans-unit id="form.label.media.save" resname="form.label.media.save">
+        <source>form.label.media.save</source>
+        <target>Mettre à jour</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

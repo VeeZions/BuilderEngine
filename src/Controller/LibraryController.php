@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use VeeZions\BuilderEngine\Entity\BuilderLibrary;
@@ -33,8 +34,14 @@ class LibraryController
         if (!$request->isXmlHttpRequest()) {
             throw new AccessDeniedException();
         }
+
+        $order = $request->request->get('media_search_order');
+        $types = $request->request->getIterator()->getArrayCopy()['media_search_types'] ?? [];
+        $search = strlen($request->request->get('media_search')) > 0 
+            ? $request->request->get('media_search') 
+            : null;
         
-        return new JsonResponse(['html' => $this->engineManager->renderMediaList()]);
+        return new JsonResponse(['html' => $this->engineManager->renderMediaList($order, $types, $search)]);
     }
     
     public function save(Request $request): JsonResponse
@@ -42,6 +49,8 @@ class LibraryController
         if (!$request->isXmlHttpRequest()) {
             throw new AccessDeniedException();
         }
+        
+        
         
         return new JsonResponse(['html' => $this->engineManager->renderMediaList()]);
     }
@@ -60,7 +69,12 @@ class LibraryController
         if (!$request->isXmlHttpRequest()) {
             throw new AccessDeniedException();
         }
-        
-        return new JsonResponse(['html' => $this->engineManager->renderMediaList()]);
+
+        if (!$request->request->has('id')) {
+            throw new BadRequestHttpException('Something went wrong...');
+        }
+
+        $id = $request->request->getInt('id');
+        return new JsonResponse(['html' => $this->engineManager->renderModal($id)]);
     }
 }

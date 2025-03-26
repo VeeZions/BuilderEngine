@@ -3,17 +3,20 @@
 namespace VeeZions\BuilderEngine\Twig\Runtime;
 
 use DateTimeInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormView;
 use Twig\Extension\RuntimeExtensionInterface;
 use Twig\Markup;
 use VeeZions\BuilderEngine\Constant\ConfigConstant;
 use VeeZions\BuilderEngine\Entity\BuilderArticle;
 use VeeZions\BuilderEngine\Entity\BuilderCategory;
+use VeeZions\BuilderEngine\Entity\BuilderElement;
 use VeeZions\BuilderEngine\Entity\BuilderLibrary;
 use VeeZions\BuilderEngine\Entity\BuilderNavigation;
 use VeeZions\BuilderEngine\Entity\BuilderPage;
 use VeeZions\BuilderEngine\Manager\AssetManager;
 use VeeZions\BuilderEngine\Manager\FormManager;
+use VeeZions\BuilderEngine\Manager\GedManager;
 use VeeZions\BuilderEngine\Manager\HtmlManager;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Knp\Component\Pager\Pagination\PaginationInterface;
@@ -29,6 +32,8 @@ final class FiltersRuntime implements RuntimeExtensionInterface
         private array $customRoutes,
         private bool $page_title,
         private AssetManager $manageAsset,
+        private EntityManagerInterface $entityManager,
+        private GedManager $gedManager,
     )
     {
         
@@ -187,7 +192,7 @@ final class FiltersRuntime implements RuntimeExtensionInterface
             'pdf' => '#cc3300',
             'xls', 'xlsx', 'csv' => '#009933',
             'doc', 'docx' => '#3366cc',
-            default => 'inherit',
+            default => '#000',
         };
 
         return [
@@ -204,5 +209,45 @@ final class FiltersRuntime implements RuntimeExtensionInterface
         $ext = end($split2);
 
         return str_replace('.'.$ext, '', $name);
+    }
+
+    public function humanizeSize(int $octets): string
+    {
+        $def = [
+            [1, 'octets'],
+            [1024, 'ko'],
+            [1024 * 1024, 'Mo'],
+            [1024 * 1024 * 1024, 'Go'],
+            [1024 * 1024 * 1024 * 1024, 'To'],
+        ];
+
+        for ($i = 0; $i < count($def); ++$i) {
+            if ($octets < $def[$i][0]) {
+                return number_format($octets / $def[$i - 1][0], 2, ',', ' ').' '.$def[$i - 1][1];
+            }
+        }
+
+        return '';
+    }
+
+    public function getAllElementsFromPage(BuilderPage $page): array
+    {
+        $elements = $this->entityManager->getRepository(BuilderElement::class)->findBy(['page' => $page]);
+        $results = [];
+        foreach ($elements as $element) {
+            $results[] = $this->gedManager->getElementHumanizedRanking($element);
+        }
+
+        return $results;
+    }
+
+    public function getRealElementsLength(array $elements): int
+    {
+        $count = 0;
+        foreach ($elements as $element) {
+            $count += $this->entityManager->getRepository(BuilderElement::class)->count(['page' => $element->getPage()]);
+        }
+
+        return $count;
     }
 }

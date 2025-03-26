@@ -215,25 +215,15 @@
 {% block form_errors -%}
     {% if errors|length > 0 -%}
         {% if form is not rootform %}
-            <small class="vbe-form-theme-error">
-                {%- for error in errors -%}
-                    {% if rawErrorMessage is defined and rawErrorMessage is same as true %}
-                        {{ error.message|raw }}
-                    {% else %}
-                        {{ error.message }}
-                        {% if not loop.last %}, {% endif %}
-                    {% endif %}
-                {%- endfor -%}
-            </small>
+            {%- for error in errors -%}
+                {{ error.message|raw }}
+                {% if not loop.last %}, {% endif %}
+            {%- endfor -%}
         {% else %}
             <div data-alert class="vbe-form-theme-alert-box vbe-form-theme-alert">
                 {%- for error in errors -%}
-                    {% if rawErrorMessage is defined and rawErrorMessage is same as true %}
-                        {{ error.message|raw }}
-                    {% else %}
-                        {{ error.message }}
-                        {% if not loop.last %}, {% endif %}
-                    {% endif %}
+                    {{ error.message|raw }}
+                    {% if not loop.last %}, {% endif %}
                 {%- endfor -%}
             </div>
         {% endif %}

@@ -6,9 +6,11 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use VeeZions\BuilderEngine\Constant\AssetConstant;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use VeeZions\BuilderEngine\Constant\ConfigConstant;
+use Symfony\Component\Validator\Constraints\File;
 
 class LibraryType extends AbstractType
 {
@@ -37,6 +39,7 @@ class LibraryType extends AbstractType
                     'accept' => implode(',', $accepted),
                     'style' => 'display:none;',
                     'data-veezions--builder-engine-bundle--veezions-builder-engine-bundle-media-target' => 'input',
+                    'data-maxFileSize' => 2000000
                 ],
                 'help' => 'form.label.libraries.help',
                 'help_translation_parameters' => [],
@@ -47,6 +50,13 @@ class LibraryType extends AbstractType
                 'row_attr' => [
                     'class' => 'builder-libraries-row',
                 ],
+                'constraints' => [
+                    new File([
+                        'maxSize' => '2M',
+                        'mimeTypes' => $accepted,
+                        'mimeTypesMessage' => $options['error_message'],
+                    ])
+                ],
             ])
             ->add('save', SubmitType::class, [
                 'label' => 'form.btn.upload',
@@ -56,6 +66,7 @@ class LibraryType extends AbstractType
                 ],
                 'attr' => [
                     'data-veezions--builder-engine-bundle--veezions-builder-engine-bundle-media-target' => 'upload',
+                    'disabled' => true
                 ]
             ])
         ;
@@ -73,6 +84,7 @@ class LibraryType extends AbstractType
             'list_url' => null,
             'message' => null,
             'form_theme' => null,
+            'error_message' => null
         ]);
     }
 }

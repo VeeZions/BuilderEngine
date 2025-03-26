@@ -26,10 +26,12 @@ export default class extends Controller {
 
     itemsPerLoad = null;
     maxFileSize = 0;
+    editUrl = null;
 
     connect() {
         this.itemsPerLoad = parseInt(this.element.dataset.perload);
         this.maxFileSize = parseInt(this.element.dataset.maxfilesize);
+        this.editUrl = this.element.dataset.edit;
         this.setCounter();
     }
 
@@ -162,7 +164,7 @@ export default class extends Controller {
             const form = new FormData();
             form.append('id', id);
 
-            fetch('/saas/xhr/media/modal', {
+            fetch(this.editUrl, {
                 method: 'POST',
                 body: form,
                 headers: {'X-Requested-With': 'XMLHttpRequest'}

@@ -41,6 +41,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             abstract_arg('Get config.custom_routes'),
             abstract_arg('Get config.page_title'),
             service('veezions_builder_engine.asset_manager'),
+            service('doctrine.orm.entity_manager'),
+            service('veezions_builder_engine.ged_manager'),
         ])
         ->tag('twig.runtime')
     ;

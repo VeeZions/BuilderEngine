@@ -26,6 +26,7 @@ use VeeZions\BuilderEngine\Entity\BuilderLibrary;
 use VeeZions\BuilderEngine\Entity\BuilderNavigation;
 use VeeZions\BuilderEngine\Form\ArticleType;
 use VeeZions\BuilderEngine\Form\CategoryType;
+use VeeZions\BuilderEngine\Form\LibraryModalType;
 use VeeZions\BuilderEngine\Form\LibrarySearchType;
 use VeeZions\BuilderEngine\Form\LibraryType;
 use VeeZions\BuilderEngine\Form\NavigationType;
@@ -52,10 +53,10 @@ readonly class FormManager
         protected Router $router,
         private GedManager $gedManager,
         private CmsManager $cmsManager,
-        private AssetManager $assetManager,
+        protected AssetManager $assetManager,
         protected array $authors,
         private string $bundleMode,
-        private array $libraryLiipFilters,
+        protected array $libraryLiipFilters,
         protected array $customRoutes,
         protected TableConstant $constant,
         protected AuthorizationCheckerInterface $authorizationChecker,
@@ -106,18 +107,31 @@ readonly class FormManager
     {
         return $this->formFactory->create(LibrarySearchType::class, null, [
             'action' => $this->router->generate(ConfigConstant::CONFIG_MEDIA_LIST_ROUTE),
-            'method' => 'POST',
+            'method' => 'GET',
             'form_theme' => $this->formTheme
         ])->createView();
     }
     
-    public function renderMediaList(): string
+    public function renderMediaList(string $order, array $types, ?string $search): string
     {
         return $this->twig->render('@BuilderEngineInternal/libraries/list.html.twig', [
-            'data' => $this->entityManager->getRepository(BuilderLibrary::class)->paginate(),
+            'data' => $this->entityManager->getRepository(BuilderLibrary::class)->paginate($order, $types, $search),
         ]);
     }
     
+    public function renderModal(int $id): string
+    {
+        return $this->twig->render('@BuilderEngineInternal/libraries/modal.html.twig', [
+            'media' => $this->entityManager->getRepository(BuilderLibrary::class)->find($id),
+            'form' => $this->formFactory->create(LibraryModalType::class, null, [
+                'action' => $this->router->generate(ConfigConstant::CONFIG_MEDIA_SAVE_ROUTE),
+                'method' => 'GET',
+                'form_theme' => $this->formTheme,
+                'file_data' => $this->entityManager->getRepository(BuilderLibrary::class)->find($id),
+            ])->createView()
+        ]);
+    }
+
     protected function engine(
         string $type, 
         mixed $data = null,
@@ -137,10 +151,12 @@ readonly class FormManager
             return new RedirectResponse($this->compileRedirectionRoute($redirectionRoute, $type));
         }
 
+        $response = $form->isSubmitted() ? 301 : 200;
+
         return new Response($this->twig->render(
             $this->getTwigTemplate($type, 'new-edit'),
             array_merge(['form' => $form->createView()], $twigVars)
-        ));
+        ), $response);
     }
     
     private function getTwigTemplate(string $type, string $action): string
@@ -199,6 +215,10 @@ readonly class FormManager
             $options['navigation_types'] = array_flip($this->navigationConstant->getTypes());
         }
         
+        if ($type === LibraryType::class) {
+            $options['error_message'] = $this->translator->trans('error.label.libraries.mime_types_message', [], 'BuilderEngineBundle-errors');
+        }
+        
         $options['list_url'] = $this->router->generate($listUrl);
         $options['message'] = $this->translator->trans('form.message.back.list', [], 'BuilderEngineBundle-forms');
         $options['form_theme'] = $this->formTheme;
@@ -206,7 +226,7 @@ readonly class FormManager
         return $options;
     }
 
-    private function setData(mixed $data, string $type): object
+    private function setData(mixed $data, string $type): ?object
     {
         if (null === $data) {
             $data = match ($type) {
@@ -214,12 +234,12 @@ readonly class FormManager
                 PageType::class => new BuilderPage(),
                 CategoryType::class => new BuilderCategory(),
                 NavigationType::class => new BuilderNavigation(),
-                LibraryType::class => new BuilderLibrary(),
+                LibraryType::class => null,
                 default => null,
             };
         }
 
-        if (null === $data) {
+        if (null === $data && $type !== LibraryType::class) {
             throw new InvalidArgumentException($this::class . '::engine() expects a valid form type');
         }
 
@@ -228,19 +248,20 @@ readonly class FormManager
 
     private function saveData(FormInterface $form): void
     {
+        $innerType = $form->getConfig()->getType()->getInnerType();
         $entity = $form->getData();
         $entity = match (true) {
             $entity instanceof BuilderNavigation =>
             $this->prepareNavigationData($form, $entity),
             $entity instanceof BuilderPage, $entity instanceof BuilderArticle, $entity instanceof BuilderCategory =>
             $this->prepareCmsEntitiesData($form, $entity),
-            $form instanceof LibraryType => $this->assetManager->upload(
+            $innerType instanceof LibraryType => $this->assetManager->upload(
                 $form->get('file')->getData(),
                 $this->libraryLiipFilters
             ),
         };
 
-        if (!$form instanceof LibraryType) {
+        if (!$innerType instanceof LibraryType) {
             if ($entity->getId() !== null) {
                 $this->entityManager->persist($entity);
             }

@@ -66,13 +66,14 @@ return static function (ContainerConfigurator $container) {
     $services
         ->set('veezions_builder_engine.asset_manager', AssetManager::class)
         ->args([
-            service('oneup_flysystem.default_filesystem_filesystem'),
+            service('oneup_flysystem.vbe_uploads_filesystem'),
             service('liip_imagine.cache.manager'),
             service('parameter_bag'),
             service('veezions_builder_engine.asset_constant'),
             service('liip_imagine.filter.manager'),
             service('liip_imagine.data.manager'),
             service('doctrine.orm.entity_manager'),
+            abstract_arg('Get config.library_config'),
         ])
     ;
     
@@ -141,7 +142,9 @@ return static function (ContainerConfigurator $container) {
             service('security.token_storage'),
             service('translator'),
             service('router'),
+            service('veezions_builder_engine.asset_manager'),
             abstract_arg('Authors provider'),
+            abstract_arg('Get liipImagine filter sets'),
             abstract_arg('Get config.custom_routes'),
             service('veezions_builder_engine.table_constant'),
             service('security.authorization_checker'),

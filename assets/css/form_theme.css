@@ -78,7 +78,9 @@
     margin-right: 5px;
 }
 
-.vbe-form-theme-button {
+.vbe-form-theme-button,
+.vbe-form-theme-media-list-delete-btn,
+.vbe-form-theme-media-list-more-btn {
     text-decoration: none;
     height: 32px;
     padding: 5px 15px;
@@ -93,29 +95,45 @@
     transition: all linear 0.3s;
 }
 
-.vbe-form-theme-button:hover {
+.vbe-form-theme-button:disabled,
+.vbe-form-theme-media-list-delete-btn:disabled,
+.vbe-form-theme-media-list-more-btn:disabled {
+    opacity: 0.5;
+}
+
+.vbe-form-theme-media-list-more-btn {
+    width: max-content;
+    margin: 32px auto 0;
+}
+
+.vbe-form-theme-button:hover,
+.vbe-form-theme-media-list-delete-btn:hover {
     text-decoration: none;
 }
 
-.vbe-form-action-btn-primary {
+.vbe-form-action-btn-primary,
+.vbe-form-theme-media-list-more-btn {
     background-color: #007bff;
     border: 1px solid #007bff;
     color: #fff;
 }
 
-.vbe-form-action-btn-primary:hover {
+.vbe-form-action-btn-primary:hover,
+.vbe-form-theme-media-list-more-btn:hover {
     background-color: #0069d9;
     border: 1px solid #0069d9;
     color: #fff;
 }
 
-.vbe-form-action-btn-secondary {
+.vbe-form-action-btn-secondary,
+.vbe-form-theme-media-list-delete-btn {
     background-color: #f1f1f1;
     border: 1px solid #ced4da;
     color: #333;
 }
 
-.vbe-form-action-btn-secondary:hover {
+.vbe-form-action-btn-secondary:hover,
+.vbe-form-theme-media-list-delete-btn:hover {
     background-color: #e9ecef;
     border: 1px solid #ced4da;
     color: #333;
@@ -198,6 +216,12 @@
 .vbe-form-theme-input::placeholder {
     font-style: italic;
     opacity: 0.5;
+}
+
+.vbe-form-theme-error:not(.vbe-form-theme-button) {
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 5px;
 }
 
 @media only screen and (min-width: 769px) {

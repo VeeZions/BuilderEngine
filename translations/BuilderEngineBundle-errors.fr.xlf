@@ -33,6 +33,10 @@
         <source>error.action.disabled</source>
         <target>Page non trouvée.</target>
       </trans-unit>
+      <trans-unit id="error.label.libraries.mime_types_message" resname="error.label.libraries.mime_types_message">
+        <source>error.label.libraries.mime_types_message</source>
+        <target><![CDATA[<span class="vbe-form-theme-error">Merci de téléverser un format de fichier valide</span>]]></target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -9,15 +9,19 @@ use Symfony\Component\Finder\Finder;
 class ConfigConstant
 {
     public const CONFIG_FILE_NAME = 'builder_engine';
+    public const CONFIG_LIIP_FILE_NAME = 'liip_imagine';
+    public const CONFIG_ONEUP_FILE_NAME = 'oneup_flysystem';
     public const CONFIG_MODE_DEFAULT = 'default';
     public const CONFIG_MODE_FORM = 'form';
     public const CONFIG_DEFAULT_DRIVER = 'local';
+    public const CONFIG_S3_DRIVER = 's3';
     public const CONFIG_DEFAULT_CRUD_PREFIX = '/admin';
     public const CONFIG_EXTENDED_TEMPLATE = '@BuilderEngineInternal/base.html.twig';
     public const CONFIG_SHARED_TEMPLATE_PATH = '@BuilderEngineBundle';
     public const CONFIG_INTERNAL_TEMPLATE_PATH = '@BuilderEngineInternal';
     public const CONFIG_DEFAULT_FORM_THEME = '@BuilderEngineInternal/form/builder_form_theme.html.twig';
     public const CONFIG_MEDIA_LIST_ROUTE = 'xlxeb_controller_library_list';
+    public const CONFIG_MEDIA_SAVE_ROUTE = 'xlxeb_controller_library_save';
     public const CONFIG_DEFAULT_ROUTES = [
         'articles_routes' => [
             'list' => 'xlxeb_controller_article_index',

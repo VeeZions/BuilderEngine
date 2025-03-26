@@ -16,6 +16,7 @@ use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use VeeZions\BuilderEngine\Constant\AssetConstant;
+use VeeZions\BuilderEngine\Constant\ConfigConstant;
 use VeeZions\BuilderEngine\Entity\BuilderLibrary;
 use VeeZions\BuilderEngine\Enum\LibraryEnum;
 
@@ -29,6 +30,7 @@ readonly class AssetManager
         private FilterManager $filterManager,
         private DataManager $dataManager,
         private EntityManagerInterface $entityManager,
+        private array $libraryConfig
     ) {
     }
 
@@ -54,12 +56,6 @@ readonly class AssetManager
                     default => AssetConstant::DOCUMENT,
                 };
 
-                $type = match ($context) {
-                    'chat' => AssetConstant::CHAT.($slug ? $slug.'/' : ''),
-                    'account' => AssetConstant::ACCOUNT.'/'.$slug.'/',
-                    default => $type,
-                };
-
                 $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $newFilename = $type.Urlizer::urlize($originalFilename).'-'.uniqid().'.'.$uploadedFile->guessExtension();
                 $getID3 = new \getID3();
@@ -78,14 +74,12 @@ readonly class AssetManager
                     fclose($stream);
                 }
 
-                if ('library' === $context) {
-                    if (in_array($uploadedFile->getMimeType(), ['image/jpg', 'image/jpeg', 'image/png', 'image/gif'], true)) {
-                        foreach ($filters as $filter) {
-                            $this->storeVariant($filter, $newFilename);
-                        }
+                if (in_array($uploadedFile->getMimeType(), ['image/jpg', 'image/jpeg', 'image/png', 'image/gif'], true)) {
+                    foreach ($filters as $filter) {
+                        $this->storeVariant($filter, $newFilename);
                     }
-                    $this->recordNewFileInGed($newFilename, $uploadedFile, $fileInfo);
                 }
+                $this->recordNewFileInGed($newFilename, $uploadedFile, $fileInfo);
 
                 return $newFilename;
             }
@@ -99,7 +93,7 @@ readonly class AssetManager
     private function setPermissions(): void
     {
         $env = $this->params->get('kernel.environment');
-        if (in_array($env, ['dev', 'test'], true)) {
+        if ($this->libraryConfig['driver'] === ConfigConstant::CONFIG_DEFAULT_DRIVER) {
             $projectDir = $this->params->get('kernel.project_dir');
             $filesystem = new Filesystem();
             $uploadsDir = is_string($projectDir) ? $projectDir.'/public/uploads' : null;
@@ -177,7 +171,7 @@ readonly class AssetManager
         try {
             if ($oldFileName) {
                 $env = $this->params->get('kernel.environment');
-                if (in_array($env, ['dev', 'test'], true)) {
+                if ($this->libraryConfig['driver'] === ConfigConstant::CONFIG_DEFAULT_DRIVER) {
                     $oldFileName = '/'.$oldFileName;
                 }
                 $this->uploadsFilesystem->delete($oldFileName);
@@ -209,7 +203,7 @@ readonly class AssetManager
         }
 
         $env = $this->params->get('kernel.environment');
-        if (in_array($env, ['dev', 'test'], true)) {
+        if ($this->libraryConfig['driver'] === ConfigConstant::CONFIG_DEFAULT_DRIVER) {
             return str_starts_with($value, '/') ? $value : '/'.$value;
         }
 
@@ -225,7 +219,7 @@ readonly class AssetManager
         }
 
         $env = $this->params->get('kernel.environment');
-        if (in_array($env, ['dev', 'test'], true)) {
+        if ($this->libraryConfig['driver'] === ConfigConstant::CONFIG_DEFAULT_DRIVER) {
             return str_starts_with($value, '/') ? $value : '/'.$value;
         }
 

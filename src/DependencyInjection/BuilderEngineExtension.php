@@ -2,13 +2,22 @@
 
 namespace VeeZions\BuilderEngine\DependencyInjection;
 
+use Behat\Gherkin\Loader\YamlFileLoader;
+use League\Flysystem\Filesystem as OneupFlysystem;
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
+use Symfony\Component\Filesystem\Exception\InvalidArgumentException;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Yaml\Yaml;
+use VeeZions\BuilderEngine\Constant\AssetConstant;
 use VeeZions\BuilderEngine\Constant\ConfigConstant;
 use VeeZions\BuilderEngine\Repository\BuilderPageRepository;
 use VeeZions\BuilderEngine\Repository\BuilderArticleRepository;
+use VeeZions\BuilderEngine\Provider\PackageConfigProvider;
 
 class BuilderEngineExtension extends Extension
 {
@@ -57,6 +66,7 @@ class BuilderEngineExtension extends Extension
         $this->setTableConstantDefinition($config, $container);
         $this->setArticleRepositoryDefinition($config, $container);
         $this->setPageRepositoryDefinition($config, $container);
+        $this->setAssetManagerDefinition($config, $container);
     }
 
     private function setRouteLoaderDefinition(array $config, ContainerBuilder $container): void
@@ -89,6 +99,7 @@ class BuilderEngineExtension extends Extension
     {
         $def = $container->getDefinition('veezions_builder_engine.engine_manager');
         $def->setArgument('$authors', $config['author_providers']);
+        $def->setArgument('$libraryLiipFilters', $config['library_config']['liip_filter_sets']);
         $def->setArgument('$customRoutes', $config['custom_routes']);
         $def->setArgument('$actions', $config['actions']);
         $def->setArgument('$formTheme', $config['form_theme']);
@@ -148,5 +159,11 @@ class BuilderEngineExtension extends Extension
     {
         $def = $container->getDefinition(BuilderPageRepository::class);
         $def->setArgument('$authors', $config['author_providers']['articles']);
+    }
+
+    private function setAssetManagerDefinition(array $config, ContainerBuilder $container): void
+    {
+        $def = $container->getDefinition('veezions_builder_engine.asset_manager');
+        $def->setArgument('$libraryConfig', $config['library_config']);
     }
 }

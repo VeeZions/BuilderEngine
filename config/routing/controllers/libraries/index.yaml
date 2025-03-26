@@ -1,7 +1,7 @@
 xlxeb_controller_library_index:
   controller: 'veezions_builder_engine.library_controller::index'
   path: '/media-library'
-  methods: ['GET']
+  methods: ['GET', 'POST']
   
 xlxeb_controller_library_list:
   controller: 'veezions_builder_engine.library_controller::list'

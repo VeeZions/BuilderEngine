@@ -14,6 +14,7 @@
         {{ stimulus_controller('veezions/builder-engine-bundle/veezions_builder_engine_bundle_media') }}
         data-perload="{{ constant('VeeZions\\BuilderEngine\\Constant\\AssetConstant::ITEMS_PER_LOAD') }}"
         data-maxfilesize="{{ constant('VeeZions\\BuilderEngine\\Constant\\AssetConstant::MAX_FILE_SIZE') }}"
+        data-edit="{{ path('xlxeb_controller_library_modal') }}"
     >
         <h1
             class="{% if builder_engine.is_original_form_theme %}vbe-{% endif %}heading{% if builder_engine.is_original_form_theme %} vbe-{% endif %}h1"
@@ -24,6 +25,7 @@
         <div id="vbe-library-page-upload-container">
             {{ form_label(form.file) }}
             {{ form_widget(form.file) }}
+            {{ form_errors(form.file) }}
             {{ form_help(form.file) }}
             {{ form_widget(form.save) }}
         </div>

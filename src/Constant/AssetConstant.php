@@ -4,6 +4,9 @@ namespace VeeZions\BuilderEngine\Constant;
 
 class AssetConstant
 {
+    // LiipImagine filters
+    public const FILTER_THUMBNAIL = 'thumbnail';
+    public const FILTER_LOW_QUALITY = 'low_quality';
     // Directories
     public const MEDIA = 'uploads/veezions-builder/media/';
     public const DOCUMENT = 'uploads/veezions-builder/documents/';

@@ -28,19 +28,26 @@ class BuilderLibraryRepository extends ServiceEntityRepository
      *
      * @return PaginationInterface<int, mixed>
      */
-    public function paginate(): PaginationInterface {
+    public function paginate(
+        ?string $order = 'asc', 
+        ?array $types = [], 
+        ?string $search = null,
+        ?int $page = 1,
+    ): PaginationInterface {
         $query = $this->createQueryBuilder('l');
-        $page = $this->requestStack->getCurrentRequest()->query->getInt('page', 1);
-
-        $searchField = $this->requestStack->getCurrentRequest()->query->get('vbeFilterField');
-        $searchValue = $this->requestStack->getCurrentRequest()->query->get('vbeFilterValue');
-        if ($searchField !== null && $searchValue !== null) {
-            $query->where($searchField.' LIKE :search')
-                ->setParameter('search', '%'.$searchValue.'%')
+        if ($search !== null) {
+            $query->where('l.title LIKE :search')
+                ->setParameter('search', '%'.$search.'%')
             ;
         }
 
-        return $this->paginator->paginate($query, $page, 10);
+        if (count($types) > 0) {
+            $query->andWhere('l.type IN (:types)')
+                ->setParameter('types', $types)
+            ;
+        }
+
+        return $this->paginator->paginate($query->orderBy('l.id', $order), $page, 10);
     }
 
     /**
