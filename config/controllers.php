@@ -63,6 +63,7 @@ return static function (ContainerConfigurator $container) {
         ->args([
             service('doctrine.orm.entity_manager'),
             service('veezions_builder_engine.engine_manager'),
+            service('veezions_builder_engine.asset_manager')
         ])
         ->tag('controller.service_arguments')
     ;

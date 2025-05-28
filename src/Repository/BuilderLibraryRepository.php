@@ -32,7 +32,7 @@ class BuilderLibraryRepository extends ServiceEntityRepository
         ?string $order = 'asc', 
         ?array $types = [], 
         ?string $search = null,
-        ?int $page = 1,
+        ?int $count = null,
     ): PaginationInterface {
         $query = $this->createQueryBuilder('l');
         if ($search !== null) {
@@ -47,7 +47,7 @@ class BuilderLibraryRepository extends ServiceEntityRepository
             ;
         }
 
-        return $this->paginator->paginate($query->orderBy('l.id', $order), $page, 10);
+        return $this->paginator->paginate($query->orderBy('l.id', $order), 1, $count ?? AssetConstant::ITEMS_PER_LOAD);
     }
 
     /**
@@ -55,14 +55,14 @@ class BuilderLibraryRepository extends ServiceEntityRepository
      *
      * @return array<int, BuilderLibrary>
      */
-    public function getSelectedGeds(array $ids): array
+    public function getSelectedMedia(array $ids): array
     {
-        $geds = $this->createQueryBuilder('g')
+        $media = $this->createQueryBuilder('g')
             ->andWhere('g.id IN (:ids)')
             ->setParameter('ids', $ids)
             ->getQuery()
             ->getResult();
 
-        return is_array($geds) ? $geds : [];
+        return is_array($media) ? $media : [];
     }
 }

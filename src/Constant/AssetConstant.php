@@ -14,7 +14,7 @@ class AssetConstant
     public const ACCOUNT = 'uploads/veezions-builder/accounts/';
 
     // Library per page items
-    public const ITEMS_PER_LOAD = 15;
+    public const ITEMS_PER_LOAD = 50;
     // Library max file size in octets
     public const MAX_FILE_SIZE = 2000000;
     // Library filetypes accepted

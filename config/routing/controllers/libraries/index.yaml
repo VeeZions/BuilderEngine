@@ -22,3 +22,8 @@ xlxeb_controller_library_modal:
   controller: 'veezions_builder_engine.library_controller::modal'
   path: '/media-library/modal'
   methods: ['POST']
+  
+xlxeb_controller_library_more:
+  controller: 'veezions_builder_engine.library_controller::more'
+  path: '/media-library/more'
+  methods: ['POST']

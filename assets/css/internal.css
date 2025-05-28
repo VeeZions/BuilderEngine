@@ -1,7 +1,13 @@
-@import "https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css";
+/*@import "https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css";*/
 
 .vbe-error {
     color: #d13d3d;
+}
+
+.vbe-h1 {
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 20px;
 }
 
 /* Library */
@@ -96,6 +102,7 @@
 .vbe-media-help-size {
     font-size: 12px;
     opacity: 0.7;
+    margin-top: 8px;
 }
 
 #vbe-search-form {
@@ -212,7 +219,7 @@
     color: #fff;
     font-size: 10px;
     font-weight: bold;
-    line-height: 1.3rem;
+    line-height: 1rem;
 }
 
 .vbe-form-theme-media-list-item-thumbnail {
@@ -278,7 +285,6 @@
     text-align: center;
     font-size: 12px;
     color: #327da8;
-    margin-top: 2px;
     line-height: 1.4rem;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -501,6 +507,48 @@
 .vbe-form-theme-media-modal-edit-info-container .vbe-form-theme-btn-row .vbe-form-theme-button {
     margin: 0;
 }
+
+html[aria-busy="true"] body #vbe-loader {
+    display: flex;
+}
+
+html:not([aria-busy="true"]) body #vbe-loader {
+    display: none;
+}
+
+#vbe-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 999999999;
+    background-color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#admin-loader span {
+    border-top: 6px solid #327da8;
+    border-right: 6px solid #327da8;
+    border-bottom: 6px solid #327da8;
+    border-left: 6px solid transparent;
+    border-radius: 2000px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    transform-origin: 50% 50%;
+    transform: rotate(0);
+    animation: vbe-loader-rotate 1s infinite linear;
+}
+
+@keyframes vbe-loader-rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 
 @media only screen and (min-width: 970px) {
     .vbe-form-theme-media-modal-container {

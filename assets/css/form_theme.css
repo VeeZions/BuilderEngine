@@ -165,13 +165,6 @@
     width: 100%;
 }
 
-.vbe-form-theme-checkbox-label,
-.vbe-form-theme-radio-label,
-.vbe-form-theme-choice-label {
-    position: relative;
-    top: 2px;
-}
-
 .vbe-form-theme-checkbox-container:last-child > label,
 .vbe-form-theme-radio-container:last-child > label,
 .vbe-form-theme-choice-container:last-child > label {
@@ -185,7 +178,7 @@
 .vbe-form-theme-radio-simple[type="radio"] {
     margin: 0 5px 0;
     position: relative;
-    top: -2px;
+    top: -1px;
 }
 
 .vbe-form-theme-choice-label, .vbe-form-theme-label:not(.vbe-form-theme-button) {

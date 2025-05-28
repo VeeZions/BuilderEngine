@@ -112,10 +112,10 @@ readonly class FormManager
         ])->createView();
     }
     
-    public function renderMediaList(string $order, array $types, ?string $search): string
+    public function renderMediaList(string $order = 'asc', array $types = [], ?string $search = null, ?int $count = null): string
     {
         return $this->twig->render('@BuilderEngineInternal/libraries/list.html.twig', [
-            'data' => $this->entityManager->getRepository(BuilderLibrary::class)->paginate($order, $types, $search),
+            'data' => $this->entityManager->getRepository(BuilderLibrary::class)->paginate($order, $types, $search, $count),
         ]);
     }
     

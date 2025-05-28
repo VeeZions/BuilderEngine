@@ -2,6 +2,7 @@ import '@veezions/builder-engine-jquery';
 import '@veezions/builder-engine-jquery-ui';
 import { resizeGridItems, resizeMediaProvider } from '@veezions/builder-engine-utils-components';
 import '../css/internal.css';
+import '../css/reset.css';
 import '../css/form_theme.css';
 
 // Opera 8.0+

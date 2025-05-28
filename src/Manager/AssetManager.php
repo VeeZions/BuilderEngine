@@ -133,21 +133,21 @@ readonly class AssetManager
         $oldFileName = str_starts_with($oldFileName, '/')
             ? substr($oldFileName, 1)
             : $oldFileName;
-        $ged = $this->entityManager->getRepository(BuilderLibrary::class)->findOneBy(['url' => $oldFileName]);
-        if (null !== $ged) {
-            $pages = $ged->getPage();
+        $media = $this->entityManager->getRepository(BuilderLibrary::class)->findOneBy(['url' => $oldFileName]);
+        if (null !== $media) {
+            $pages = $media->getPage();
             foreach ($pages as $page) {
-                $ged->removePage($page);
+                $media->removePage($page);
             }
-            $articles = $ged->getArticle();
+            $articles = $media->getArticle();
             foreach ($articles as $article) {
-                $ged->removeArticle($article);
+                $media->removeArticle($article);
             }
-            $categories = $ged->getCategory();
+            $categories = $media->getCategory();
             foreach ($categories as $category) {
-                $ged->removeCategory($category);
+                $media->removeCategory($category);
             }
-            $this->entityManager->remove($ged);
+            $this->entityManager->remove($media);
             $this->entityManager->flush();
         }
     }

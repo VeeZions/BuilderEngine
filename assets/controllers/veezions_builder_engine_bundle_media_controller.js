@@ -27,11 +27,15 @@ export default class extends Controller {
     itemsPerLoad = null;
     maxFileSize = 0;
     editUrl = null;
+    deleteUrl = null;
+    moreUrl = null;
 
     connect() {
         this.itemsPerLoad = parseInt(this.element.dataset.perload);
         this.maxFileSize = parseInt(this.element.dataset.maxfilesize);
         this.editUrl = this.element.dataset.edit;
+        this.deleteUrl = this.element.dataset.delete;
+        this.moreUrl = this.element.dataset.more;
         this.setCounter();
     }
 
@@ -192,10 +196,10 @@ export default class extends Controller {
             ids.push(parseInt(elmt.value));
         });
 
-        const form = new FormData();
+        const form = new FormData(this.searchFormTarget);
         form.append('ids', JSON.stringify(ids));
 
-        fetch('/saas/xhr/media/delete', {
+        fetch(this.deleteUrl, {
             method: 'POST',
             body: form,
             headers: {'X-Requested-With': 'XMLHttpRequest'}
@@ -222,10 +226,10 @@ export default class extends Controller {
 
                 const height = this.containerTarget.offsetTop + this.containerTarget.scrollHeight + 116;
                 const count = this.itemsTargets.length + this.itemsPerLoad;
-                const form = new FormData();
+                const form = new FormData(this.searchFormTarget);
                 form.append('count', count);
 
-                fetch('/saas/xhr/media/more', {
+                fetch(this.moreUrl, {
                     method: 'POST',
                     body: form,
                     headers: {'X-Requested-With': 'XMLHttpRequest'}
@@ -262,23 +266,25 @@ export default class extends Controller {
     }
 
     saveTargetConnected() {
-        this.saveTarget.onclick = () => {
+        this.saveTarget.onclick = (e) => {
+            e.preventDefault();
 
             const htmlTag = document.querySelector('html');
             htmlTag.setAttribute('aria-busy', 'true');
 
-            const id = document.querySelector('input[name="media_modal_id"]').value;
-            const title = document.querySelector('input[name="media_modal_title"]').value;
-            const legend = document.querySelector('input[name="media_modal_legend"]').value;
+            const htmlForm = this.saveTarget.closest('form');
+            const id = htmlForm.querySelector('[name="id"]').value;
+            const title = htmlForm.querySelector('[name="media_modal_title"]').value;
+            const legend = htmlForm.querySelector('[name="media_modal_legend"]').value;
 
-            const form = new FormData();
+            const form = new FormData(this.searchFormTarget);
             form.append('id', parseInt(id));
             form.append('title', title);
             if (legend.length > 0) {
                 form.append('legend', legend);
             }
 
-            fetch('/saas/xhr/media/save', {
+            fetch(htmlForm.action, {
                 method: 'POST',
                 body: form,
                 headers: {'X-Requested-With': 'XMLHttpRequest'}
