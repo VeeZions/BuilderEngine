@@ -8,8 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation\Slug;
 use Gedmo\Mapping\Annotation\Timestampable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use VeeZions\BuilderEngine\Repository\BuilderPageRepository;
 use Symfony\Component\Validator\Constraints as Assert;
+use VeeZions\BuilderEngine\Repository\BuilderPageRepository;
 
 #[UniqueEntity(fields: ['route'])]
 #[ORM\Entity(repositoryClass: BuilderPageRepository::class)]
@@ -32,9 +32,15 @@ class BuilderPage
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
+    /**
+     * @var array<string, mixed>
+     */
     #[ORM\Column]
     private array $seo = [];
 
+    /**
+     * @var array<int, mixed>
+     */
     #[ORM\Column]
     private array $content = [];
 
@@ -113,11 +119,17 @@ class BuilderPage
         return $this->slug;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getSeo(): array
     {
         return $this->seo;
     }
 
+    /**
+     * @param array<string, mixed> $seo
+     */
     public function setSeo(array $seo): static
     {
         $this->seo = $seo;
@@ -125,11 +137,19 @@ class BuilderPage
         return $this;
     }
 
+    /**
+     * @return array<int, mixed>
+     */
     public function getContent(): array
     {
         return $this->content;
     }
 
+    /**
+     * @param array<int, mixed> $content
+     *
+     * @return $this
+     */
     public function setContent(array $content): static
     {
         $this->content = $content;

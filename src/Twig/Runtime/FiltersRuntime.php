@@ -2,29 +2,26 @@
 
 namespace VeeZions\BuilderEngine\Twig\Runtime;
 
-use DateTimeInterface;
+use Carbon\Carbon;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Form\FormView;
+use Knp\Component\Pager\Pagination\PaginationInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Extension\RuntimeExtensionInterface;
 use Twig\Markup;
+use VeeZions\BuilderEngine\Constant\AssetConstant;
 use VeeZions\BuilderEngine\Constant\ConfigConstant;
-use VeeZions\BuilderEngine\Entity\BuilderArticle;
-use VeeZions\BuilderEngine\Entity\BuilderCategory;
 use VeeZions\BuilderEngine\Entity\BuilderElement;
-use VeeZions\BuilderEngine\Entity\BuilderLibrary;
-use VeeZions\BuilderEngine\Entity\BuilderNavigation;
 use VeeZions\BuilderEngine\Entity\BuilderPage;
 use VeeZions\BuilderEngine\Manager\AssetManager;
 use VeeZions\BuilderEngine\Manager\FormManager;
 use VeeZions\BuilderEngine\Manager\GedManager;
 use VeeZions\BuilderEngine\Manager\HtmlManager;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Knp\Component\Pager\Pagination\PaginationInterface;
-use Carbon\Carbon;
-use Symfony\Component\Intl\Locales;
 
 final class FiltersRuntime implements RuntimeExtensionInterface
 {
+    /**
+     * @param array<string, array<string, string>> $customRoutes
+     */
     public function __construct(
         private HtmlManager $htmlManager,
         private RequestStack $requestStack,
@@ -34,14 +31,16 @@ final class FiltersRuntime implements RuntimeExtensionInterface
         private AssetManager $manageAsset,
         private EntityManagerInterface $entityManager,
         private GedManager $gedManager,
-    )
-    {
-        
+    ) {
     }
 
     public function containerId(): ?string
     {
-        $route = $this->requestStack->getCurrentRequest()->attributes->get('_route');
+        $request = $this->requestStack->getCurrentRequest();
+        if (null === $request) {
+            return null;
+        }
+        $route = $request->attributes->getString('_route');
         if (!str_starts_with($route, 'xlxeb_controller_')) {
             return null;
         }
@@ -56,47 +55,73 @@ final class FiltersRuntime implements RuntimeExtensionInterface
         );
     }
 
+    /**
+     * @param array<int, string>              $order
+     * @param PaginationInterface<int, mixed> $data
+     */
     public function buildRender(PaginationInterface $data, array $order = []): Markup
     {
         return new Markup($this->htmlManager->buildRender($data, $order), 'UTF-8');
     }
 
+    /**
+     * @param PaginationInterface<int, mixed> $data
+     */
     public function buildTable(PaginationInterface $data): Markup
     {
         return new Markup($this->htmlManager->buildTable($data), 'UTF-8');
     }
 
+    /**
+     * @param PaginationInterface<int, mixed> $data
+     */
     public function buildFilters(PaginationInterface $data): Markup
     {
         return new Markup($this->htmlManager->buildFilters($data), 'UTF-8');
     }
 
+    /**
+     * @param PaginationInterface<int, mixed> $data
+     */
     public function buildPagination(PaginationInterface $data): Markup
     {
         return new Markup($this->htmlManager->buildPagination($data), 'UTF-8');
     }
 
+    /**
+     * @param PaginationInterface<int, mixed> $data
+     */
     public function buildCounter(PaginationInterface $data): Markup
     {
         return new Markup($this->htmlManager->buildCounter($data), 'UTF-8');
     }
 
+    /**
+     * @param PaginationInterface<int, mixed> $data
+     */
     public function buildCreate(PaginationInterface $data): Markup
     {
         return new Markup($this->htmlManager->buildCreate($data), 'UTF-8');
     }
 
+    /**
+     * @param array<string, mixed>                 $cell
+     * @param array<string, array<string, string>> $flags
+     */
     public function valueMutator(array $cell, array $flags): ?Markup
     {
         $value = $cell['value'];
 
-        if ($cell['label'] === 'locale') {
+        if ('locale' === $cell['label'] && is_string($value)) {
             $flag = $this->formManager->getFlagFromLocale($value, $flags);
+
             return new Markup($flag, 'UTF-8');
         }
 
-        if ($value instanceof DateTimeInterface) {
-            Carbon::setLocale($this->requestStack->getCurrentRequest()->getLocale());
+        $request = $this->requestStack->getCurrentRequest();
+        if ($value instanceof \DateTimeInterface && null !== $request) {
+            Carbon::setLocale($request->getLocale());
+
             return new Markup(Carbon::parse($value)->isoFormat('lll'), 'UTF-8');
         }
 
@@ -123,28 +148,34 @@ final class FiltersRuntime implements RuntimeExtensionInterface
         if (!$this->page_title) {
             return null;
         }
-        
-        $route = $this->requestStack->getCurrentRequest()->attributes->get('_route');
+
+        $request = $this->requestStack->getCurrentRequest();
+        if (null === $request) {
+            return null;
+        }
+        $route = $request->attributes->get('_route');
         if ($route === ConfigConstant::CONFIG_DEFAULT_ROUTES['libraries_routes']['list']) {
             return $this->formManager->translateCrudTitle('libraries', 'index');
         }
         $entity = null;
         $controller = null;
         foreach ($this->customRoutes as $type => $list) {
-            foreach ($list as $action => $customRoute) {
-                if ($route === $customRoute) {
-                    $controller = $action === 'list' ? 'index' : $action;
-                    $entity = str_replace('_routes', '', $type);
+            if (is_array($list)) {
+                foreach ($list as $action => $customRoute) {
+                    if ($route === $customRoute) {
+                        $controller = 'list' === $action ? 'index' : $action;
+                        $entity = str_replace('_routes', '', $type);
 
-                    if ($controller !== 'index') {
-                        $entity = match ($entity) {
-                            'articles' => 'article',
-                            'pages' => 'page',
-                            'categories' => 'category',
-                            'navigations' => 'navigation',
-                            'libraries' => 'library',
-                            default => null,
-                        };
+                        if ('index' !== $controller) {
+                            $entity = match ($entity) {
+                                'articles' => 'article',
+                                'pages' => 'page',
+                                'categories' => 'category',
+                                'navigations' => 'navigation',
+                                'libraries' => 'library',
+                                default => null,
+                            };
+                        }
                     }
                 }
             }
@@ -157,6 +188,9 @@ final class FiltersRuntime implements RuntimeExtensionInterface
         return $this->formManager->translateCrudTitle($entity, $controller);
     }
 
+    /**
+     * @return array<string, array<string, string>>
+     */
     public function getFlags(): array
     {
         return $this->formManager->getAvailableLocales();
@@ -169,6 +203,7 @@ final class FiltersRuntime implements RuntimeExtensionInterface
         }
 
         $split = explode(' as ', $colName);
+
         return $split[0];
     }
 
@@ -230,6 +265,9 @@ final class FiltersRuntime implements RuntimeExtensionInterface
         return '';
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function getAllElementsFromPage(BuilderPage $page): array
     {
         $elements = $this->entityManager->getRepository(BuilderElement::class)->findBy(['page' => $page]);
@@ -241,6 +279,9 @@ final class FiltersRuntime implements RuntimeExtensionInterface
         return $results;
     }
 
+    /**
+     * @param array<int, BuilderElement> $elements
+     */
     public function getRealElementsLength(array $elements): int
     {
         $count = 0;
@@ -249,5 +290,14 @@ final class FiltersRuntime implements RuntimeExtensionInterface
         }
 
         return $count;
+    }
+
+    public function convertToBytes(?string $value): float
+    {
+        if (null === $value) {
+            return 0;
+        }
+
+        return AssetConstant::convertToBytes($value);
     }
 }

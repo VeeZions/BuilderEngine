@@ -12,6 +12,7 @@ class BuilderEngineConfiguration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder(ConfigConstant::CONFIG_FILE_NAME);
 
+        /**@phpstan-ignore-next-lines */
         $treeBuilder->getRootNode()
             ->children()
                 ->arrayNode('author_providers')
@@ -50,6 +51,7 @@ class BuilderEngineConfiguration implements ConfigurationInterface
                             ->isRequired()
                             ->cannotBeEmpty()
                         ->end()
+                        ->scalarNode('max_upload_file')->defaultValue(ini_get('upload_max_filesize'))->end()
                         ->scalarNode('service')->defaultValue(null)->end()
                         ->scalarNode('s3_bucket')
                             ->defaultValue(null)

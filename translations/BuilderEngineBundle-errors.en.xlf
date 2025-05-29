@@ -37,9 +37,13 @@
         <source>error.async.not.found</source>
         <target>This page does not exists.</target>
       </trans-unit>
-      <trans-unit id="error.label.libraries.mime_types_message" resname="error.label.libraries.mime_types_message">
-        <source>error.label.libraries.mime_types_message</source>
+      <trans-unit id="error.label.libraries.mime_error_extensions_message_message" resname="error.label.libraries.mime_error_extensions_message_message">
+        <source>error.label.libraries.mime_error_extensions_message_message</source>
         <target><![CDATA[<span class="vbe-form-theme-error">Please upload a valid file format</span>]]></target>
+      </trans-unit>
+      <trans-unit id="error.label.libraries.max_size_message" resname="error.label.libraries.max_size_message">
+        <source>error.label.libraries.max_size_message</source>
+        <target><![CDATA[<span class="vbe-form-theme-error">File size too large</span>]]></target>
       </trans-unit>
     </body>
   </file>

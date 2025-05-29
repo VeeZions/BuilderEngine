@@ -19,6 +19,7 @@ final class FiltersExtension extends AbstractExtension
             new TwigFilter('vbe_humanize_size', [FiltersRuntime::class, 'humanizeSize']),
             new TwigFilter('vbe_get_all_elements_from_page', [FiltersRuntime::class, 'getAllElementsFromPage']),
             new TwigFilter('vbe_get_real_elements_length', [FiltersRuntime::class, 'getRealElementsLength']),
+            new TwigFilter('vbe_convert_to_bytes', [FiltersRuntime::class, 'convertToBytes']),
         ];
     }
 

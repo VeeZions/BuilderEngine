@@ -22,6 +22,9 @@ use VeeZions\BuilderEngine\Enum\LibraryEnum;
 
 readonly class AssetManager
 {
+    /**
+     * @param array<string, mixed> $libraryConfig
+     */
     public function __construct(
         private FilesystemOperator $uploadsFilesystem,
         private CacheManager $cacheManager,
@@ -30,7 +33,7 @@ readonly class AssetManager
         private FilterManager $filterManager,
         private DataManager $dataManager,
         private EntityManagerInterface $entityManager,
-        private array $libraryConfig
+        private array $libraryConfig,
     ) {
     }
 
@@ -93,7 +96,7 @@ readonly class AssetManager
     private function setPermissions(): void
     {
         $env = $this->params->get('kernel.environment');
-        if ($this->libraryConfig['driver'] === ConfigConstant::CONFIG_DEFAULT_DRIVER) {
+        if (ConfigConstant::CONFIG_DEFAULT_DRIVER === $this->libraryConfig['driver']) {
             $projectDir = $this->params->get('kernel.project_dir');
             $filesystem = new Filesystem();
             $uploadsDir = is_string($projectDir) ? $projectDir.'/public/uploads' : null;
@@ -171,7 +174,7 @@ readonly class AssetManager
         try {
             if ($oldFileName) {
                 $env = $this->params->get('kernel.environment');
-                if ($this->libraryConfig['driver'] === ConfigConstant::CONFIG_DEFAULT_DRIVER) {
+                if (ConfigConstant::CONFIG_DEFAULT_DRIVER === $this->libraryConfig['driver']) {
                     $oldFileName = '/'.$oldFileName;
                 }
                 $this->uploadsFilesystem->delete($oldFileName);
@@ -203,7 +206,7 @@ readonly class AssetManager
         }
 
         $env = $this->params->get('kernel.environment');
-        if ($this->libraryConfig['driver'] === ConfigConstant::CONFIG_DEFAULT_DRIVER) {
+        if (ConfigConstant::CONFIG_DEFAULT_DRIVER === $this->libraryConfig['driver']) {
             return str_starts_with($value, '/') ? $value : '/'.$value;
         }
 
@@ -219,7 +222,7 @@ readonly class AssetManager
         }
 
         $env = $this->params->get('kernel.environment');
-        if ($this->libraryConfig['driver'] === ConfigConstant::CONFIG_DEFAULT_DRIVER) {
+        if (ConfigConstant::CONFIG_DEFAULT_DRIVER === $this->libraryConfig['driver']) {
             return str_starts_with($value, '/') ? $value : '/'.$value;
         }
 

@@ -60,6 +60,7 @@ return static function (ContainerConfigurator $container) {
             abstract_arg('Get config.form_theme'),
             service('veezions_builder_engine.navigation_constant'),
             abstract_arg('Get config.locale_fallback'),
+            abstract_arg('Get config.library_config.max_upload_file'),
         ])
     ;
     
@@ -153,6 +154,7 @@ return static function (ContainerConfigurator $container) {
             abstract_arg('Get config.form_theme'),
             service('veezions_builder_engine.navigation_constant'),
             abstract_arg('Get config.locale_fallback'),
+            abstract_arg('Get config.library_config.max_upload_file'),
         ])
     ;
 

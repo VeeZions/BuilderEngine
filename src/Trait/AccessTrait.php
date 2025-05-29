@@ -6,6 +6,9 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 trait AccessTrait
 {
+    /**
+     * @param array<int, string> $roles
+     */
     public function isGranted(array $roles, bool $throwable = true): bool
     {
         if (!empty($roles)) {
@@ -15,7 +18,7 @@ trait AccessTrait
                 }
             }
 
-            if ($throwable === true) {
+            if (true === $throwable) {
                 throw new AccessDeniedException();
             }
 

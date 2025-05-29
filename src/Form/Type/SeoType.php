@@ -15,7 +15,7 @@ class SeoType extends AbstractType
     {
         $seo = $options['data'];
         $seo = is_array($seo) ? $seo : [];
-        $isOriginalFormTheme = $options['form_theme'] === ConfigConstant::CONFIG_DEFAULT_FORM_THEME;
+        $isOriginalFormTheme = ConfigConstant::CONFIG_DEFAULT_FORM_THEME === $options['form_theme'];
 
         $builder
             ->add('title', TextType::class, [
@@ -25,7 +25,7 @@ class SeoType extends AbstractType
                 'attr' => [
                     'spellcheck' => 'false',
                     'autocorrect' => 'off',
-                ]
+                ],
             ])
             ->add('keywords', TextType::class, [
                 'label' => 'form.label.seo.keywords',
@@ -34,7 +34,7 @@ class SeoType extends AbstractType
                 'attr' => [
                     'spellcheck' => 'false',
                     'autocorrect' => 'off',
-                ]
+                ],
             ])
             ->add('desc', TextareaType::class, [
                 'label' => 'form.label.seo.desc',
@@ -44,7 +44,7 @@ class SeoType extends AbstractType
                     'rows' => 3,
                     'spellcheck' => 'false',
                     'autocorrect' => 'off',
-                ]
+                ],
             ])
         ;
     }
@@ -53,7 +53,7 @@ class SeoType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => null,
-            'form_theme' => null
+            'form_theme' => null,
         ]);
     }
 }

@@ -16,7 +16,7 @@ class BuilderType extends AbstractType
     {
         $content = $options['data'];
         $content = is_array($content) ? $content : [];
-        $isOriginalFormTheme = $options['form_theme'] === ConfigConstant::CONFIG_DEFAULT_FORM_THEME;
+        $isOriginalFormTheme = ConfigConstant::CONFIG_DEFAULT_FORM_THEME === $options['form_theme'];
 
         $builder
             ->add('builder', TextType::class, [
@@ -42,7 +42,7 @@ class BuilderType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => null,
-            'form_theme' => null
+            'form_theme' => null,
         ]);
     }
 }

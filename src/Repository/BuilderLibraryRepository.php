@@ -18,30 +18,30 @@ class BuilderLibraryRepository extends ServiceEntityRepository
     public function __construct(
         ManagerRegistry $registry,
         private readonly PaginatorInterface $paginator,
-        private readonly RequestStack $requestStack,
+        private readonly RequestStack $requestStack, /**@phpstan-ignore-line */
     ) {
         parent::__construct($registry, BuilderLibrary::class);
     }
 
     /**
-     * @param array<int, string>                     $columns
+     * @param array<int, string> $types
      *
      * @return PaginationInterface<int, mixed>
      */
     public function paginate(
-        ?string $order = 'asc', 
-        ?array $types = [], 
+        ?string $order = 'asc',
+        ?array $types = [],
         ?string $search = null,
         ?int $count = null,
     ): PaginationInterface {
         $query = $this->createQueryBuilder('l');
-        if ($search !== null) {
+        if (null !== $search) {
             $query->where('l.title LIKE :search')
                 ->setParameter('search', '%'.$search.'%')
             ;
         }
 
-        if (count($types) > 0) {
+        if (null !== $types && count($types) > 0) {
             $query->andWhere('l.type IN (:types)')
                 ->setParameter('types', $types)
             ;

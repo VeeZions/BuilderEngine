@@ -2,22 +2,13 @@
 
 namespace VeeZions\BuilderEngine\DependencyInjection;
 
-use Behat\Gherkin\Loader\YamlFileLoader;
-use League\Flysystem\Filesystem as OneupFlysystem;
-use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
-use Symfony\Component\Filesystem\Exception\InvalidArgumentException;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\Yaml\Yaml;
-use VeeZions\BuilderEngine\Constant\AssetConstant;
 use VeeZions\BuilderEngine\Constant\ConfigConstant;
-use VeeZions\BuilderEngine\Repository\BuilderPageRepository;
 use VeeZions\BuilderEngine\Repository\BuilderArticleRepository;
-use VeeZions\BuilderEngine\Provider\PackageConfigProvider;
+use VeeZions\BuilderEngine\Repository\BuilderPageRepository;
 
 class BuilderEngineExtension extends Extension
 {
@@ -48,11 +39,17 @@ class BuilderEngineExtension extends Extension
         $this->setDefinitions($config, $container);
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     public function getConfiguration(array $config, ContainerBuilder $container): BuilderEngineConfiguration
     {
         return new BuilderEngineConfiguration();
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     private function setDefinitions(array $config, ContainerBuilder $container): void
     {
         $this->setRouteLoaderDefinition($config, $container);
@@ -69,6 +66,9 @@ class BuilderEngineExtension extends Extension
         $this->setAssetManagerDefinition($config, $container);
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     private function setRouteLoaderDefinition(array $config, ContainerBuilder $container): void
     {
         $def = $container->getDefinition('veezions_builder_engine.route_loader');
@@ -77,35 +77,49 @@ class BuilderEngineExtension extends Extension
         $def->setArgument('$actionsConfig', $config['actions']);
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     private function setCommandsDefinition(array $config, ContainerBuilder $container): void
     {
         $def = $container->getDefinition('veezions_builder_engine.command.import_templates');
         $def->setArgument('$mode', $config['mode']);
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     private function setformManagerDefinition(array $config, ContainerBuilder $container): void
     {
         $def = $container->getDefinition('veezions_builder_engine.form_manager');
         $def->setArgument('$authors', $config['author_providers']);
         $def->setArgument('$bundleMode', $config['mode']);
-        $def->setArgument('$libraryLiipFilters', $config['library_config']['liip_filter_sets']);
+        $def->setArgument('$libraryLiipFilters', is_array($config['library_config']) ? $config['library_config']['liip_filter_sets'] : []);
         $def->setArgument('$customRoutes', $config['custom_routes']);
         $def->setArgument('$actions', $config['actions']);
         $def->setArgument('$formTheme', $config['form_theme']);
         $def->setArgument('$localeFallback', $config['locale_fallback']);
+        $def->setArgument('$maxUploadFile', is_array($config['library_config']) ? $config['library_config']['max_upload_file'] : ini_get('upload_max_filesize'));
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     private function setEngineManagerDefinition(array $config, ContainerBuilder $container): void
     {
         $def = $container->getDefinition('veezions_builder_engine.engine_manager');
         $def->setArgument('$authors', $config['author_providers']);
-        $def->setArgument('$libraryLiipFilters', $config['library_config']['liip_filter_sets']);
+        $def->setArgument('$libraryLiipFilters', is_array($config['library_config']) ? $config['library_config']['liip_filter_sets'] : []);
         $def->setArgument('$customRoutes', $config['custom_routes']);
         $def->setArgument('$actions', $config['actions']);
         $def->setArgument('$formTheme', $config['form_theme']);
         $def->setArgument('$localeFallback', $config['locale_fallback']);
+        $def->setArgument('$maxUploadFile', is_array($config['library_config']) ? $config['library_config']['max_upload_file'] : ini_get('upload_max_filesize'));
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     private function setAssetConstantDefinition(array $config, ContainerBuilder $container): void
     {
         $def = $container->getDefinition('veezions_builder_engine.asset_constant');
@@ -117,6 +131,9 @@ class BuilderEngineExtension extends Extension
         );
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     private function setGlobalVariableDefinition(array $config, ContainerBuilder $container): void
     {
         $def = $container->getDefinition('veezions_builder_engine.twig.global');
@@ -127,8 +144,12 @@ class BuilderEngineExtension extends Extension
         $def->setArgument('$crud_buttons', $config['crud_buttons']);
         $def->setArgument('$internal_css', $config['internal_css']);
         $def->setArgument('$page_title', $config['page_title_display']);
+        $def->setArgument('$max_upload_file', is_array($config['library_config']) ? $config['library_config']['max_upload_file'] : ini_get('upload_max_filesize'));
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     private function setPageRuntimeDefinition(array $config, ContainerBuilder $container): void
     {
         $def = $container->getDefinition('veezions_builder_engine.twig.page_runtime');
@@ -136,6 +157,9 @@ class BuilderEngineExtension extends Extension
         $def->setArgument('$page_title', $config['page_title_display']);
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     private function setHtmlManagerDefinition(array $config, ContainerBuilder $container): void
     {
         $def = $container->getDefinition('veezions_builder_engine.html_manager');
@@ -143,24 +167,36 @@ class BuilderEngineExtension extends Extension
         $def->setArgument('$actions', $config['actions']);
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     private function setTableConstantDefinition(array $config, ContainerBuilder $container): void
     {
         $def = $container->getDefinition('veezions_builder_engine.table_constant');
         $def->setArgument('$authors', $config['author_providers']);
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     private function setArticleRepositoryDefinition(array $config, ContainerBuilder $container): void
     {
         $def = $container->getDefinition(BuilderArticleRepository::class);
-        $def->setArgument('$authors', $config['author_providers']['articles']);
+        $def->setArgument('$authors', is_array($config['author_providers']) ? $config['author_providers']['articles'] : []);
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     private function setPageRepositoryDefinition(array $config, ContainerBuilder $container): void
     {
         $def = $container->getDefinition(BuilderPageRepository::class);
-        $def->setArgument('$authors', $config['author_providers']['articles']);
+        $def->setArgument('$authors', is_array($config['author_providers']) ? $config['author_providers']['pages'] : []);
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     private function setAssetManagerDefinition(array $config, ContainerBuilder $container): void
     {
         $def = $container->getDefinition('veezions_builder_engine.asset_manager');

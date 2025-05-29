@@ -15,8 +15,8 @@ class LibraryModalType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $isOriginalFormTheme = $options['form_theme'] === ConfigConstant::CONFIG_DEFAULT_FORM_THEME;
-        /**@var BuilderLibrary $media*/
+        $isOriginalFormTheme = ConfigConstant::CONFIG_DEFAULT_FORM_THEME === $options['form_theme'];
+        /** @var BuilderLibrary $media */
         $media = $options['file_data'];
 
         $builder
@@ -37,10 +37,10 @@ class LibraryModalType extends AbstractType
                 'label' => 'form.label.media.save',
                 'translation_domain' => 'BuilderEngineBundle-forms',
                 'attr' => [
-                    'data-veezions--builder-engine-bundle--veezions-builder-engine-bundle-media-target' => 'save'
+                    'data-veezions--builder-engine-bundle--veezions-builder-engine-bundle-media-target' => 'save',
                 ],
                 'row_attr' => [
-                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-btn-row' : 'btn-row'
+                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-btn-row' : 'btn-row',
                 ],
             ])
         ;

@@ -37,8 +37,13 @@ class BuilderImportTemplatesCommand extends Command
             return Command::SUCCESS;
         }
 
-        $templatesPath = $this->params->get('kernel.project_dir').'/vendor/veezions/builder-engine-bundle/src/Resources/views';
-        $destinationPath = $this->params->get('kernel.project_dir').'/templates/bundles/BuilderEngineBundle/';
+        $projectDir = $this->params->get('kernel.project_dir');
+        if (!is_string($projectDir)) {
+            throw new \RuntimeException('Project directory must be a string');
+        }
+
+        $templatesPath = $projectDir.'/vendor/veezions/builder-engine-bundle/src/Resources/views';
+        $destinationPath = $projectDir.'/templates/bundles/BuilderEngineBundle/';
 
         $filesystem = new Filesystem();
         if ($filesystem->exists($templatesPath)) {

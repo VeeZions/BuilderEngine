@@ -15,32 +15,32 @@ class ButtonsType extends AbstractType
     {
         $attr = ['onclick' => null];
         if (null !== $options['list_url'] && null !== $options['message']) {
-            $attr['onclick'] = 'if(confirm("' . $options['message'] . '")) window.location.href = "' . $options['list_url'] . '";';
+            $attr['onclick'] = 'if(confirm("'.$options['message'].'")) window.location.href = "'.$options['list_url'].'";';
         }
-        $isOriginalFormTheme = $options['form_theme'] === ConfigConstant::CONFIG_DEFAULT_FORM_THEME;
+        $isOriginalFormTheme = ConfigConstant::CONFIG_DEFAULT_FORM_THEME === $options['form_theme'];
 
         $builder
             ->add('save', SubmitType::class, [
                 'label' => 'form.btn.save',
                 'translation_domain' => 'BuilderEngineBundle-forms',
                 'row_attr' => [
-                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-btn-row' : 'btn-row'
-                ]
+                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-btn-row' : 'btn-row',
+                ],
             ])
             ->add('save_and_stay', SubmitType::class, [
                 'label' => 'form.btn.save.reload',
                 'translation_domain' => 'BuilderEngineBundle-forms',
                 'row_attr' => [
-                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-btn-row' : 'btn-row'
-                ]
+                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-btn-row' : 'btn-row',
+                ],
             ])
             ->add('back_to_list', ButtonType::class, [
                 'label' => 'form.btn.back.list',
                 'translation_domain' => 'BuilderEngineBundle-forms',
                 'attr' => $attr,
                 'row_attr' => [
-                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-btn-row' : 'btn-row'
-                ]
+                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-btn-row' : 'btn-row',
+                ],
             ])
         ;
     }

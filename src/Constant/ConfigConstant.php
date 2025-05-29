@@ -2,10 +2,6 @@
 
 namespace VeeZions\BuilderEngine\Constant;
 
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Finder\Finder;
-
 class ConfigConstant
 {
     public const CONFIG_FILE_NAME = 'builder_engine';
@@ -27,7 +23,7 @@ class ConfigConstant
             'list' => 'xlxeb_controller_article_index',
             'new' => 'xlxeb_controller_article_new',
             'edit' => 'xlxeb_controller_article_edit',
-            'delete' => 'xlxeb_controller_article_delete'
+            'delete' => 'xlxeb_controller_article_delete',
         ],
         'categories_routes' => [
             'list' => 'xlxeb_controller_category_index',
@@ -49,7 +45,7 @@ class ConfigConstant
         ],
         'libraries_routes' => [
             'list' => 'xlxeb_controller_library_index',
-        ]
+        ],
     ];
     public const CONFIG_LOCALES = [
         'ad' => 'ca',
@@ -301,6 +297,6 @@ class ConfigConstant
         'yt' => 'fr',
         'za' => 'zu',
         'zm' => 'en',
-        'zw' => 'en'
+        'zw' => 'en',
     ];
 }

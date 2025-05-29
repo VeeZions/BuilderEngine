@@ -5,34 +5,36 @@ namespace VeeZions\BuilderEngine\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment as TwigEnvironment;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class AsyncController
 {
+    /**
+     * @var array|string[]
+     */
     private array $slugs = ['mon-test' => 'test'];
 
     public function __construct(
-        private TwigEnvironment $twig,
-        private Router $router,
+        private TwigEnvironment $twig, /**@phpstan-ignore-line */
+        private Router $router, /**@phpstan-ignore-line */
         private TranslatorInterface $translator,
-        private EntityManagerInterface $entityManager,
-        private AuthorizationCheckerInterface $authorizationChecker,
+        private EntityManagerInterface $entityManager, /**@phpstan-ignore-line */
+        private AuthorizationCheckerInterface $authorizationChecker, /**@phpstan-ignore-line */
     ) {
     }
 
     public function index(Request $request, string $slug): Response
     {
         if (!$request->isXmlHttpRequest() || !$request->isMethod('POST') || !isset($this->slugs[$slug])) {
-            throw new NotFoundHttpException(
-                $this->translator->trans('error.async.not.found', [], 'BuilderEngineBundle-errors')
-            );
+            throw new NotFoundHttpException($this->translator->trans('error.async.not.found', [], 'BuilderEngineBundle-errors'));
         }
         $classMethod = $this->slugs[$slug];
+
         return new JsonResponse(['data' => $this->$classMethod($request)]);
     }
 

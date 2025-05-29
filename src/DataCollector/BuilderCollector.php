@@ -26,6 +26,9 @@ class BuilderCollector extends AbstractDataCollector
         return $this->data['route'];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function getPages(): array
     {
         return $this->data['pages'];

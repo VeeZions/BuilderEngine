@@ -68,8 +68,11 @@ export default class extends Controller {
     }
 
     uploadTargetConnected(btn) {
+        const htmlTag = document.querySelector('html');
+        if (htmlTag.getAttribute('aria-busy') === 'true') {
+            htmlTag.removeAttribute('aria-busy');
+        }
         btn.onclick = () => {
-            const htmlTag = document.querySelector('html');
             htmlTag.setAttribute('aria-busy', 'true');
         }
     }

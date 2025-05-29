@@ -11,7 +11,6 @@ class PageController
 {
     public function __construct(private EngineManager $engineManager)
     {
-        
     }
 
     public function index(): Response

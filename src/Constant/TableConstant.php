@@ -2,7 +2,6 @@
 
 namespace VeeZions\BuilderEngine\Constant;
 
-use Symfony\Contracts\Translation\TranslatorInterface;
 use VeeZions\BuilderEngine\Entity\BuilderArticle;
 use VeeZions\BuilderEngine\Entity\BuilderCategory;
 use VeeZions\BuilderEngine\Entity\BuilderNavigation;
@@ -16,15 +15,19 @@ class TableConstant
     public const VBE_TABLE_COUNTER = 'counter';
     public const VBE_TABLE_TABLE = 'table';
     public const VBE_TABLE_PAGINATION = 'pagination';
-    
+
+    /**
+     * @param array<string, array<string, mixed>> $authors
+     */
     public function __construct(
         private AuthorProvider $authorProvider,
-        private array $authors
-    )
-    {
-        
+        private array $authors,
+    ) {
     }
 
+    /**
+     * @return string[]
+     */
     public function getColumnsFromTable(string $entity): array
     {
         $entities = [
@@ -43,16 +46,14 @@ class TableConstant
             BuilderArticle::class => $this->getQueryForArticleTable(),
             BuilderPage::class => $this->getQueryForPageTable(),
             BuilderNavigation::class => $this->getQueryFornavigationTable(),
-            default => null
         };
-
-        if (null === $columns) {
-            throw new \Exception('Entity "'.$entity.'" not found');
-        }
 
         return $columns;
     }
 
+    /**
+     * @return string[]
+     */
     public function getQueryForCategoryTable(): array
     {
         return [
@@ -64,6 +65,9 @@ class TableConstant
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function getQueryForArticleTable(): array
     {
         $query = [
@@ -75,10 +79,10 @@ class TableConstant
 
         $provider = $this->authors['articles'];
         $class = $provider['author_class'];
-        if ($class !== null && class_exists($class)) {
-            $count = count($this->authorProvider->provideAuthors($provider, 'articles'));
-            if ($count > 0) {
-                $index = $provider['author_placeholder'] === 'id'
+        if (is_string($class) && class_exists($class)) {
+            $authors = $this->authorProvider->provideAuthors($provider, 'articles');
+            if (is_array($authors) && count($authors) > 0) {
+                $index = 'id' === $provider['author_placeholder']
                     ? 'pr.id as prId'
                     : 'pr.'.$provider['author_placeholder'];
                 $query[$index] = 'vbe.query.author';
@@ -90,6 +94,9 @@ class TableConstant
         return $query;
     }
 
+    /**
+     * @return string[]
+     */
     public function getQueryForPageTable(): array
     {
         $query = [
@@ -101,10 +108,10 @@ class TableConstant
 
         $provider = $this->authors['pages'];
         $class = $provider['author_class'];
-        if ($class !== null && class_exists($class)) {
-            $count = count($this->authorProvider->provideAuthors($provider, 'pages'));
-            if ($count > 0) {
-                $index = $provider['author_placeholder'] === 'id'
+        if (is_string($class) && class_exists($class)) {
+            $authors = $this->authorProvider->provideAuthors($provider, 'pages');
+            if (is_array($authors) && count($authors) > 0) {
+                $index = 'id' === $provider['author_placeholder']
                     ? 'pr.id as prId'
                     : 'pr.'.$provider['author_placeholder'];
                 $query[$index] = 'vbe.query.author';
@@ -116,6 +123,9 @@ class TableConstant
         return $query;
     }
 
+    /**
+     * @return string[]
+     */
     public function getQueryForNavigationTable(): array
     {
         return [

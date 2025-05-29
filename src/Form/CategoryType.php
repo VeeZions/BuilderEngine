@@ -2,40 +2,40 @@
 
 namespace VeeZions\BuilderEngine\Form;
 
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\InvalidConfigurationException;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use VeeZions\BuilderEngine\Constant\ConfigConstant;
+use VeeZions\BuilderEngine\Entity\BuilderCategory;
 use VeeZions\BuilderEngine\Form\Type\ButtonsType;
 use VeeZions\BuilderEngine\Form\Type\LocaleType;
 use VeeZions\BuilderEngine\Form\Type\SeoType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use VeeZions\BuilderEngine\Entity\BuilderCategory;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
 
 class CategoryType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        /**@var BuilderCategory $entity*/
+        /** @var BuilderCategory $entity */
         $entity = $builder->getData();
         if (!$entity instanceof BuilderCategory) {
             throw new InvalidConfigurationException('Entity must be an instance of BuilderCategory');
         }
         $libraries = $entity->getLibraries()->toArray();
         $id = $entity->getId();
-        $isOriginalFormTheme = $options['form_theme'] === ConfigConstant::CONFIG_DEFAULT_FORM_THEME;
+        $isOriginalFormTheme = ConfigConstant::CONFIG_DEFAULT_FORM_THEME === $options['form_theme'];
 
         $builder
             ->add('locale', LocaleType::class, [
                 'label' => 'form.label.locale',
                 'translation_domain' => 'BuilderEngineBundle-forms',
                 'data' => $entity->getLocale() ?? $options['locale_fallback'],
-                'choice_label' => function ($choice, string $key, mixed $value): TranslatableMessage|string {
+                'choice_label' => function ($choice, string $key, mixed $value): string {
                     return mb_convert_case($key, MB_CASE_TITLE, 'UTF-8');
                 },
             ])
@@ -45,7 +45,7 @@ class CategoryType extends AbstractType
                 'attr' => [
                     'spellcheck' => 'false',
                     'autocomplete' => 'off',
-                ]
+                ],
             ])
         ;
         $builder
@@ -77,11 +77,11 @@ class CategoryType extends AbstractType
                 'required' => true,
                 'form_theme' => $options['form_theme'],
                 'attr' => [
-                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-seo-container' : 'seo-container'
+                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-seo-container' : 'seo-container',
                 ],
                 'row_attr' => [
-                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-seo-row' : 'seo-row'
-                ]
+                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-seo-row' : 'seo-row',
+                ],
             ])
             ->add('buttons', ButtonsType::class, [
                 'mapped' => false,
@@ -90,11 +90,11 @@ class CategoryType extends AbstractType
                 'message' => $options['message'],
                 'form_theme' => $options['form_theme'],
                 'attr' => [
-                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-btns' : 'btns'
+                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-btns' : 'btns',
                 ],
                 'row_attr' => [
-                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-btns-container' : 'btns-container'
-                ]
+                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-btns-container' : 'btns-container',
+                ],
             ])
         ;
     }

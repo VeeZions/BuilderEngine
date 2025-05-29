@@ -4,12 +4,12 @@ namespace VeeZions\BuilderEngine\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
-use Gedmo\Mapping\Annotation\Timestampable;
-use VeeZions\BuilderEngine\Repository\BuilderArticleRepository;
+use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation\Slug;
+use Gedmo\Mapping\Annotation\Timestampable;
 use Symfony\Component\Validator\Constraints as Assert;
+use VeeZions\BuilderEngine\Repository\BuilderArticleRepository;
 
 #[ORM\Entity(repositoryClass: BuilderArticleRepository::class)]
 class BuilderArticle
@@ -31,6 +31,9 @@ class BuilderArticle
     #[ORM\Column(length: 12)]
     private ?string $locale = null;
 
+    /**
+     * @var array<string, mixed>
+     */
     #[ORM\Column]
     private array $seo = [];
 
@@ -111,7 +114,7 @@ class BuilderArticle
     }
 
     /**
-     * @return array<string, string>
+     * @return array<string, mixed>
      */
     public function getSeo(): array
     {
@@ -119,7 +122,7 @@ class BuilderArticle
     }
 
     /**
-     * @param array<string, string> $seo
+     * @param array<string, mixed> $seo
      */
     public function setSeo(array $seo): static
     {
@@ -128,7 +131,7 @@ class BuilderArticle
         return $this;
     }
 
-    public function getContent(): ?String
+    public function getContent(): ?string
     {
         return $this->content;
     }

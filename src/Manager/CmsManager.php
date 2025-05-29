@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use VeeZions\BuilderEngine\Entity\BuilderNavigation;
-use VeeZions\BuilderEngine\Entity\Page;
+use VeeZions\BuilderEngine\Entity\BuilderPage;
 
 readonly class CmsManager
 {
@@ -40,7 +40,7 @@ readonly class CmsManager
         return $modules;
     }
 
-    public function createPageFile(Page $page): void
+    public function createPageFile(BuilderPage $page): void
     {
         $projectDir = $this->parameterBag->get('kernel.project_dir');
         if (!is_string($projectDir)) {
@@ -65,7 +65,7 @@ readonly class CmsManager
         }
     }
 
-    public function removePageFile(Page $page): void
+    public function removePageFile(BuilderPage $page): void
     {
         $projectDir = $this->parameterBag->get('kernel.project_dir');
         if (!is_string($projectDir)) {
@@ -85,7 +85,7 @@ readonly class CmsManager
         }
     }
 
-    public function removeFromNavigation(Page $page): void
+    public function removeFromNavigation(BuilderPage $page): void
     {
         $navigations = $this->entityManager->getRepository(BuilderNavigation::class)->findAll();
         $filtered = ['name' => null, 'stages' => []];

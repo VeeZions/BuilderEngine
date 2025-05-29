@@ -19,8 +19,6 @@ class BuilderLibrariesReferencesCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $io->title('BuilderEngineBundle external libraries references list');
 
-
-
         return Command::SUCCESS;
     }
 }

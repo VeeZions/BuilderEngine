@@ -2,10 +2,10 @@
 
 namespace VeeZions\BuilderEngine\Manager;
 
+use Doctrine\ORM\EntityManagerInterface;
 use VeeZions\BuilderEngine\Entity\BuilderArticle;
 use VeeZions\BuilderEngine\Entity\BuilderCategory;
 use VeeZions\BuilderEngine\Entity\BuilderPage;
-use Doctrine\ORM\EntityManagerInterface;
 
 readonly class NavigationManager
 {
@@ -24,44 +24,51 @@ readonly class NavigationManager
         }
 
         return [
-            'pages' => array_map(function ($page) use ($locale) {
+            'pages' => array_map(function ($page) {
                 return [
                     'type' => 'page',
-                    'label' => 'fr' === $locale ? $page->getTitleFr() : $page->getTitleEn(),
+                    'label' => $page->getTitle(),
                     'id' => $page->getId(),
                     'query' => [],
                     'route' => $page->getRoute(),
                     'link' => null,
                     'blank' => false,
                 ];
-            }, $this->entityManager->getRepository(BuilderPage::class)->findAll()),
+            }, $this->entityManager->getRepository(BuilderPage::class)->findBy(['locale' => $locale])),
 
-            'articles' => array_map(function ($article) use ($locale) {
+            'articles' => array_map(function ($article) {
                 return [
                     'type' => 'article',
-                    'label' => 'fr' === $locale ? $article->getTitleFr() : $article->getTitleEn(),
+                    'label' => $article->getTitle(),
                     'id' => $article->getId(),
                     'query' => [
-                        'category' => 'fr' === $locale ? $article->getCategory()?->getSlugFr() : $article->getCategory()?->getSlugEn(),
-                        'article' => 'fr' === $locale ? $article->getSlugFr() : $article->getSlugEn(),
+                        'categories' => static function () use ($article) {
+                            $categories = [];
+                            foreach ($article->getCategories() as $category) {
+                                $categories[] = $category->getSlug();
+                            }
+
+                            return $categories;
+                        },
+                        'article' => $article->getSlug(),
                     ],
                     'route' => 'app_web_blog_article',
                     'link' => null,
                     'blank' => false,
                 ];
-            }, $this->entityManager->getRepository(BuilderArticle::class)->findBy(['published' => true])),
+            }, $this->entityManager->getRepository(BuilderArticle::class)->findBy(['published' => true, 'locale' => $locale])),
 
-            'categories' => array_map(function ($category) use ($locale) {
+            'categories' => array_map(function ($category) {
                 return [
                     'type' => 'category',
-                    'label' => 'fr' === $locale ? $category->getTitleFr() : $category->getTitleEn(),
+                    'label' => $category->getTitle(),
                     'id' => $category->getId(),
-                    'query' => ['category' => 'fr' === $locale ? $category->getSlugFr() : $category->getSlugEn()],
+                    'query' => ['category' => $category->getSlug()],
                     'route' => 'app_web_blog_category',
                     'link' => null,
                     'blank' => false,
                 ];
-            }, $this->entityManager->getRepository(BuilderCategory::class)->findAll()),
+            }, $this->entityManager->getRepository(BuilderCategory::class)->findBy(['locale' => $locale])),
 
             'user' => [],
             'commerce' => [],

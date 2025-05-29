@@ -9,56 +9,27 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use VeeZions\BuilderEngine\Constant\TableConstant;
 use VeeZions\BuilderEngine\Entity\BuilderArticle;
-use VeeZions\BuilderEngine\Entity\BuilderCategory;
 
 /**
  * @extends ServiceEntityRepository<BuilderArticle>
  */
 class BuilderArticleRepository extends ServiceEntityRepository
 {
+    /**
+     * @param array<string, mixed> $authors
+     */
     public function __construct(
         ManagerRegistry $registry,
         private readonly PaginatorInterface $paginator,
         private readonly RequestStack $requestStack,
         private readonly array $authors,
-        private readonly TableConstant $tableConstant,
+        private readonly TableConstant $tableConstant, /**@phpstan-ignore-line */
     ) {
         parent::__construct($registry, BuilderArticle::class);
     }
 
-    /*
-     * @return array<string, mixed>|null
-     */
-    public function getArticle(string $slug, ?BuilderCategory $category, string $locale): ?array
-    {
-        $locale = in_array(strtolower($locale), $this->availableTranslations, true) ? $locale : 'En';
-        $article = $this->createQueryBuilder('a')
-            ->select(
-                'a.id',
-                'a.category',
-                'a.author',
-                'a.updatedAt',
-                'a.seo',
-                "a.content{$locale} as content",
-                'a.hero_image',
-                'a.published',
-                'a.createdAt',
-                'a.updatedAt',
-                "a.title{$locale} as title",
-                "a.slug{$locale} as slug",
-            )
-            ->where('a.slug'.$locale.' = :slug')
-            ->setParameter('slug', $slug)
-            ->andWhere('a.category = :category')
-            ->setParameter('category', $category)
-            ->getQuery()
-            ->getOneOrNullResult();
-
-        return is_array($article) ? $article : null;
-    }
-
     /**
-     * @param array<int, string>                     $columns
+     * @param array<int, string> $columns
      *
      * @return PaginationInterface<int, mixed>
      */
@@ -67,16 +38,19 @@ class BuilderArticleRepository extends ServiceEntityRepository
         array $columns,
     ): PaginationInterface {
         $query = $this->createQueryBuilder('a')->select($columns);
-        if ($this->authors['author_class'] !== null) {
+        if (is_string($this->authors['author_class'])) {
             $query->leftJoin($this->authors['author_class'], 'pr', 'WITH', 'a.author = pr.id');
         }
 
-        $searchField = $this->requestStack->getCurrentRequest()->query->get('vbeFilterField');
-        $searchValue = $this->requestStack->getCurrentRequest()->query->get('vbeFilterValue');
-        if ($searchField !== null && $searchValue !== null && strlen($searchValue) > 0) {
-            $query->where($searchField.' LIKE :search')
-                ->setParameter('search', '%'.$searchValue.'%')
-            ;
+        $request = $this->requestStack->getCurrentRequest();
+        if (null !== $request) {
+            $searchField = $request->query->get('vbeFilterField');
+            $searchValue = $request->query->get('vbeFilterValue');
+            if (is_string($searchField) && is_string($searchValue) && strlen($searchValue) > 0) {
+                $query->where($searchField.' LIKE :search')
+                    ->setParameter('search', '%'.$searchValue.'%')
+                ;
+            }
         }
 
         return $this->paginator->paginate($query, $page, 10);

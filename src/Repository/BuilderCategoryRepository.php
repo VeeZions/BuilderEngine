@@ -22,27 +22,8 @@ class BuilderCategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, BuilderCategory::class);
     }
 
-    public function getCategory(string $slug, string $locale): ?array
-    {
-        $locale = in_array(strtolower($locale), $this->availableTranslations, true) ? $locale : 'En';
-        $category = $this->createQueryBuilder('c')
-            ->select(
-                'c.id',
-                'c.parent',
-                'c.createdAt',
-                "c.slug{$locale} as slug",
-                "c.title{$locale} as title",
-            )
-            ->where('c.slug'.$locale.' = :slug')
-            ->setParameter('slug', $slug)
-            ->getQuery()
-            ->getOneOrNullResult();
-
-        return is_array($category) ? $category : null;
-    }
-
     /**
-     * @param array<int, string>                     $columns
+     * @param array<int, string> $columns
      *
      * @return PaginationInterface<int, mixed>
      */
@@ -54,12 +35,15 @@ class BuilderCategoryRepository extends ServiceEntityRepository
             ->select($columns)
             ->leftJoin(BuilderCategory::class, 'cp', 'WITH', 'c.parent = cp.id');
 
-        $searchField = $this->requestStack->getCurrentRequest()->query->get('vbeFilterField');
-        $searchValue = $this->requestStack->getCurrentRequest()->query->get('vbeFilterValue');
-        if ($searchField !== null && $searchValue !== null && strlen($searchValue) > 0) {
-            $query->where($searchField.' LIKE :search')
-                ->setParameter('search', '%'.$searchValue.'%')
-            ;
+        $request = $this->requestStack->getCurrentRequest();
+        if (null !== $request) {
+            $searchField = $request->query->get('vbeFilterField');
+            $searchValue = $request->query->get('vbeFilterValue');
+            if (is_string($searchField) && is_string($searchValue) && strlen($searchValue) > 0) {
+                $query->where($searchField.' LIKE :search')
+                    ->setParameter('search', '%'.$searchValue.'%')
+                ;
+            }
         }
 
         return $this->paginator->paginate($query, $page, 10);

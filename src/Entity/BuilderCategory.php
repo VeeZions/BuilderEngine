@@ -7,8 +7,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation\Slug;
 use Gedmo\Mapping\Annotation\Timestampable;
-use VeeZions\BuilderEngine\Repository\BuilderCategoryRepository;
 use Symfony\Component\Validator\Constraints as Assert;
+use VeeZions\BuilderEngine\Repository\BuilderCategoryRepository;
 
 #[ORM\Entity(repositoryClass: BuilderCategoryRepository::class)]
 class BuilderCategory
@@ -53,6 +53,9 @@ class BuilderCategory
     #[ORM\ManyToMany(targetEntity: BuilderLibrary::class, mappedBy: 'category')]
     private Collection $libraries;
 
+    /**
+     * @var array<string, mixed>
+     */
     #[ORM\Column]
     private array $seo = [];
 
@@ -74,7 +77,7 @@ class BuilderCategory
         return $this->id;
     }
 
-    public function getTitle(): ?String
+    public function getTitle(): ?string
     {
         return $this->title;
     }

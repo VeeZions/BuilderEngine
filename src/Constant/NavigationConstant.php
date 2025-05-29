@@ -8,7 +8,10 @@ class NavigationConstant
     public const HEADER_TYPE = 'header';
     public const FOOTER_TYPE = 'footer';
     public const SUB_FOOTER_TYPE = 'sub_footer';
-    
+
+    /**
+     * @return string[]
+     */
     public function getTypes(): array
     {
         return [

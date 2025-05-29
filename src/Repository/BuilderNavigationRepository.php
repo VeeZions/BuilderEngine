@@ -8,7 +8,6 @@ use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use VeeZions\BuilderEngine\Entity\BuilderNavigation;
-use VeeZions\BuilderEngine\Trait\SearchTrait;
 
 /**
  * @extends ServiceEntityRepository<BuilderNavigation>
@@ -24,7 +23,7 @@ class BuilderNavigationRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param array<int, string>                     $columns
+     * @param array<int, string> $columns
      *
      * @return PaginationInterface<int, mixed>
      */
@@ -34,12 +33,15 @@ class BuilderNavigationRepository extends ServiceEntityRepository
     ): PaginationInterface {
         $query = $this->createQueryBuilder('n')->select($columns);
 
-        $searchField = $this->requestStack->getCurrentRequest()->query->get('vbeFilterField');
-        $searchValue = $this->requestStack->getCurrentRequest()->query->get('vbeFilterValue');
-        if ($searchField !== null && $searchValue !== null && strlen($searchValue) > 0) {
-            $query->where($searchField.' LIKE :search')
-                ->setParameter('search', '%'.$searchValue.'%')
-            ;
+        $request = $this->requestStack->getCurrentRequest();
+        if (null !== $request) {
+            $searchField = $request->query->get('vbeFilterField');
+            $searchValue = $request->query->get('vbeFilterValue');
+            if (is_string($searchField) && is_string($searchValue) && strlen($searchValue) > 0) {
+                $query->where($searchField.' LIKE :search')
+                    ->setParameter('search', '%'.$searchValue.'%')
+                ;
+            }
         }
 
         return $this->paginator->paginate($query, $page, 10);

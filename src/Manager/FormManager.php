@@ -6,24 +6,24 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\InvalidEntityRepository;
 use Symfony\Component\Form\Exception\InvalidArgumentException;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Intl\Countries;
-use Symfony\Component\Intl\Locales;
 use Symfony\Component\Routing\Router;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface as Security;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment as TwigEnvironment;
-use VeeZions\BuilderEngine\Constant\AssetConstant;
 use VeeZions\BuilderEngine\Constant\ConfigConstant;
+use VeeZions\BuilderEngine\Constant\NavigationConstant;
+use VeeZions\BuilderEngine\Constant\TableConstant;
 use VeeZions\BuilderEngine\Entity\BuilderArticle;
-use VeeZions\BuilderEngine\Entity\BuilderPage;
 use VeeZions\BuilderEngine\Entity\BuilderCategory;
 use VeeZions\BuilderEngine\Entity\BuilderLibrary;
 use VeeZions\BuilderEngine\Entity\BuilderNavigation;
+use VeeZions\BuilderEngine\Entity\BuilderPage;
 use VeeZions\BuilderEngine\Form\ArticleType;
 use VeeZions\BuilderEngine\Form\CategoryType;
 use VeeZions\BuilderEngine\Form\LibraryModalType;
@@ -31,18 +31,20 @@ use VeeZions\BuilderEngine\Form\LibrarySearchType;
 use VeeZions\BuilderEngine\Form\LibraryType;
 use VeeZions\BuilderEngine\Form\NavigationType;
 use VeeZions\BuilderEngine\Form\PageType;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface as Security;
-use VeeZions\BuilderEngine\Constant\TableConstant;
 use VeeZions\BuilderEngine\Provider\AuthorProvider;
-use VeeZions\BuilderEngine\Trait\AccessTrait;
 use VeeZions\BuilderEngine\Provider\LocaleProvider;
-use VeeZions\BuilderEngine\Constant\NavigationConstant;
+use VeeZions\BuilderEngine\Trait\AccessTrait;
 
 readonly class FormManager
 {
     use AccessTrait;
 
+    /**
+     * @param array<string, array<string, mixed>>                $authors
+     * @param array<int, string>                                 $libraryLiipFilters
+     * @param array<string, array<string, string>>               $customRoutes
+     * @param array<string, array<string, array<string, mixed>>> $actions
+     */
     public function __construct(
         protected TwigEnvironment $twig,
         protected FormFactory $formFactory,
@@ -55,7 +57,7 @@ readonly class FormManager
         private CmsManager $cmsManager,
         protected AssetManager $assetManager,
         protected array $authors,
-        private string $bundleMode,
+        private string $bundleMode, /** @phpstan-ignore-line */
         protected array $libraryLiipFilters,
         protected array $customRoutes,
         protected TableConstant $constant,
@@ -66,16 +68,23 @@ readonly class FormManager
         protected string $formTheme,
         protected NavigationConstant $navigationConstant,
         protected ?string $localeFallback,
-    )
-    {
-        
+        protected string $maxUploadFile,
+    ) {
     }
-    
+
+    /**
+     * @param array<string, mixed> $twigVars
+     */
     protected function provide(string $class, array $twigVars = []): Response
     {
         $type = $this->typeProvider($class);
+        $request = $this->requestStack->getCurrentRequest();
+        if (null === $request) {
+            throw new InvalidArgumentException($this::class.'::provide() expects a valid $request value');
+        }
+        /**@phpstan-ignore-next-line */
         $data = $this->entityManager->getRepository($class)->paginate(
-            max($this->requestStack->getCurrentRequest()->query->getInt('page', 1), 1),
+            max($request->query->getInt('page', 1), 1),
             array_keys($this->constant->getColumnsFromTable($class))
         );
 
@@ -97,7 +106,7 @@ readonly class FormManager
         };
 
         if (null === $type) {
-            throw new InvalidArgumentException($this::class . '::provide() expects a valid className');
+            throw new InvalidArgumentException($this::class.'::provide() expects a valid className');
         }
 
         return $type;
@@ -108,17 +117,21 @@ readonly class FormManager
         return $this->formFactory->create(LibrarySearchType::class, null, [
             'action' => $this->router->generate(ConfigConstant::CONFIG_MEDIA_LIST_ROUTE),
             'method' => 'GET',
-            'form_theme' => $this->formTheme
+            'form_theme' => $this->formTheme,
         ])->createView();
     }
-    
+
+    /**
+     * @param array<int, string> $types
+     */
     public function renderMediaList(string $order = 'asc', array $types = [], ?string $search = null, ?int $count = null): string
     {
         return $this->twig->render('@BuilderEngineInternal/libraries/list.html.twig', [
+            /**@phpstan-ignore-next-line */
             'data' => $this->entityManager->getRepository(BuilderLibrary::class)->paginate($order, $types, $search, $count),
         ]);
     }
-    
+
     public function renderModal(int $id): string
     {
         return $this->twig->render('@BuilderEngineInternal/libraries/modal.html.twig', [
@@ -128,27 +141,37 @@ readonly class FormManager
                 'method' => 'GET',
                 'form_theme' => $this->formTheme,
                 'file_data' => $this->entityManager->getRepository(BuilderLibrary::class)->find($id),
-            ])->createView()
+            ])->createView(),
         ]);
     }
 
+    /**
+     * @param array<string, mixed> $twigVars
+     */
     protected function engine(
-        string $type, 
+        string $type,
         mixed $data = null,
         array $twigVars = [],
         ?string $redirectionRoute = null,
-    ): Response
-    {
+    ): Response {
         $options = $this->setOptions($type);
         $data = $this->setData($data, $type);
-        
+
         $form = $this->formFactory->create($type, $data, $options);
         $form->handleRequest($this->requestStack->getCurrentRequest());
-        
-        if ($form->isSubmitted() && $form->isValid()) {
 
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->saveData($form);
-            return new RedirectResponse($this->compileRedirectionRoute($redirectionRoute, $type));
+            if (null === $redirectionRoute) {
+                throw new InvalidArgumentException($this::class.'::engine() expects a valid $redirectionRoute value');
+            }
+
+            $route = $this->compileRedirectionRoute($redirectionRoute, $type);
+            if (null === $route) {
+                throw new InvalidArgumentException($this::class.'::engine() expects a valid compileRedirectionRoute() value');
+            }
+
+            return new RedirectResponse($route);
         }
 
         $response = $form->isSubmitted() ? 301 : 200;
@@ -158,10 +181,10 @@ readonly class FormManager
             array_merge(['form' => $form->createView()], $twigVars)
         ), $response);
     }
-    
+
     private function getTwigTemplate(string $type, string $action): string
     {
-        return match ($type) {
+        $template = match ($type) {
             ArticleType::class => ConfigConstant::CONFIG_SHARED_TEMPLATE_PATH.'/articles/'.$action.'.html.twig',
             PageType::class => ConfigConstant::CONFIG_SHARED_TEMPLATE_PATH.'/pages/'.$action.'.html.twig',
             CategoryType::class => ConfigConstant::CONFIG_SHARED_TEMPLATE_PATH.'/categories/'.$action.'.html.twig',
@@ -169,16 +192,18 @@ readonly class FormManager
             LibraryType::class => ConfigConstant::CONFIG_INTERNAL_TEMPLATE_PATH.'/libraries/index.html.twig',
             default => null,
         };
-        
-        $formMethod = $type === 'index' ? '::provide()' : '::engine()';
-        
+
         if (null === $template) {
-            throw new InvalidArgumentException($this::class . $formMethod . ' expects a valid form type');
+            $formMethod = 'index' === $type ? '::provide()' : '::engine()';
+            throw new InvalidArgumentException($this::class.$formMethod.' expects a valid form type');
         }
-        
+
         return $template;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function setOptions(string $type): array
     {
         $options = [];
@@ -191,7 +216,7 @@ readonly class FormManager
         if (in_array($type, [ArticleType::class, PageType::class], true)) {
             $options['authors'] = $authors;
             $token = $this->security->getToken();
-            $options['user_id'] = $token !== null ? $token->getUser() : null;
+            $options['user_id'] = null !== $token ? $token->getUser() : null;
         }
 
         if (in_array($type, [ArticleType::class, PageType::class, NavigationType::class, CategoryType::class], true)) {
@@ -206,19 +231,21 @@ readonly class FormManager
             LibraryType::class => ConfigConstant::CONFIG_DEFAULT_ROUTES['libraries_routes']['list'],
             default => null,
         };
-        
+
         if (null === $listUrl) {
-            throw new InvalidArgumentException($this::class . '::engine() expects a valid $type value');
+            throw new InvalidArgumentException($this::class.'::engine() expects a valid $type value');
         }
 
-        if ($type === NavigationType::class) {
+        if (NavigationType::class === $type) {
             $options['navigation_types'] = array_flip($this->navigationConstant->getTypes());
         }
-        
-        if ($type === LibraryType::class) {
-            $options['error_message'] = $this->translator->trans('error.label.libraries.mime_types_message', [], 'BuilderEngineBundle-errors');
+
+        if (LibraryType::class === $type) {
+            $options['error_extensions_message'] = $this->translator->trans('error.label.libraries.mime_extensions_message', [], 'BuilderEngineBundle-errors');
+            $options['error_max_size_message'] = $this->translator->trans('error.label.libraries.max_size_message', [], 'BuilderEngineBundle-errors');
+            $options['max_upload_size'] = $this->maxUploadFile;
         }
-        
+
         $options['list_url'] = $this->router->generate($listUrl);
         $options['message'] = $this->translator->trans('form.message.back.list', [], 'BuilderEngineBundle-forms');
         $options['form_theme'] = $this->formTheme;
@@ -226,7 +253,7 @@ readonly class FormManager
         return $options;
     }
 
-    private function setData(mixed $data, string $type): ?object
+    private function setData(mixed $data, string $type): mixed
     {
         if (null === $data) {
             $data = match ($type) {
@@ -239,8 +266,8 @@ readonly class FormManager
             };
         }
 
-        if (null === $data && $type !== LibraryType::class) {
-            throw new InvalidArgumentException($this::class . '::engine() expects a valid form type');
+        if (null === $data && LibraryType::class !== $type) {
+            throw new InvalidArgumentException($this::class.'::engine() expects a valid form type');
         }
 
         return $data;
@@ -251,18 +278,17 @@ readonly class FormManager
         $innerType = $form->getConfig()->getType()->getInnerType();
         $entity = $form->getData();
         $entity = match (true) {
-            $entity instanceof BuilderNavigation =>
-            $this->prepareNavigationData($form, $entity),
-            $entity instanceof BuilderPage, $entity instanceof BuilderArticle, $entity instanceof BuilderCategory =>
-            $this->prepareCmsEntitiesData($form, $entity),
+            $entity instanceof BuilderNavigation => $this->prepareNavigationData($form, $entity),
+            $entity instanceof BuilderPage, $entity instanceof BuilderArticle, $entity instanceof BuilderCategory => $this->prepareCmsEntitiesData($form, $entity),
             $innerType instanceof LibraryType => $this->assetManager->upload(
                 $form->get('file')->getData(),
                 $this->libraryLiipFilters
             ),
+            default => null,
         };
 
         if (!$innerType instanceof LibraryType) {
-            if ($entity->getId() !== null) {
+            if (is_object($entity) && null !== $entity->getId()) {
                 $this->entityManager->persist($entity);
             }
             $this->entityManager->flush();
@@ -270,9 +296,12 @@ readonly class FormManager
         }
     }
 
-    private function compileRedirectionRoute(?string $redirectionRoute, string $type): string
+    private function compileRedirectionRoute(string $redirectionRoute, string $type): ?string
     {
         $request = $this->requestStack->getCurrentRequest();
+        if (null === $request) {
+            throw new InvalidArgumentException($this::class.'::compileRedirectionRoute() expects a valid $request value');
+        }
 
         if ($this->isReloaded($request->request->all())) {
             return $request->headers->get('referer');
@@ -288,34 +317,40 @@ readonly class FormManager
         };
 
         if (null === $routeToRedirect) {
-            throw new InvalidArgumentException($this::class . '::engine() expects a valid redirection route');
+            throw new InvalidArgumentException($this::class.'::engine() expects a valid redirection route');
         }
 
         return $redirectionRoute ?
-            $this->router->generate($redirectionRoute) : 
+            $this->router->generate($redirectionRoute) :
             $this->router->generate($routeToRedirect);
     }
 
+    /**
+     * @param array<string, mixed> $request
+     */
     private function isReloaded(array $request): bool
     {
         foreach ($request as $row) {
-            return isset($row['buttons']['save_and_stay']);
+            return is_array($row) && isset($row['buttons']['save_and_stay']);
         }
 
         return false;
     }
 
+    /**
+     * @return array<string, array<string, string>>
+     */
     public function getAvailableLocales(): array
     {
-        return $this->localeProvider->getList(false);
+        return $this->localeProvider->getList();
     }
-    
+
     public function translateCrudTitle(string $entity, string $type): string
     {
-        if ($entity === 'libraries' && $type === 'index') {
+        if ('libraries' === $entity && 'index' === $type) {
             return $this->translator->trans('form.media.library', [], 'BuilderEngineBundle-forms');
         }
-        
+
         return $this->translator->trans(
             'form.title.'.$type,
             ['%entity%' => $this->translator->trans(
@@ -329,8 +364,8 @@ readonly class FormManager
 
     private function callBackActions(mixed $entity): void
     {
-        $isEdition = $entity->getId() !== null;
         if ($entity instanceof BuilderPage) {
+            $isEdition = null !== $entity->getId();
             $this->gedManager->setGedsFromPageBuilder($entity);
             if ($isEdition) {
                 $this->cmsManager->createPageFile($entity);
@@ -340,7 +375,11 @@ readonly class FormManager
 
     private function prepareNavigationData(FormInterface $form, BuilderNavigation $entity): BuilderNavigation
     {
-        $json = json_decode($form->getData()['data'], true);
+        $data = $form->getData();
+        if (!is_array($data)) {
+            throw new InvalidArgumentException($this::class.'::prepareNavigationData() expects a valid $data array');
+        }
+        $json = json_decode($data['data'], true);
         $json = is_array($json) ? $json : [];
         $entity->setContent($json);
 
@@ -349,10 +388,9 @@ readonly class FormManager
 
     private function prepareCmsEntitiesData(
         FormInterface $form,
-        BuilderPage|BuilderArticle|BuilderCategory $entity
-    ): BuilderPage|BuilderArticle|BuilderCategory
-    {
-        $isEdition = $entity->getId() !== null;
+        BuilderPage|BuilderArticle|BuilderCategory $entity,
+    ): BuilderPage|BuilderArticle|BuilderCategory {
+        $isEdition = null !== $entity->getId();
         $newLibraryId = $form->get('libraries')->getData();
 
         if ($isEdition) {
@@ -383,12 +421,10 @@ readonly class FormManager
                 default => 'entity',
             };
 
-            throw new InvalidEntityRepository(
-                $this->translator->trans('error.'.$entity.'.not.found', [], 'BuilderEngineBundle-errors')
-            );
+            throw new InvalidEntityRepository($this->translator->trans('error.'.$entity.'.not.found', [], 'BuilderEngineBundle-errors'));
         }
     }
-    
+
     protected function remove(?object $data = null): Response
     {
         $this->checkIfEntityExists($data);
@@ -401,36 +437,48 @@ readonly class FormManager
             $data instanceof BuilderLibrary => ConfigConstant::CONFIG_DEFAULT_ROUTES['libraries_routes']['list'],
             default => null,
         };
-        
+
         if (null === $routeToRedirect) {
-            throw new InvalidArgumentException($this::class . '::remove() expects a valid redirection route');
+            throw new InvalidArgumentException($this::class.'::remove() expects a valid redirection route');
         }
 
-        $this->entityManager->remove($data);
-        $this->entityManager->flush();
-        
+        if (null !== $data) {
+            $this->entityManager->remove($data);
+            $this->entityManager->flush();
+        }
+
         return new RedirectResponse($this->router->generate($routeToRedirect));
     }
-    
+
     protected function checkPermissions(): void
     {
-        $currentRoute = $this->requestStack->getCurrentRequest()->attributes->get('_route');
+        $request = $this->requestStack->getCurrentRequest();
+        if (null === $request) {
+            throw new InvalidArgumentException($this::class.'::checkPermissions() expects a valid $request value');
+        }
+        $currentRoute = $request->attributes->get('_route');
 
         foreach ($this->customRoutes as $entity => $routes) {
             foreach ($routes as $action => $route) {
-
                 if ($currentRoute === $route) {
-                    $index = str_replace('_routes', '' ,$entity);
+                    $index = str_replace('_routes', '', $entity);
+                    if (!is_array($this->actions[$index][$action]['roles'])) {
+                        throw new InvalidArgumentException($this::class.'::checkPermissions() expects a valid $roles array');
+                    }
                     $this->isGranted($this->actions[$index][$action]['roles']);
                 }
             }
         }
     }
 
+    /**
+     * @param array<string, array<string, string>> $flags
+     */
     public function getFlagFromLocale(string $locale, array $flags): ?string
     {
         if (isset($flags[$locale])) {
             $data = $flags[$locale];
+
             return sprintf('<span title="%s">%s</span>', $data['language'], $data['flag']);
         }
 

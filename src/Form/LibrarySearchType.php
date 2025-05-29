@@ -6,7 +6,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use VeeZions\BuilderEngine\Constant\ConfigConstant;
@@ -16,7 +15,7 @@ class LibrarySearchType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $isOriginalFormTheme = $options['form_theme'] === ConfigConstant::CONFIG_DEFAULT_FORM_THEME;
+        $isOriginalFormTheme = ConfigConstant::CONFIG_DEFAULT_FORM_THEME === $options['form_theme'];
 
         $builder
             ->add('media_search_order', ChoiceType::class, [
@@ -45,7 +44,7 @@ class LibrarySearchType extends AbstractType
                     LibraryEnum::VIDEO->value,
                     LibraryEnum::DOCUMENT->value,
                     LibraryEnum::UNKNOWN->value,
-                ]
+                ],
             ])
             ->add('media_search', SearchType::class, [
                 'label' => 'form.label.media.search',
@@ -53,16 +52,16 @@ class LibrarySearchType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => 'form.label.media.search.placeholder',
-                ]
+                ],
             ])
             ->add('media_search_button', SubmitType::class, [
                 'label' => 'form.label.search',
                 'translation_domain' => 'BuilderEngineBundle-forms',
                 'attr' => [
-                    'data-veezions--builder-engine-bundle--veezions-builder-engine-bundle-media-target' => 'searchBtn'
+                    'data-veezions--builder-engine-bundle--veezions-builder-engine-bundle-media-target' => 'searchBtn',
                 ],
                 'row_attr' => [
-                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-btn-row' : 'btn-row'
+                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-btn-row' : 'btn-row',
                 ],
             ])
         ;

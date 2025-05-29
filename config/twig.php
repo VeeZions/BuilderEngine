@@ -28,6 +28,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             abstract_arg('Get config.crud_buttons'),
             abstract_arg('Get config.internal_css'),
             abstract_arg('Get config.page_title'),
+            abstract_arg('Get config.library_config.max_upload_file'),
         ])
         ->tag('twig.global')
     ;

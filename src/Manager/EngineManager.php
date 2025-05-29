@@ -13,11 +13,16 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment as TwigEnvironment;
 use VeeZions\BuilderEngine\Constant\NavigationConstant;
 use VeeZions\BuilderEngine\Constant\TableConstant;
-use VeeZions\BuilderEngine\Manager\FormManager;
 use VeeZions\BuilderEngine\Provider\AuthorProvider;
 
 readonly class EngineManager extends FormManager
 {
+    /**
+     * @param array<string, array<string, mixed>>                $authors
+     * @param array<int, string>                                 $libraryLiipFilters
+     * @param array<string, array<string, string>>               $customRoutes
+     * @param array<string, array<string, array<string, mixed>>> $actions
+     */
     public function __construct(
         protected TwigEnvironment $twig,
         protected FormFactory $formFactory,
@@ -37,9 +42,8 @@ readonly class EngineManager extends FormManager
         protected string $formTheme,
         protected NavigationConstant $navigationConstant,
         protected ?string $localeFallback,
-    )
-    {
-
+        protected string $maxUploadFile,
+    ) {
     }
 
     public function get(string $class): Response
@@ -47,25 +51,32 @@ readonly class EngineManager extends FormManager
         return $this->provide($class);
     }
 
+    /**
+     * @param array<string, mixed> $twigVars
+     */
     public function new(string $class, array $twigVars = [], ?string $redirectionRoute = null): Response
     {
         $this->checkPermissions();
+
         return $this->engine($class, null, $twigVars, $redirectionRoute);
     }
 
+    /**
+     * @param array<string, mixed> $twigVars
+     */
     public function edit(string $class, ?object $data = null, array $twigVars = [], ?string $redirectionRoute = null): Response
     {
         $this->checkPermissions();
         $this->checkIfEntityExists($data, $class);
-        
+
         return $this->engine($class, $data, $twigVars, $redirectionRoute);
     }
-    
+
     public function delete(?object $data = null): Response
     {
         $this->checkPermissions();
         $this->checkIfEntityExists($data);
-        
+
         return $this->remove($data);
     }
 }

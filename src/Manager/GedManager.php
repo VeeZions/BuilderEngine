@@ -30,7 +30,7 @@ readonly class GedManager
             $g = $element['bgImage'];
             $bId = $element['builderId'];
             $t = $element['type'];
-            if ($p instanceof Page
+            if ($p instanceof BuilderPage
                 && is_string($bId)
                 && is_string($t)
             ) {
@@ -101,7 +101,7 @@ readonly class GedManager
         return $elements;
     }
 
-    public function removeAllElementGeds(Page $page): void
+    public function removeAllElementGeds(BuilderPage $page): void
     {
         $elements = $this->entityManager->getRepository(BuilderElement::class)->findBy(['page' => $page]);
         foreach ($elements as $element) {
@@ -114,7 +114,7 @@ readonly class GedManager
         $this->entityManager->flush();
     }
 
-    public function getElementHumanizedRanking(Element $element): string
+    public function getElementHumanizedRanking(BuilderElement $element): string
     {
         if (null === $element->getBuilderId() || null === $element->getType()) {
             return '';
