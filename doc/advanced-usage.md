@@ -2,7 +2,7 @@
 
 ### phpstan:
 ```shell
-php vendor/bin/phpstan analyze -c phpstan.dist.neon --memory-limit 1G
+php vendor/bin/phpstan analyze -c phpstan.builder.engine.dist.neon --memory-limit 1G
 ```
 
 ### CS Fixer
