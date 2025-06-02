@@ -23,7 +23,7 @@
     }
   ],
   "require": {
-    "php": ">=8.2.0",
+    "php": ">=8.3",
     "nesbot/carbon": ">=3.3",
     "gedmo/doctrine-extensions": "^3.16",
     "james-heinrich/getid3": "^1.9",

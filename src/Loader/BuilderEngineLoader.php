@@ -10,11 +10,13 @@ class BuilderEngineLoader extends Loader
 {
     /**
      * @param array<string, array<string, array<string, mixed>>> $actionsConfig
+     * @param array<string, string> $frontRoutes
      */
     public function __construct(
         private string $mode,
         private string $prefix,
         private array $actionsConfig = [],
+        protected array $frontRoutes,
     ) {
     }
 
@@ -26,6 +28,22 @@ class BuilderEngineLoader extends Loader
         $asyncRoute = $this->import(ConfigConstant::CONFIG_SHARED_TEMPLATE_PATH.'/config/routing/async.yaml', $type);
         $asyncRoute->addPrefix('/_xlxeb'); /* @phpstan-ignore-line */
         $routes->addCollection($asyncRoute); /* @phpstan-ignore-line */
+
+        $defaultFrontRoutes = [
+            ConfigConstant::CONFIG_DEFAULT_BLOG_ROUTE,
+            ConfigConstant::CONFIG_DEFAULT_ARTICLE_ROUTE,
+            ConfigConstant::CONFIG_DEFAULT_CATEGORY_ROUTE
+        ];
+
+        foreach ($this->frontRoutes as $target => $frontRoute) {
+            if (in_array($frontRoute, $defaultFrontRoutes, true)) {
+                $fr = $this->import(
+                    ConfigConstant::CONFIG_SHARED_TEMPLATE_PATH.'/config/routing/controllers/front/'.$target.'.yaml',
+                    $type
+                );
+                $routes->addCollection($fr); /* @phpstan-ignore-line */
+            }
+        }
 
         if ('form' !== $this->mode) {
             foreach ($this->actionsConfig as $entity => $actions) {

@@ -23,12 +23,18 @@ final class GlobalVariables
         private bool $internal_css,
         private bool $page_title,
         private string $max_upload_file,
+        private string $extended_front_template,
     ) {
     }
 
     public function getExtended_template(): string
     {
         return $this->extended_template;
+    }
+    
+    public function getExtended_front_template(): string
+    {
+        return $this->extended_front_template;
     }
 
     public function getForm_theme(): ?string

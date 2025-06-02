@@ -68,6 +68,7 @@ class PageType extends AbstractType
                     'translation_domain' => 'BuilderEngineBundle-forms',
                     'required' => true,
                     'choices' => $choices,
+                    'choice_translation_domain' => false,
                     'data' => $entity->getAuthor(),
                 ])
             ;

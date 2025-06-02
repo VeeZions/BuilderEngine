@@ -44,6 +44,8 @@ readonly class FormManager
      * @param array<int, string>                                 $libraryLiipFilters
      * @param array<string, array<string, string>>               $customRoutes
      * @param array<string, array<string, array<string, mixed>>> $actions
+     * @param array<string, string>                              $frontRoutes
+     *
      */
     public function __construct(
         protected TwigEnvironment $twig,
@@ -69,6 +71,7 @@ readonly class FormManager
         protected NavigationConstant $navigationConstant,
         protected ?string $localeFallback,
         protected string $maxUploadFile,
+        protected array $frontRoutes,
     ) {
     }
 
@@ -241,7 +244,7 @@ readonly class FormManager
         }
 
         if (LibraryType::class === $type) {
-            $options['error_extensions_message'] = $this->translator->trans('error.label.libraries.mime_extensions_message', [], 'BuilderEngineBundle-errors');
+            $options['error_extensions_message'] = $this->translator->trans('error.label.libraries.extensions_message', [], 'BuilderEngineBundle-errors');
             $options['error_max_size_message'] = $this->translator->trans('error.label.libraries.max_size_message', [], 'BuilderEngineBundle-errors');
             $options['max_upload_size'] = $this->maxUploadFile;
         }

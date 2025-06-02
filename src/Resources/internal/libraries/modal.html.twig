@@ -63,15 +63,17 @@
                 </p>
                 <ul class="vbe-form-theme-media-modal-use-list">
                     {% for article in articles %}
-                        <li class="vbe-form-theme-media-modal-use-entity">
-                            <a
-                                class="vbe-form-theme-media-modal-use-entity-link"
-                                href="{{ path('app_web_blog_article', {category: app.request.getLocale() is same as 'fr' ? article.category.slugFr : article.category.slugEn, article: app.request.getLocale() is same as 'fr' ? article.slugFr : article.slugEn}) }}"
-                                target="_blank"
-                            >
-                                - {{ app.request.getLocale() is same as 'fr' ? article.titleFr : article.titleEn }}
-                            </a>
-                        </li>
+                        {% for articleCategory in article.categories %}
+                            <li class="vbe-form-theme-media-modal-use-entity">
+                                <a
+                                    class="vbe-form-theme-media-modal-use-entity-link"
+                                    href="{{ path('app_web_blog_article', {category: articleCategory.slug, article: article.slug}) }}"
+                                    target="_blank"
+                                >
+                                    - {{ article.title }}
+                                </a>
+                            </li>
+                        {% endfor %}
                     {% endfor %}
                 </ul>
             {% elseif categories|length > 0 %}
@@ -86,10 +88,10 @@
                         <li class="vbe-form-theme-media-modal-use-entity">
                             <a
                                 class="vbe-form-theme-media-modal-use-entity-link"
-                                href="{{ path('app_web_blog_category', {category: app.request.getLocale() is same as 'fr' ? category.slugFr : category.slugEn}) }}"
+                                href="{{ path('app_web_blog_category', {category: category.slug}) }}"
                                 target="_blank"
                             >
-                                - {{ app.request.getLocale() is same as 'fr' ? category.titleFr : category.titleEn }}
+                                - {{ category.title }}
                             </a>
                         </li>
                     {% endfor %}

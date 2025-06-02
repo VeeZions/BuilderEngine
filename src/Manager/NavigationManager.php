@@ -24,7 +24,7 @@ readonly class NavigationManager
         }
 
         return [
-            'pages' => array_map(function ($page) {
+            'pages' => array_map(static function ($page) {
                 return [
                     'type' => 'page',
                     'label' => $page->getTitle(),
@@ -36,7 +36,7 @@ readonly class NavigationManager
                 ];
             }, $this->entityManager->getRepository(BuilderPage::class)->findBy(['locale' => $locale])),
 
-            'articles' => array_map(function ($article) {
+            'articles' => array_map(static function ($article) {
                 return [
                     'type' => 'article',
                     'label' => $article->getTitle(),
@@ -58,7 +58,7 @@ readonly class NavigationManager
                 ];
             }, $this->entityManager->getRepository(BuilderArticle::class)->findBy(['published' => true, 'locale' => $locale])),
 
-            'categories' => array_map(function ($category) {
+            'categories' => array_map(static function ($category) {
                 return [
                     'type' => 'category',
                     'label' => $category->getTitle(),

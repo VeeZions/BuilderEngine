@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c086e9a7-04b9-43e7-960c-473e7fb427ac" name="Changes" comment="" />
+    <list default="true" id="c086e9a7-04b9-43e7-960c-473e7fb427ac" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -175,37 +177,40 @@
       <path value="$PROJECT_DIR$/vendor/knplabs/knp-components" />
     </include_path>
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 6
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
   <component name="ProjectId" id="2xj7AimwVxAuJIDpA8w4i4kAEVB" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Remove" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "/Users/fredericgeffray/Documents/recherche/Pacakges/Packages/BuilderEngine",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/fredericgeffray/Documents/recherche/Pacakges/Packages/BuilderEngine&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "GitStage.ChangesTree.GroupingKeys": [
-      "directory",
-      "module",
-      "repository"
+  &quot;keyToStringList&quot;: {
+    &quot;GitStage.ChangesTree.GroupingKeys&quot;: [
+      &quot;directory&quot;,
+      &quot;module&quot;,
+      &quot;repository&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
@@ -226,8 +231,34 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1748439488954</updated>
-      <workItem from="1748439490511" duration="6299000" />
+      <workItem from="1748439490511" duration="15891000" />
+      <workItem from="1748606409720" duration="278000" />
     </task>
+    <task id="LOCAL-00001" summary="Rename 'complided_locales.json' to 'compiled_locales.json'&#10;&#10;Fix a typo in the filename to ensure proper referencing and consistency. This prevents potential errors in loading the locales file.">
+      <option name="closed" value="true" />
+      <created>1748503932073</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1748503932073</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Rename 'complided_locales.json' to 'compiled_locales.json'&#10;&#10;Fix a typo in the filename to ensure proper referencing and consistency. This prevents potential errors in loading the locales file.">
+      <option name="closed" value="true" />
+      <created>1748503982408</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1748503982408</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Update PHPStan config file path in documentation&#10;&#10;Replaced the PHPStan configuration file reference to point to `phpstan.builder.engine.dist.neon` instead of `phpstan.dist.neon` for clarity and accuracy. This ensures the documentation aligns with the correct configuration file setup.">
+      <option name="closed" value="true" />
+      <created>1748504115024</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1748504115024</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -235,6 +266,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Update media controller logic, assets, and dependencies  &#10;&#10;Enhanced media controller with dynamic URLs and improved form usage. Adjusted CSS for loader visuals, typography, and element positioning. Upgraded JS and dependencies, introducing reset styles and library updates, including `james-heinrich/getid3`. Removed obsolete `.idea` configuration files and improved code organization." />
-    <option name="LAST_COMMIT_MESSAGE" value="Update media controller logic, assets, and dependencies  &#10;&#10;Enhanced media controller with dynamic URLs and improved form usage. Adjusted CSS for loader visuals, typography, and element positioning. Upgraded JS and dependencies, introducing reset styles and library updates, including `james-heinrich/getid3`. Removed obsolete `.idea` configuration files and improved code organization." />
+    <MESSAGE value="Rename 'complided_locales.json' to 'compiled_locales.json'&#10;&#10;Fix a typo in the filename to ensure proper referencing and consistency. This prevents potential errors in loading the locales file." />
+    <MESSAGE value="Update PHPStan config file path in documentation&#10;&#10;Replaced the PHPStan configuration file reference to point to `phpstan.builder.engine.dist.neon` instead of `phpstan.dist.neon` for clarity and accuracy. This ensures the documentation aligns with the correct configuration file setup." />
+    <option name="LAST_COMMIT_MESSAGE" value="Update PHPStan config file path in documentation&#10;&#10;Replaced the PHPStan configuration file reference to point to `phpstan.builder.engine.dist.neon` instead of `phpstan.dist.neon` for clarity and accuracy. This ensures the documentation aligns with the correct configuration file setup." />
   </component>
 </project>

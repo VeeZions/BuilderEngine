@@ -13,11 +13,15 @@ class ConfigConstant
     public const CONFIG_S3_DRIVER = 's3';
     public const CONFIG_DEFAULT_CRUD_PREFIX = '/admin';
     public const CONFIG_EXTENDED_TEMPLATE = '@BuilderEngineInternal/base.html.twig';
+    public const CONFIG_EXTENDED_FRONT_TEMPLATE = '@BuilderEngineInternal/front.html.twig';
     public const CONFIG_SHARED_TEMPLATE_PATH = '@BuilderEngineBundle';
     public const CONFIG_INTERNAL_TEMPLATE_PATH = '@BuilderEngineInternal';
     public const CONFIG_DEFAULT_FORM_THEME = '@BuilderEngineInternal/form/builder_form_theme.html.twig';
     public const CONFIG_MEDIA_LIST_ROUTE = 'xlxeb_controller_library_list';
     public const CONFIG_MEDIA_SAVE_ROUTE = 'xlxeb_controller_library_save';
+    public const CONFIG_DEFAULT_BLOG_ROUTE = 'xlxeb_front_controller_blog';
+    public const CONFIG_DEFAULT_ARTICLE_ROUTE = 'xlxeb_front_controller_article';
+    public const CONFIG_DEFAULT_CATEGORY_ROUTE = 'xlxeb_front_controller_category';
     public const CONFIG_DEFAULT_ROUTES = [
         'articles_routes' => [
             'list' => 'xlxeb_controller_article_index',

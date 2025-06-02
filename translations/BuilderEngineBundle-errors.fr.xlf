@@ -33,8 +33,8 @@
         <source>error.action.disabled</source>
         <target>Page non trouvée.</target>
       </trans-unit>
-      <trans-unit id="error.label.libraries.error_extensions_message" resname="error.label.libraries.error_extensions_message">
-        <source>error.label.libraries.error_extensions_message</source>
+      <trans-unit id="error.label.libraries.extensions_message" resname="error.label.libraries.extensions_message">
+        <source>error.label.libraries.extensions_message</source>
         <target><![CDATA[<span class="vbe-form-theme-error">Merci de téléverser un format de fichier valide</span>]]></target>
       </trans-unit>
       <trans-unit id="error.label.libraries.max_size_message" resname="error.label.libraries.max_size_message">

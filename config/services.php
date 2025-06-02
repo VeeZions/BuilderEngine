@@ -29,6 +29,7 @@ return static function (ContainerConfigurator $container) {
             abstract_arg('Get config.mode value'),
             abstract_arg('Get config.crud_prefix value'),
             abstract_arg('Get config.actions'),
+            abstract_arg('Frontend blog, article and category routes'),
         ])
         ->tag('routing.loader')
     ;
@@ -61,6 +62,7 @@ return static function (ContainerConfigurator $container) {
             service('veezions_builder_engine.navigation_constant'),
             abstract_arg('Get config.locale_fallback'),
             abstract_arg('Get config.library_config.max_upload_file'),
+            abstract_arg('Frontend blog, article and category routes'),
         ])
     ;
     
@@ -155,6 +157,7 @@ return static function (ContainerConfigurator $container) {
             service('veezions_builder_engine.navigation_constant'),
             abstract_arg('Get config.locale_fallback'),
             abstract_arg('Get config.library_config.max_upload_file'),
+            abstract_arg('Frontend blog, article and category routes'),
         ])
     ;
 

@@ -1,0 +1,4 @@
+xlxeb_front_controller_article:
+  controller: 'veezions_builder_engine.front_controller::article'
+  path: '/blog/{categorySlug}/{articleSlug}'
+  methods: ['GET']

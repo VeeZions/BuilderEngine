@@ -20,11 +20,11 @@ class AsyncController
     private array $slugs = ['mon-test' => 'test'];
 
     public function __construct(
-        private TwigEnvironment $twig, /**@phpstan-ignore-line */
-        private Router $router, /**@phpstan-ignore-line */
+        private TwigEnvironment $twig,
+        private Router $router,
         private TranslatorInterface $translator,
-        private EntityManagerInterface $entityManager, /**@phpstan-ignore-line */
-        private AuthorizationCheckerInterface $authorizationChecker, /**@phpstan-ignore-line */
+        private EntityManagerInterface $entityManager,
+        private AuthorizationCheckerInterface $authorizationChecker,
     ) {
     }
 

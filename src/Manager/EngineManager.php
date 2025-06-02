@@ -22,6 +22,7 @@ readonly class EngineManager extends FormManager
      * @param array<int, string>                                 $libraryLiipFilters
      * @param array<string, array<string, string>>               $customRoutes
      * @param array<string, array<string, array<string, mixed>>> $actions
+     * @param array<string, string>                              $frontRoutes
      */
     public function __construct(
         protected TwigEnvironment $twig,
@@ -43,6 +44,7 @@ readonly class EngineManager extends FormManager
         protected NavigationConstant $navigationConstant,
         protected ?string $localeFallback,
         protected string $maxUploadFile,
+        protected array $frontRoutes,
     ) {
     }
 
