@@ -1,4 +1,4 @@
 vzbeb_front_controller_category:
   controller: 'veezions_builder_engine.front_controller::category'
-  path: '/blog/{categorySlug}'
+  path: '/blog/category/{slug}'
   methods: ['GET']

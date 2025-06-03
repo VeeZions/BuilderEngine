@@ -31,7 +31,7 @@ final class GlobalVariables
     {
         return $this->extended_template;
     }
-    
+
     public function getExtended_front_template(): string
     {
         return $this->extended_front_template;

@@ -277,6 +277,42 @@
         <source>form.label.media.save</source>
         <target>Mettre à jour</target>
       </trans-unit>
+      <trans-unit id="form.label.media.modal.count.entities" resname="form.label.media.modal.count.entities">
+        <source>form.label.media.modal.count.entities</source>
+        <target>Dans %nb% %entity%</target>
+      </trans-unit>
+      <trans-unit id="form.label.media.modal.articles" resname="form.label.media.modal.articles">
+        <source>form.label.media.modal.articles</source>
+        <target>articles</target>
+      </trans-unit>
+      <trans-unit id="form.label.media.modal.article" resname="form.label.media.modal.article">
+        <source>form.label.media.modal.article</source>
+        <target>article</target>
+      </trans-unit>
+      <trans-unit id="form.label.media.modal.categories" resname="form.label.media.modal.categories">
+        <source>form.label.media.modal.categories</source>
+        <target>catégories</target>
+      </trans-unit>
+      <trans-unit id="form.label.media.modal.category" resname="form.label.media.modal.category">
+        <source>form.label.media.modal.category</source>
+        <target>catégorie</target>
+      </trans-unit>
+      <trans-unit id="form.label.media.modal.pages" resname="form.label.media.modal.pages">
+        <source>form.label.media.modal.pages</source>
+        <target>pages</target>
+      </trans-unit>
+      <trans-unit id="form.label.media.modal.page" resname="form.label.media.modal.page">
+        <source>form.label.media.modal.page</source>
+        <target>page</target>
+      </trans-unit>
+      <trans-unit id="form.label.media.modal.elements" resname="form.label.media.modal.elements">
+        <source>form.label.media.modal.elements</source>
+        <target>éléments</target>
+      </trans-unit>
+      <trans-unit id="form.label.media.modal.element" resname="form.label.media.modal.element">
+        <source>form.label.media.modal.element</source>
+        <target>élement</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

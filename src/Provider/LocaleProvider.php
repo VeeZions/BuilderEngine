@@ -8,34 +8,22 @@ use Symfony\Component\Intl\Locales;
 class LocaleProvider
 {
     /**
+     * @param array<int, string> $enabledLocales
+     */
+    public function __construct(
+        private array $enabledLocales,
+    ) {
+    }
+
+    /**
      * @return array<string, array<string, string>>
      */
     public function getList(?string $choicedLocale = null): array
     {
-        $filesystem = new Filesystem();
-        $path = __DIR__.'/../../assets/libraries/compiled_locales.json';
-        if (!$filesystem->exists($path)) {
-            $this->generateList($choicedLocale);
+        if (empty($this->enabledLocales)) {
+            throw new \RuntimeException('You must add at least one enabled locale to the config/builder_engine.yaml file. (builder_engine.enabled_locales.');
         }
 
-        $content = file_get_contents($path);
-        if (!is_string($content)) {
-            return [];
-        }
-
-        $results = json_decode($content, true);
-        if (!is_array($results)) {
-            return [];
-        }
-
-        return $results;
-    }
-
-    /**
-     * @return array<int, string>
-     */
-    public function getProviderList(?string $choicedLocale = null): array
-    {
         $filesystem = new Filesystem();
         $path = __DIR__.'/../../assets/libraries/compiled_locales.json';
         if (!$filesystem->exists($path)) {
@@ -54,7 +42,44 @@ class LocaleProvider
 
         $list = [];
         foreach ($results as $l => $n) {
-            $list[$l] = $n['language'];
+            if (in_array($l, $this->enabledLocales, true)) {
+                $list[$l] = $n;
+            }
+        }
+
+        return $list;
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function getProviderList(?string $choicedLocale = null): array
+    {
+        if (empty($this->enabledLocales)) {
+            throw new \RuntimeException('You must add at least one enabled locale to the config/builder_engine.yaml file. (builder_engine.enabled_locales.');
+        }
+
+        $filesystem = new Filesystem();
+        $path = __DIR__.'/../../assets/libraries/compiled_locales.json';
+        if (!$filesystem->exists($path)) {
+            $this->generateList($choicedLocale);
+        }
+
+        $content = file_get_contents($path);
+        if (!is_string($content)) {
+            return [];
+        }
+
+        $results = json_decode($content, true);
+        if (!is_array($results)) {
+            return [];
+        }
+
+        $list = [];
+        foreach ($results as $l => $n) {
+            if (in_array($l, $this->enabledLocales, true)) {
+                $list[$l] = $n['language'];
+            }
         }
 
         return $list;

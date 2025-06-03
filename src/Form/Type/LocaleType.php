@@ -22,14 +22,16 @@ class LocaleType extends AbstractType
                     throw new LogicException(\sprintf('The "symfony/intl" component is required to use "%s". Try running "composer require symfony/intl".', static::class));
                 }
 
-                $choiceTranslationLocale = is_string($options['choice_translation_locale']) ? $options['choice_translation_locale'] : 'fr';
-                $provider = new LocaleProvider();
+                $choiceTranslationLocale = is_string($options['choice_translation_locale']) ? $options['choice_translation_locale'] : 'en_US';
+                /** @var LocaleProvider $provider */
+                $provider = $options['locales_provider'];
 
                 return ChoiceList::loader($this, new IntlCallbackChoiceLoader(static fn () => array_flip($provider->getProviderList($choiceTranslationLocale))), $choiceTranslationLocale);
             },
             'choice_translation_domain' => false,
             'choice_translation_locale' => null,
             'provider' => null,
+            'locales_provider' => null,
             'invalid_message' => 'Please select a valid locale.',
         ]);
 

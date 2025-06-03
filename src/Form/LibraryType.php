@@ -91,7 +91,7 @@ class LibraryType extends AbstractType
             'form_theme' => null,
             'error_extensions_message' => null,
             'error_max_size_message' => null,
-            'max_upload_size' => null,
+            'max_upload_size' => null
         ]);
     }
 }

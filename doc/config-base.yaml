@@ -10,38 +10,48 @@ builder_engine:
       author_placeholder:   id
   library_config:
     driver:               local # Required
-
+      
       # Examples:
       # - local
-    # - s3
+      # - s3
     max_upload_file:      2M
     service:              null
-
+    
     # If you are using "s3 driver", you must set this value.
     s3_bucket:            null
-
+    
     # If you are using "s3 driver", you can set this value to your CDN URL.
     s3_cdn_url:           null
     liip_filter_sets:     []
-
+  
   # Possible values: default, form
   mode:                 default
-
+  
   # Full locale name, e.g. "en_US" to use in default locale fields.
-  locale_fallback:      en_GB
-
+  locale_fallback:      en_US
+  enabled_locales:
+    
+    # Defaults:
+    - fr_FR
+    - en_US
+    - es_ES
+    - de_DE
+  
   # Add a prefix to controllers URLs in "default" mode
   crud_prefix:          /admin
-
+  
   # Use your own extended template in "default" mode
   extended_template:    '@BuilderEngineInternal/base.html.twig'
-
+  
+  # Use your own extended template in "default" mode
+  extended_front_template: '@BuilderEngineInternal/front.html.twig'
+  
   # form_theme to use in builder forms in "default" mode
   form_theme:           '@BuilderEngineInternal/form/builder_form_theme.html.twig'
-
+  
   # Internal CSS to use with HTML tables in "default" mode
   internal_css:         true
-
+  
   # Display page title or not in "default" mode
   page_title_display:   true
   pagination_buttons:
@@ -52,7 +62,13 @@ builder_engine:
   crud_buttons:
     edit_label:           '@BuilderEngineInternal/table/crud-edit.html.twig'
     delete_label:         '@BuilderEngineInternal/table/crud-delete.html.twig'
-
+  
+  # Set frontend routes.
+  front_routes:
+    blog:                 vzbeb_front_controller_blog
+    article:              vzbeb_front_controller_article
+    category:             vzbeb_front_controller_category
+  
   # Set customs routes if "default" mode is active.
   custom_routes:
     articles_routes:
@@ -75,7 +91,7 @@ builder_engine:
       new:                  vzbeb_controller_navigation_new
       edit:                 vzbeb_controller_navigation_edit
       delete:               vzbeb_controller_navigation_delete
-
+  
   # Set granted roles to allow access to each actions like ["ROLE_USER"] for each controller in "default" mode.
   actions:
     categories:
@@ -122,3 +138,4 @@ builder_engine:
       delete:
         enabled:              true
         roles:                []
+

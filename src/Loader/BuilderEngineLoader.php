@@ -10,13 +10,13 @@ class BuilderEngineLoader extends Loader
 {
     /**
      * @param array<string, array<string, array<string, mixed>>> $actionsConfig
-     * @param array<string, string> $frontRoutes
+     * @param array<string, string>                              $frontRoutes
      */
     public function __construct(
         private string $mode,
         private string $prefix,
+        private array $frontRoutes,
         private array $actionsConfig = [],
-        protected array $frontRoutes,
     ) {
     }
 
@@ -32,7 +32,7 @@ class BuilderEngineLoader extends Loader
         $defaultFrontRoutes = [
             ConfigConstant::CONFIG_DEFAULT_BLOG_ROUTE,
             ConfigConstant::CONFIG_DEFAULT_ARTICLE_ROUTE,
-            ConfigConstant::CONFIG_DEFAULT_CATEGORY_ROUTE
+            ConfigConstant::CONFIG_DEFAULT_CATEGORY_ROUTE,
         ];
 
         foreach ($this->frontRoutes as $target => $frontRoute) {

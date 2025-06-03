@@ -73,8 +73,8 @@ return static function (ContainerConfigurator $container) {
         ->set('veezions_builder_engine.front_controller', FrontController::class)
         ->args([
             service('twig'),
-            service('router'),
             service('doctrine.orm.entity_manager'),
+            service('request_stack'),
         ])
         ->tag('controller.service_arguments')
     ;

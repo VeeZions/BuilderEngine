@@ -63,17 +63,15 @@
                 </p>
                 <ul class="vbe-form-theme-media-modal-use-list">
                     {% for article in articles %}
-                        {% for articleCategory in article.categories %}
-                            <li class="vbe-form-theme-media-modal-use-entity">
-                                <a
-                                    class="vbe-form-theme-media-modal-use-entity-link"
-                                    href="{{ path(routes.article, {categorySlug: articleCategory.slug, articleSlug: article.slug}) }}"
-                                    target="_blank"
-                                >
-                                    - {{ article.title }}
-                                </a>
-                            </li>
-                        {% endfor %}
+                        <li class="vbe-form-theme-media-modal-use-entity">
+                            <a
+                                class="vbe-form-theme-media-modal-use-entity-link"
+                                href="{{ path(routes.article, {slug: article.slug}) }}"
+                                target="_blank"
+                            >
+                                - {{ article.title }}
+                            </a>
+                        </li>
                     {% endfor %}
                 </ul>
             {% elseif categories|length > 0 %}
@@ -88,7 +86,7 @@
                         <li class="vbe-form-theme-media-modal-use-entity">
                             <a
                                 class="vbe-form-theme-media-modal-use-entity-link"
-                                href="{{ path(routes.category, {categorySlug: category.slug}) }}"
+                                href="{{ path(routes.category, {slug: category.slug}) }}"
                                 target="_blank"
                             >
                                 - {{ category.title }}
@@ -131,7 +129,7 @@
                                 href="{{ path(element.page.route) }}"
                                 target="_blank"
                             >
-                                - {{ app.request.getLocale() is same as 'fr' ? element.page.titleFr : element.page.titleEn }}
+                                - {{ element.page.title }}
                             </a>
                             <ul class="vbe-form-theme-media-modal-use-list-element-per-page">
                                 {% for elmt in element.page|vbe_get_all_elements_from_page %}

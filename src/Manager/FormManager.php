@@ -45,7 +45,6 @@ readonly class FormManager
      * @param array<string, array<string, string>>               $customRoutes
      * @param array<string, array<string, array<string, mixed>>> $actions
      * @param array<string, string>                              $frontRoutes
-     *
      */
     public function __construct(
         protected TwigEnvironment $twig,
@@ -225,6 +224,7 @@ readonly class FormManager
 
         if (in_array($type, [ArticleType::class, PageType::class, NavigationType::class, CategoryType::class], true)) {
             $options['locale_fallback'] = $this->localeFallback;
+            $options['locales_provider'] = $this->localeProvider;
         }
 
         $listUrl = match ($type) {

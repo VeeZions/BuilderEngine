@@ -22,6 +22,7 @@ class ConfigConstant
     public const CONFIG_DEFAULT_BLOG_ROUTE = 'vzbeb_front_controller_blog';
     public const CONFIG_DEFAULT_ARTICLE_ROUTE = 'vzbeb_front_controller_article';
     public const CONFIG_DEFAULT_CATEGORY_ROUTE = 'vzbeb_front_controller_category';
+    public const CONFIG_DEFAULT_ENABLED_LOCALES = ['fr_FR', 'en_US', 'es_ES', 'de_DE'];
     public const CONFIG_DEFAULT_ROUTES = [
         'articles_routes' => [
             'list' => 'vzbeb_controller_article_index',

@@ -35,6 +35,7 @@ class NavigationType extends AbstractType
                 'choice_label' => function ($choice, string $key, mixed $value): string {
                     return mb_convert_case($key, MB_CASE_TITLE, 'UTF-8');
                 },
+                'locales_provider' => $options['locales_provider'],
             ])
             ->add('type', ChoiceType::class, [
                 'label' => 'form.label.navigation-type',
@@ -72,6 +73,7 @@ class NavigationType extends AbstractType
             'message' => null,
             'form_theme' => null,
             'navigation_types' => [],
+            'locales_provider' => null,
         ]);
     }
 }

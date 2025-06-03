@@ -45,6 +45,9 @@ class BuilderArticle
     private bool $published = false;
 
     #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $publishedAt = null;
+
+    #[ORM\Column(nullable: true)]
     private ?int $author = null;
 
     #[Timestampable(on: 'create')]
@@ -151,6 +154,18 @@ class BuilderArticle
     public function setPublished(bool $published): static
     {
         $this->published = $published;
+
+        return $this;
+    }
+
+    public function getPublishedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setPublishedAt(?\DateTimeImmutable $publishedAt): static
+    {
+        $this->publishedAt = $publishedAt;
 
         return $this;
     }

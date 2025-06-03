@@ -3,30 +3,44 @@
 namespace VeeZions\BuilderEngine\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
-use Twig\Environment as TwigEnvironment;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Twig\Environment as TwigEnvironment;
+use VeeZions\BuilderEngine\Entity\BuilderArticle;
+use VeeZions\BuilderEngine\Entity\BuilderCategory;
 
 class FrontController
 {
     public function __construct(
         private TwigEnvironment $twig,
-        private Router $router,
         private EntityManagerInterface $entityManager,
+        private RequestStack $requestStack,
     ) {
     }
-    
-    public function blog() :Response
+
+    public function blog(): Response
     {
+        $request = $this->requestStack->getCurrentRequest();
+        if (null === $request) {
+            throw new BadRequestHttpException('Request is null');
+        }
+
+        $locale = $request->getLocale();
+        $categories = $this->entityManager->getRepository(BuilderCategory::class)->findBy(['locale' => $locale]);
+        $articles = $this->entityManager->getRepository(BuilderArticle::class)->findBy(['locale' => $locale, 'published' => true], ['publishedAt' => 'DESC']);
+
         return new Response($this->twig->render(
             '@BuilderEngineBundle/front/blog.html.twig',
             [
+                'articles' => $articles,
+                'categories' => $categories,
                 'title' => 'Blog',
             ]
         ));
     }
 
-    public function article(string $categorySlug, string $articleSlug) :Response
+    public function article(string $slug): Response
     {
         return new Response($this->twig->render(
             '@BuilderEngineBundle/front/article.html.twig',
@@ -36,7 +50,7 @@ class FrontController
         ));
     }
 
-    public function category(string $categorySlug) :Response
+    public function category(string $slug): Response
     {
         return new Response($this->twig->render(
             '@BuilderEngineBundle/front/category.html.twig',

@@ -14,6 +14,7 @@ use Twig\Environment as TwigEnvironment;
 use VeeZions\BuilderEngine\Constant\NavigationConstant;
 use VeeZions\BuilderEngine\Constant\TableConstant;
 use VeeZions\BuilderEngine\Provider\AuthorProvider;
+use VeeZions\BuilderEngine\Provider\LocaleProvider;
 
 readonly class EngineManager extends FormManager
 {
@@ -39,6 +40,7 @@ readonly class EngineManager extends FormManager
         protected TableConstant $constant,
         protected AuthorizationCheckerInterface $authorizationChecker,
         protected array $actions,
+        protected LocaleProvider $localeProvider,
         protected AuthorProvider $authorProvider,
         protected string $formTheme,
         protected NavigationConstant $navigationConstant,

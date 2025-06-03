@@ -28,8 +28,8 @@ return static function (ContainerConfigurator $container) {
         ->args([
             abstract_arg('Get config.mode value'),
             abstract_arg('Get config.crud_prefix value'),
-            abstract_arg('Get config.actions'),
             abstract_arg('Frontend blog, article and category routes'),
+            abstract_arg('Get config.actions'),
         ])
         ->tag('routing.loader')
     ;
@@ -152,6 +152,7 @@ return static function (ContainerConfigurator $container) {
             service('veezions_builder_engine.table_constant'),
             service('security.authorization_checker'),
             abstract_arg('Get config.actions'),
+            service('veezions_builder_engine.locale_provider'),
             service('veezions_builder_engine.author_provider'),
             abstract_arg('Get config.form_theme'),
             service('veezions_builder_engine.navigation_constant'),
@@ -168,5 +169,10 @@ return static function (ContainerConfigurator $container) {
         ])
     ;
 
-    $services->set('veezions_builder_engine.locale_provider', LocaleProvider::class);
+    $services
+        ->set('veezions_builder_engine.locale_provider', LocaleProvider::class)
+        ->args([
+            abstract_arg('Get config.enabled_locales'),
+        ])
+    ;
 };

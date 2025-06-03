@@ -38,6 +38,7 @@ class CategoryType extends AbstractType
                 'choice_label' => function ($choice, string $key, mixed $value): string {
                     return mb_convert_case($key, MB_CASE_TITLE, 'UTF-8');
                 },
+                'locales_provider' => $options['locales_provider'],
             ])
             ->add('title', TextType::class, [
                 'label' => 'form.label.title',
@@ -111,6 +112,7 @@ class CategoryType extends AbstractType
             'list_url' => null,
             'message' => null,
             'form_theme' => null,
+            'locales_provider' => null,
         ]);
     }
 }

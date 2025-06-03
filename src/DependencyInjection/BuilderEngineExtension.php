@@ -64,6 +64,7 @@ class BuilderEngineExtension extends Extension
         $this->setArticleRepositoryDefinition($config, $container);
         $this->setPageRepositoryDefinition($config, $container);
         $this->setAssetManagerDefinition($config, $container);
+        $this->setLocaleProviderDefinition($config, $container);
     }
 
     /**
@@ -205,5 +206,14 @@ class BuilderEngineExtension extends Extension
     {
         $def = $container->getDefinition('veezions_builder_engine.asset_manager');
         $def->setArgument('$libraryConfig', $config['library_config']);
+    }
+
+    /**
+     * @param array<string, mixed> $config
+     */
+    private function setLocaleProviderDefinition(array $config, ContainerBuilder $container): void
+    {
+        $def = $container->getDefinition('veezions_builder_engine.locale_provider');
+        $def->setArgument('$enabledLocales', $config['enabled_locales']);
     }
 }
