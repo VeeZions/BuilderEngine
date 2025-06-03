@@ -9,7 +9,7 @@ use VeeZions\BuilderEngine\Manager\EngineManager;
 
 class CategoryController
 {
-    public function __construct(private EngineManager $engineManager)
+    public function __construct(private readonly EngineManager $engineManager)
     {
     }
 

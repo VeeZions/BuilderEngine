@@ -13,9 +13,9 @@ use VeeZions\BuilderEngine\Entity\BuilderCategory;
 class FrontController
 {
     public function __construct(
-        private TwigEnvironment $twig,
-        private EntityManagerInterface $entityManager,
-        private RequestStack $requestStack,
+        private readonly TwigEnvironment        $twig,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly RequestStack           $requestStack,
     ) {
     }
 

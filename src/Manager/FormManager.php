@@ -165,9 +165,6 @@ readonly class FormManager
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->saveData($form);
-            if (null === $redirectionRoute) {
-                throw new InvalidArgumentException($this::class.'::engine() expects a valid $redirectionRoute value');
-            }
 
             $route = $this->compileRedirectionRoute($redirectionRoute, $type);
             if (null === $route) {
@@ -300,7 +297,7 @@ readonly class FormManager
         }
     }
 
-    private function compileRedirectionRoute(string $redirectionRoute, string $type): ?string
+    private function compileRedirectionRoute(?string $redirectionRoute, string $type): ?string
     {
         $request = $this->requestStack->getCurrentRequest();
         if (null === $request) {

@@ -160,7 +160,7 @@ class BuilderArticle
 
     public function getPublishedAt(): ?\DateTimeImmutable
     {
-        return $this->createdAt;
+        return $this->publishedAt;
     }
 
     public function setPublishedAt(?\DateTimeImmutable $publishedAt): static
