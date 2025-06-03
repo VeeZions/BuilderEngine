@@ -41,14 +41,14 @@ final class FiltersRuntime implements RuntimeExtensionInterface
             return null;
         }
         $route = $request->attributes->getString('_route');
-        if (!str_starts_with($route, 'xlxeb_controller_')) {
+        if (!str_starts_with($route, 'vzbeb_controller_')) {
             return null;
         }
 
         return sprintf(
             'vbe-%s',
             str_replace(
-                ['xlxeb_controller_', '_', '.', 'index'],
+                ['vzbeb_controller_', '_', '.', 'index'],
                 ['', '-', '-', 'crud'],
                 $route
             )

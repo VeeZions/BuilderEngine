@@ -1,4 +1,4 @@
-xlxeb_controller_page_show:
+vzbeb_controller_page_show:
   controller: 'veezions_builder_engine.page_controller::show'
   path: '/pages/{id}/show'
   methods: ['GET']

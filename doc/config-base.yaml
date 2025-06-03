@@ -56,25 +56,25 @@ builder_engine:
   # Set customs routes if "default" mode is active.
   custom_routes:
     articles_routes:
-      list:                 xlxeb_controller_article_index
-      new:                  xlxeb_controller_article_new
-      edit:                 xlxeb_controller_article_edit
-      delete:               xlxeb_controller_article_delete
+      list:                 vzbeb_controller_article_index
+      new:                  vzbeb_controller_article_new
+      edit:                 vzbeb_controller_article_edit
+      delete:               vzbeb_controller_article_delete
     categories_routes:
-      list:                 xlxeb_controller_category_index
-      new:                  xlxeb_controller_category_new
-      edit:                 xlxeb_controller_category_edit
-      delete:               xlxeb_controller_category_delete
+      list:                 vzbeb_controller_category_index
+      new:                  vzbeb_controller_category_new
+      edit:                 vzbeb_controller_category_edit
+      delete:               vzbeb_controller_category_delete
     pages_routes:
-      list:                 xlxeb_controller_page_index
-      new:                  xlxeb_controller_page_new
-      edit:                 xlxeb_controller_page_edit
-      delete:               xlxeb_controller_page_delete
+      list:                 vzbeb_controller_page_index
+      new:                  vzbeb_controller_page_new
+      edit:                 vzbeb_controller_page_edit
+      delete:               vzbeb_controller_page_delete
     navigations_routes:
-      list:                 xlxeb_controller_navigation_index
-      new:                  xlxeb_controller_navigation_new
-      edit:                 xlxeb_controller_navigation_edit
-      delete:               xlxeb_controller_navigation_delete
+      list:                 vzbeb_controller_navigation_index
+      new:                  vzbeb_controller_navigation_new
+      edit:                 vzbeb_controller_navigation_edit
+      delete:               vzbeb_controller_navigation_delete
 
   # Set granted roles to allow access to each actions like ["ROLE_USER"] for each controller in "default" mode.
   actions:

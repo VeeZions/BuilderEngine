@@ -139,6 +139,7 @@ readonly class FormManager
     {
         return $this->twig->render('@BuilderEngineInternal/libraries/modal.html.twig', [
             'media' => $this->entityManager->getRepository(BuilderLibrary::class)->find($id),
+            'routes' => $this->frontRoutes,
             'form' => $this->formFactory->create(LibraryModalType::class, null, [
                 'action' => $this->router->generate(ConfigConstant::CONFIG_MEDIA_SAVE_ROUTE),
                 'method' => 'GET',

@@ -1,4 +1,4 @@
-xlxeb_controller_article_delete:
+vzbeb_controller_article_delete:
   controller: 'veezions_builder_engine.article_controller::delete'
   path: '/articles/{id}/delete'
   methods: ['GET']

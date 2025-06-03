@@ -1,4 +1,4 @@
-xlxeb_controller_page_edit:
+vzbeb_controller_page_edit:
   controller: 'veezions_builder_engine.page_controller::edit'
   path: '/pages/{id}/edit'
   methods: ['GET', 'POST']

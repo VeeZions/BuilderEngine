@@ -17,38 +17,38 @@ class ConfigConstant
     public const CONFIG_SHARED_TEMPLATE_PATH = '@BuilderEngineBundle';
     public const CONFIG_INTERNAL_TEMPLATE_PATH = '@BuilderEngineInternal';
     public const CONFIG_DEFAULT_FORM_THEME = '@BuilderEngineInternal/form/builder_form_theme.html.twig';
-    public const CONFIG_MEDIA_LIST_ROUTE = 'xlxeb_controller_library_list';
-    public const CONFIG_MEDIA_SAVE_ROUTE = 'xlxeb_controller_library_save';
-    public const CONFIG_DEFAULT_BLOG_ROUTE = 'xlxeb_front_controller_blog';
-    public const CONFIG_DEFAULT_ARTICLE_ROUTE = 'xlxeb_front_controller_article';
-    public const CONFIG_DEFAULT_CATEGORY_ROUTE = 'xlxeb_front_controller_category';
+    public const CONFIG_MEDIA_LIST_ROUTE = 'vzbeb_controller_library_list';
+    public const CONFIG_MEDIA_SAVE_ROUTE = 'vzbeb_controller_library_save';
+    public const CONFIG_DEFAULT_BLOG_ROUTE = 'vzbeb_front_controller_blog';
+    public const CONFIG_DEFAULT_ARTICLE_ROUTE = 'vzbeb_front_controller_article';
+    public const CONFIG_DEFAULT_CATEGORY_ROUTE = 'vzbeb_front_controller_category';
     public const CONFIG_DEFAULT_ROUTES = [
         'articles_routes' => [
-            'list' => 'xlxeb_controller_article_index',
-            'new' => 'xlxeb_controller_article_new',
-            'edit' => 'xlxeb_controller_article_edit',
-            'delete' => 'xlxeb_controller_article_delete',
+            'list' => 'vzbeb_controller_article_index',
+            'new' => 'vzbeb_controller_article_new',
+            'edit' => 'vzbeb_controller_article_edit',
+            'delete' => 'vzbeb_controller_article_delete',
         ],
         'categories_routes' => [
-            'list' => 'xlxeb_controller_category_index',
-            'new' => 'xlxeb_controller_category_new',
-            'edit' => 'xlxeb_controller_category_edit',
-            'delete' => 'xlxeb_controller_category_delete',
+            'list' => 'vzbeb_controller_category_index',
+            'new' => 'vzbeb_controller_category_new',
+            'edit' => 'vzbeb_controller_category_edit',
+            'delete' => 'vzbeb_controller_category_delete',
         ],
         'pages_routes' => [
-            'list' => 'xlxeb_controller_page_index',
-            'new' => 'xlxeb_controller_page_new',
-            'edit' => 'xlxeb_controller_page_edit',
-            'delete' => 'xlxeb_controller_page_delete',
+            'list' => 'vzbeb_controller_page_index',
+            'new' => 'vzbeb_controller_page_new',
+            'edit' => 'vzbeb_controller_page_edit',
+            'delete' => 'vzbeb_controller_page_delete',
         ],
         'navigations_routes' => [
-            'list' => 'xlxeb_controller_navigation_index',
-            'new' => 'xlxeb_controller_navigation_new',
-            'edit' => 'xlxeb_controller_navigation_edit',
-            'delete' => 'xlxeb_controller_navigation_delete',
+            'list' => 'vzbeb_controller_navigation_index',
+            'new' => 'vzbeb_controller_navigation_new',
+            'edit' => 'vzbeb_controller_navigation_edit',
+            'delete' => 'vzbeb_controller_navigation_delete',
         ],
         'libraries_routes' => [
-            'list' => 'xlxeb_controller_library_index',
+            'list' => 'vzbeb_controller_library_index',
         ],
     ];
     public const CONFIG_LOCALES = [

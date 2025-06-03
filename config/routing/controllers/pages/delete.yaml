@@ -1,4 +1,4 @@
-xlxeb_controller_page_delete:
+vzbeb_controller_page_delete:
   controller: 'veezions_builder_engine.page_controller::delete'
   path: '/pages/{id}/delete'
   methods: ['GET']

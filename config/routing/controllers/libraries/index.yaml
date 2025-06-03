@@ -1,29 +1,29 @@
-xlxeb_controller_library_index:
+vzbeb_controller_library_index:
   controller: 'veezions_builder_engine.library_controller::index'
   path: '/media-library'
   methods: ['GET', 'POST']
   
-xlxeb_controller_library_list:
+vzbeb_controller_library_list:
   controller: 'veezions_builder_engine.library_controller::list'
   path: '/media-library/list'
   methods: ['POST']
   
-xlxeb_controller_library_save:
+vzbeb_controller_library_save:
   controller: 'veezions_builder_engine.library_controller::save'
   path: '/media-library/save'
   methods: ['POST']
   
-xlxeb_controller_library_delete:
+vzbeb_controller_library_delete:
   controller: 'veezions_builder_engine.library_controller::delete'
   path: '/media-library/delete'
   methods: ['POST']
   
-xlxeb_controller_library_modal:
+vzbeb_controller_library_modal:
   controller: 'veezions_builder_engine.library_controller::modal'
   path: '/media-library/modal'
   methods: ['POST']
   
-xlxeb_controller_library_more:
+vzbeb_controller_library_more:
   controller: 'veezions_builder_engine.library_controller::more'
   path: '/media-library/more'
   methods: ['POST']

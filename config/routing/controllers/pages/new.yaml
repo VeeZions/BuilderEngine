@@ -1,4 +1,4 @@
-xlxeb_controller_page_new:
+vzbeb_controller_page_new:
   controller: 'veezions_builder_engine.page_controller::new'
   path: '/pages/new'
   methods: ['GET', 'POST']

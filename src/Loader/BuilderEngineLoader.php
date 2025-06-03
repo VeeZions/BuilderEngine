@@ -26,7 +26,7 @@ class BuilderEngineLoader extends Loader
         $type = 'yaml';
 
         $asyncRoute = $this->import(ConfigConstant::CONFIG_SHARED_TEMPLATE_PATH.'/config/routing/async.yaml', $type);
-        $asyncRoute->addPrefix('/_xlxeb'); /* @phpstan-ignore-line */
+        $asyncRoute->addPrefix('/_vzbeb'); /* @phpstan-ignore-line */
         $routes->addCollection($asyncRoute); /* @phpstan-ignore-line */
 
         $defaultFrontRoutes = [

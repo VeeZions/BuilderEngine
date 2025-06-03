@@ -67,7 +67,7 @@
                             <li class="vbe-form-theme-media-modal-use-entity">
                                 <a
                                     class="vbe-form-theme-media-modal-use-entity-link"
-                                    href="{{ path('app_web_blog_article', {category: articleCategory.slug, article: article.slug}) }}"
+                                    href="{{ path(routes.article, {categorySlug: articleCategory.slug, articleSlug: article.slug}) }}"
                                     target="_blank"
                                 >
                                     - {{ article.title }}
@@ -88,7 +88,7 @@
                         <li class="vbe-form-theme-media-modal-use-entity">
                             <a
                                 class="vbe-form-theme-media-modal-use-entity-link"
-                                href="{{ path('app_web_blog_category', {category: category.slug}) }}"
+                                href="{{ path(routes.category, {categorySlug: category.slug}) }}"
                                 target="_blank"
                             >
                                 - {{ category.title }}

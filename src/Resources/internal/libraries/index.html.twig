@@ -18,9 +18,9 @@
         {{ stimulus_controller('veezions/builder-engine-bundle/veezions_builder_engine_bundle_media') }}
         data-perload="{{ constant('VeeZions\\BuilderEngine\\Constant\\AssetConstant::ITEMS_PER_LOAD') }}"
         data-maxfilesize="{{ builder_engine.max_upload_file|vbe_convert_to_bytes }}"
-        data-edit="{{ path('xlxeb_controller_library_modal') }}"
-        data-delete="{{ path('xlxeb_controller_library_delete') }}"
-        data-more="{{ path('xlxeb_controller_library_more') }}"
+        data-edit="{{ path('vzbeb_controller_library_modal') }}"
+        data-delete="{{ path('vzbeb_controller_library_delete') }}"
+        data-more="{{ path('vzbeb_controller_library_more') }}"
     >
         <h1
             class="{% if builder_engine.is_original_form_theme %}vbe-{% endif %}heading{% if builder_engine.is_original_form_theme %} vbe-{% endif %}h1"
