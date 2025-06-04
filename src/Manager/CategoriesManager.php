@@ -87,7 +87,7 @@ class CategoriesManager
 
     /**
      * @param array<int, BuilderCategory> $categories
-     * 
+     *
      * @return array<int<0, max>, BuilderCategory>
      */
     public function buildHierarchy(array $categories): array
@@ -96,20 +96,20 @@ class CategoriesManager
         $children = [];
 
         foreach ($categories as $category) {
-            if ($category->getParent() === null) {
+            if (null === $category->getParent()) {
                 $parents[] = $category;
             } else {
                 $children[$category->getParent()->getId()][] = $category;
             }
         }
 
-        usort($parents, fn($a, $b) => strcmp($a->getTitle() ?? '', $b->getTitle() ?? ''));
+        usort($parents, fn ($a, $b) => strcmp($a->getTitle() ?? '', $b->getTitle() ?? ''));
 
         $result = [];
         foreach ($parents as $parent) {
             $result[] = $parent;
             if (isset($children[$parent->getId()])) {
-                usort($children[$parent->getId()], fn($a, $b) => strcmp($a->getTitle() ?? '', $b->getTitle() ?? ''));
+                usort($children[$parent->getId()], fn ($a, $b) => strcmp($a->getTitle() ?? '', $b->getTitle() ?? ''));
                 foreach ($children[$parent->getId()] as $child) {
                     /**@phpstan-ignore-next-line*/
                     $child->level = 1;

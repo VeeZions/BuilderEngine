@@ -242,8 +242,8 @@ readonly class FormManager
         if (null === $listUrl) {
             throw new InvalidArgumentException($this::class.'::engine() expects a valid $type value');
         }
-        
-        if ($type === ArticleType::class) {
+
+        if (ArticleType::class === $type) {
             $options['categories_manager'] = $this->categoriesManager;
         }
 

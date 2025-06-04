@@ -248,10 +248,11 @@ class BuilderCategory
     {
         $level = 0;
         $parent = $this->getParent();
-        while ($parent !== null) {
-            $level++;
+        while (null !== $parent) {
+            ++$level;
             $parent = $parent->getParent();
         }
+
         return $level;
     }
 

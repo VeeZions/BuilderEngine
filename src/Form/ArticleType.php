@@ -94,13 +94,18 @@ class ArticleType extends AbstractType
                 'choice_label' => function (BuilderCategory $category) {
                     return $category->getTitle();
                 },
-                'choice_attr' => function(BuilderCategory $category) {
-                    return [
-                        'data-veezions--builder-engine-bundle--veezions-builder-engine-bundle-tree-target' => 'category',
+                'choice_attr' => function (BuilderCategory $category) use ($isOriginalFormTheme) {
+                    $attr = [
                         'data-level' => ($category->level ?? 0) + 1,
                         'style' => 'margin-left: '.(($category->level ?? 0) * 20).'px',
                         'data-parent-id' => $category->getParent() ? $category->getParent()->getId() : '',
                     ];
+
+                    if ($isOriginalFormTheme) {
+                        $attr['data-veezions--builder-engine-bundle--veezions-builder-engine-bundle-tree-target'] = 'category';
+                    }
+
+                    return $attr;
                 },
                 'multiple' => true,
                 'expanded' => true,
@@ -111,7 +116,17 @@ class ArticleType extends AbstractType
                 'data' => !empty($libraries) ? $libraries[0]->getId() : null,
                 'mapped' => false,
                 'required' => false,
-            ])
+            ]);
+
+        $contentRowAttr = [
+            'class' => $isOriginalFormTheme ? 'vbe-form-theme-textarea-row' : 'textarea-row',
+        ];
+
+        if ($isOriginalFormTheme) {
+            $contentRowAttr['data-controller'] = 'veezions--builder-engine-bundle--veezions-builder-engine-bundle-quill';
+        }
+
+        $builder
             ->add('content', TextareaType::class, [
                 'label' => 'form.label.content',
                 'translation_domain' => 'BuilderEngineBundle-forms',
@@ -121,51 +136,48 @@ class ArticleType extends AbstractType
                     'autocorrect' => 'off',
                     'data-veezions--builder-engine-bundle--veezions-builder-engine-bundle-quill-target' => 'content',
                 ],
-                'row_attr' => [
-                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-textarea-row' : 'textarea-row',
-                    'data-controller' => 'veezions--builder-engine-bundle--veezions-builder-engine-bundle-quill'
-                ],
+                'row_attr' => $contentRowAttr,
             ])
-            ->add('seo', SeoType::class, [
-                'label' => 'form.label.seo',
-                'translation_domain' => 'BuilderEngineBundle-forms',
-                'data' => $entity->getSeo(),
-                'required' => true,
-                'form_theme' => $options['form_theme'],
-                'attr' => [
-                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-seo-container' : 'seo-container',
-                ],
-                'row_attr' => [
-                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-seo-row' : 'seo-row',
-                ],
-            ])
-            ->add('buttons', ButtonsType::class, [
-                'mapped' => false,
-                'label' => false,
-                'list_url' => $options['list_url'],
-                'message' => $options['message'],
-                'form_theme' => $options['form_theme'],
-                'attr' => [
-                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-btns' : 'btns',
-                ],
-                'row_attr' => [
-                    'class' => $isOriginalFormTheme ? 'vbe-form-theme-btns-container' : 'btns-container',
-                ],
-            ])
+        ->add('seo', SeoType::class, [
+            'label' => 'form.label.seo',
+            'translation_domain' => 'BuilderEngineBundle-forms',
+            'data' => $entity->getSeo(),
+            'required' => true,
+            'form_theme' => $options['form_theme'],
+            'attr' => [
+                'class' => $isOriginalFormTheme ? 'vbe-form-theme-seo-container' : 'seo-container',
+            ],
+            'row_attr' => [
+                'class' => $isOriginalFormTheme ? 'vbe-form-theme-seo-row' : 'seo-row',
+            ],
+        ])
+        ->add('buttons', ButtonsType::class, [
+            'mapped' => false,
+            'label' => false,
+            'list_url' => $options['list_url'],
+            'message' => $options['message'],
+            'form_theme' => $options['form_theme'],
+            'attr' => [
+                'class' => $isOriginalFormTheme ? 'vbe-form-theme-btns' : 'btns',
+            ],
+            'row_attr' => [
+                'class' => $isOriginalFormTheme ? 'vbe-form-theme-btns-container' : 'btns-container',
+            ],
+        ])
 
-            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($options) {
-                if (null !== $options['authors'] && !empty($options['authors']) && is_int($options['user_id'])) {
-                    $data = $event->getData();
-                    /** @var BuilderArticle $form */
-                    $form = $event->getForm()->getData();
-                    /**@phpstan-ignore-next-line */
-                    if (null === $data->getCreatedAt()) {
-                        $form->setCreatedBy($options['user_id']);
-                    } else {
-                        $form->setUpdatedBy($options['user_id']);
-                    }
+        ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($options) {
+            if (null !== $options['authors'] && !empty($options['authors']) && is_int($options['user_id'])) {
+                $data = $event->getData();
+                /** @var BuilderArticle $form */
+                $form = $event->getForm()->getData();
+                /**@phpstan-ignore-next-line */
+                if (null === $data->getCreatedAt()) {
+                    $form->setCreatedBy($options['user_id']);
+                } else {
+                    $form->setUpdatedBy($options['user_id']);
                 }
-            })
+            }
+        })
         ;
     }
 

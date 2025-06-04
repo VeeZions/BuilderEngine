@@ -240,7 +240,7 @@
       <updated>1748439488954</updated>
       <workItem from="1748439490511" duration="15891000" />
       <workItem from="1748606409720" duration="278000" />
-      <workItem from="1748897951616" duration="11792000" />
+      <workItem from="1748897951616" duration="12390000" />
     </task>
     <task id="LOCAL-00001" summary="Rename 'complided_locales.json' to 'compiled_locales.json'&#10;&#10;Fix a typo in the filename to ensure proper referencing and consistency. This prevents potential errors in loading the locales file.">
       <option name="closed" value="true" />
@@ -298,7 +298,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748958077043</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Introduce Quill.js integration and pagination limits for improved form and frontend handling&#10;&#10;Added Quill.js integration for enhanced rich-text editing functionality in forms. Simplified category handling with a new `CategoriesManager`. Introduced default pagination limits (`front_pagination_limit` and `crud_pagination_limit`) configurable globally. Updated frontend controllers to support dynamic rendering for blogs, articles, and categories. Refactored `FrontController` logic to utilize `EngineManager` for cleaner separation of concerns.">
+      <option name="closed" value="true" />
+      <created>1749024928596</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1749024928596</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -312,6 +320,7 @@
     <MESSAGE value="Rename `xlxeb_` routes and constants to `vzbeb_`&#10;&#10;Updated routing configurations, constants, twig templates, and other references to replace the `xlxeb_` prefix with `vzbeb_` for standardization and improved naming consistency across the codebase." />
     <MESSAGE value="Add locale support and frontend routing improvements&#10;&#10;Introduced `enabled_locales` configuration for better localization management and added support for `locale_provider`. Enhanced frontend routing definitions and templates to reflect changes in path structure. Updated related forms, constants, and documentation to align with new locale handling and route structures." />
     <MESSAGE value="Make constructor properties readonly, fix `getPublishedAt` method, and improve `FormManager` handling&#10;&#10;Made constructor properties readonly for improved immutability across controllers. Fixed the `getPublishedAt` method in `BuilderArticle` to correctly return `publishedAt` instead of `createdAt`. Simplified `FormManager` by removing redundant exception and updating the `compileRedirectionRoute` method to accept nullable route parameters." />
-    <option name="LAST_COMMIT_MESSAGE" value="Make constructor properties readonly, fix `getPublishedAt` method, and improve `FormManager` handling&#10;&#10;Made constructor properties readonly for improved immutability across controllers. Fixed the `getPublishedAt` method in `BuilderArticle` to correctly return `publishedAt` instead of `createdAt`. Simplified `FormManager` by removing redundant exception and updating the `compileRedirectionRoute` method to accept nullable route parameters." />
+    <MESSAGE value="Introduce Quill.js integration and pagination limits for improved form and frontend handling&#10;&#10;Added Quill.js integration for enhanced rich-text editing functionality in forms. Simplified category handling with a new `CategoriesManager`. Introduced default pagination limits (`front_pagination_limit` and `crud_pagination_limit`) configurable globally. Updated frontend controllers to support dynamic rendering for blogs, articles, and categories. Refactored `FrontController` logic to utilize `EngineManager` for cleaner separation of concerns." />
+    <option name="LAST_COMMIT_MESSAGE" value="Introduce Quill.js integration and pagination limits for improved form and frontend handling&#10;&#10;Added Quill.js integration for enhanced rich-text editing functionality in forms. Simplified category handling with a new `CategoriesManager`. Introduced default pagination limits (`front_pagination_limit` and `crud_pagination_limit`) configurable globally. Updated frontend controllers to support dynamic rendering for blogs, articles, and categories. Refactored `FrontController` logic to utilize `EngineManager` for cleaner separation of concerns." />
   </component>
 </project>
