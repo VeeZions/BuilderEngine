@@ -6,8 +6,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use VeeZions\BuilderEngine\Constant\TableConstant;
 use VeeZions\BuilderEngine\Entity\BuilderArticle;
 
 /**
@@ -23,7 +23,6 @@ class BuilderArticleRepository extends ServiceEntityRepository
         private readonly PaginatorInterface $paginator,
         private readonly RequestStack $requestStack,
         private readonly array $authors,
-        private readonly TableConstant $tableConstant, /**@phpstan-ignore-line */
     ) {
         parent::__construct($registry, BuilderArticle::class);
     }
@@ -36,6 +35,7 @@ class BuilderArticleRepository extends ServiceEntityRepository
     public function paginate(
         int $page,
         array $columns,
+        int $limit,
     ): PaginationInterface {
         $query = $this->createQueryBuilder('a')->select($columns);
         if (is_string($this->authors['author_class'])) {
@@ -53,6 +53,20 @@ class BuilderArticleRepository extends ServiceEntityRepository
             }
         }
 
-        return $this->paginator->paginate($query, $page, 10);
+        return $this->paginator->paginate($query, $page, $limit);
+    }
+
+    /**
+     * @return PaginationInterface<int, mixed>|null
+     */
+    public function getBlog(string $locale, Request $request, int $limit): ?PaginationInterface
+    {
+        $page = $request->query->getInt('page', 1);
+        $query = $this->createQueryBuilder('a');
+        if (is_string($this->authors['author_class'])) {
+            $query->leftJoin($this->authors['author_class'], 'pr', 'WITH', 'a.author = pr.id');
+        }
+
+        return $this->paginator->paginate($query, $page, $limit);
     }
 }

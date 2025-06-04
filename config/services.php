@@ -16,6 +16,7 @@ use VeeZions\BuilderEngine\Provider\AuthorProvider;
 use VeeZions\BuilderEngine\Provider\LocaleProvider;
 use VeeZions\BuilderEngine\Form\Type\LocaleType;
 use VeeZions\BuilderEngine\Form\Type\ButtonsType;
+use VeeZions\BuilderEngine\Manager\CategoriesManager;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\abstract_arg;
 
@@ -63,6 +64,9 @@ return static function (ContainerConfigurator $container) {
             abstract_arg('Get config.locale_fallback'),
             abstract_arg('Get config.library_config.max_upload_file'),
             abstract_arg('Frontend blog, article and category routes'),
+            abstract_arg('Crud pagination limit'),
+            abstract_arg('Front pagination limit'),
+            service('veezions_builder_engine.categories_manager')
         ])
     ;
     
@@ -159,6 +163,9 @@ return static function (ContainerConfigurator $container) {
             abstract_arg('Get config.locale_fallback'),
             abstract_arg('Get config.library_config.max_upload_file'),
             abstract_arg('Frontend blog, article and category routes'),
+            abstract_arg('Crud pagination limit'),
+            abstract_arg('Front pagination limit'),
+            service('veezions_builder_engine.categories_manager')
         ])
     ;
 
@@ -173,6 +180,14 @@ return static function (ContainerConfigurator $container) {
         ->set('veezions_builder_engine.locale_provider', LocaleProvider::class)
         ->args([
             abstract_arg('Get config.enabled_locales'),
+        ])
+    ;
+
+    $services
+        ->set('veezions_builder_engine.categories_manager', CategoriesManager::class)
+        ->args([
+            service('doctrine.orm.entity_manager'),
+            service('request_stack'),
         ])
     ;
 };

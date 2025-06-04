@@ -30,6 +30,7 @@ class BuilderCategoryRepository extends ServiceEntityRepository
     public function paginate(
         int $page,
         array $columns,
+        int $limit,
     ): PaginationInterface {
         $query = $this->createQueryBuilder('c')
             ->select($columns)
@@ -46,6 +47,6 @@ class BuilderCategoryRepository extends ServiceEntityRepository
             }
         }
 
-        return $this->paginator->paginate($query, $page, 10);
+        return $this->paginator->paginate($query, $page, $limit);
     }
 }

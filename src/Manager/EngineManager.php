@@ -47,6 +47,9 @@ readonly class EngineManager extends FormManager
         protected ?string $localeFallback,
         protected string $maxUploadFile,
         protected array $frontRoutes,
+        protected int $crudPaginationLimit,
+        protected int $frontPaginationLimit,
+        protected CategoriesManager $categoriesManager,
     ) {
     }
 
@@ -82,5 +85,10 @@ readonly class EngineManager extends FormManager
         $this->checkIfEntityExists($data);
 
         return $this->remove($data);
+    }
+
+    public function frontRender(string $type, ?string $slug = null): Response
+    {
+        return $this->frontData($type, $slug);
     }
 }

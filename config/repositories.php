@@ -32,7 +32,6 @@ return static function (ContainerConfigurator $container) {
             service(PaginatorInterface::class),
             service('request_stack'),
             abstract_arg('Authors provider'),
-            service('veezions_builder_engine.table_constant'),
         ])
         ->tag('doctrine.repository_service')
     ;
@@ -44,7 +43,6 @@ return static function (ContainerConfigurator $container) {
             service(PaginatorInterface::class),
             service('request_stack'),
             abstract_arg('Authors provider'),
-            service('veezions_builder_engine.table_constant'),
         ])
         ->tag('doctrine.repository_service')
     ;

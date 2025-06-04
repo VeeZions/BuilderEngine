@@ -9,8 +9,10 @@ use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface as Security;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -71,6 +73,9 @@ readonly class FormManager
         protected ?string $localeFallback,
         protected string $maxUploadFile,
         protected array $frontRoutes,
+        protected int $crudPaginationLimit,
+        protected int $frontPaginationLimit,
+        protected CategoriesManager $categoriesManager,
     ) {
     }
 
@@ -87,7 +92,8 @@ readonly class FormManager
         /**@phpstan-ignore-next-line */
         $data = $this->entityManager->getRepository($class)->paginate(
             max($request->query->getInt('page', 1), 1),
-            array_keys($this->constant->getColumnsFromTable($class))
+            array_keys($this->constant->getColumnsFromTable($class)),
+            $this->crudPaginationLimit,
         );
 
         return new Response($this->twig->render(
@@ -235,6 +241,10 @@ readonly class FormManager
 
         if (null === $listUrl) {
             throw new InvalidArgumentException($this::class.'::engine() expects a valid $type value');
+        }
+        
+        if ($type === ArticleType::class) {
+            $options['categories_manager'] = $this->categoriesManager;
         }
 
         if (NavigationType::class === $type) {
@@ -484,5 +494,80 @@ readonly class FormManager
         }
 
         return null;
+    }
+
+    public function frontData(string $type, ?string $slug): Response
+    {
+        $request = $this->requestStack->getCurrentRequest();
+        if (null === $request) {
+            throw new InvalidArgumentException($this::class.'::frontData() expects a valid $request value');
+        }
+
+        $locale = $request->getLocale();
+
+        $data = match ($type) {
+            ConfigConstant::CONFIG_RENDER_BLOG => $this->getBlog($locale, $request),
+            ConfigConstant::CONFIG_RENDER_ARTICLE => $this->getArticle($locale, $slug),
+            ConfigConstant::CONFIG_RENDER_CATEGORY => $this->getCategory($locale, $slug),
+            default => null,
+        };
+
+        if (null === $data) {
+            throw new InvalidArgumentException($this::class.'::frontData() expects a valid $type value');
+        }
+
+        $title = match (true) {
+            $data instanceof BuilderCategory || $data instanceof BuilderArticle => $data->getTitle(),
+            default => 'Blog',
+        };
+
+        return new Response($this->twig->render(
+            '@BuilderEngineBundle/front/'.$type.'.html.twig',
+            [
+                'data' => $data,
+                'title' => $title,
+            ]
+        ));
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function getBlog(string $locale, Request $request): array
+    {
+        return [
+            /**@phpstan-ignore-next-line*/
+            'articles' => $this->entityManager->getRepository(BuilderArticle::class)->getBlog($locale, $request, $this->frontPaginationLimit),
+            'categories' => $this->categoriesManager->getCategoriesTree(),
+        ];
+    }
+
+    private function getArticle(string $locale, ?string $slug): BuilderArticle
+    {
+        $article = $this->entityManager->getRepository(BuilderArticle::class)->findOneBy([
+            'slug' => $slug,
+            'published' => true,
+            'locale' => $locale,
+        ]);
+
+        if (null === $article) {
+            throw new NotFoundHttpException($this->translator->trans('error.article.not.found', [], 'BuilderEngineBundle-errors'));
+        }
+
+        return $article;
+    }
+
+    private function getCategory(string $locale, ?string $slug): BuilderCategory
+    {
+        $category = $this->entityManager->getRepository(BuilderCategory::class)->findOneBy([
+            'slug' => $slug,
+            'locale' => $locale,
+        ]);
+
+        if (null === $category) {
+            throw new NotFoundHttpException($this->translator->trans('error.category.not.found', [], 'BuilderEngineBundle-errors'));
+        }
+
+        return $category;
     }
 }

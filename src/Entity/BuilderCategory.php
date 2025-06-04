@@ -243,4 +243,20 @@ class BuilderCategory
 
         return $this;
     }
+
+    public function getLevel(): int
+    {
+        $level = 0;
+        $parent = $this->getParent();
+        while ($parent !== null) {
+            $level++;
+            $parent = $parent->getParent();
+        }
+        return $level;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name ?? '';
+    }
 }

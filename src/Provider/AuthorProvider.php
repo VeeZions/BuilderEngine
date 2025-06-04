@@ -31,7 +31,7 @@ class AuthorProvider
         $authorsProvider = $this->entityManager->getRepository($class)->findAll();
         $role = $authors['author_role'];
 
-        if (is_string($role) && $role !== '' && method_exists($class, 'getRoles')) {
+        if (is_string($role) && '' !== $role && method_exists($class, 'getRoles')) {
             $authorsProvider = array_filter($authorsProvider, static function ($author) use ($role) {
                 /**@phpstan-ignore-next-line */
                 $roles = $author->getRoles();
@@ -44,7 +44,7 @@ class AuthorProvider
         }
 
         $placeholder = $authors['author_placeholder'];
-        if (!is_string($placeholder) || $placeholder === '') {
+        if (!is_string($placeholder) || '' === $placeholder) {
             throw new InvalidArgumentException(sprintf('Author provider class "%s" for %s does not have a placeholder.', $class, $type));
         }
 

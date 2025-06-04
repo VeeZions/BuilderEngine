@@ -21,6 +21,7 @@ use VeeZions\BuilderEngine\Entity\BuilderLibrary;
 use VeeZions\BuilderEngine\Form\Type\ButtonsType;
 use VeeZions\BuilderEngine\Form\Type\LocaleType;
 use VeeZions\BuilderEngine\Form\Type\SeoType;
+use VeeZions\BuilderEngine\Manager\CategoriesManager;
 
 class ArticleType extends AbstractType
 {
@@ -34,6 +35,9 @@ class ArticleType extends AbstractType
         /** @var BuilderLibrary[] $libraries */
         $libraries = $entity->getLibraries()->toArray();
         $isOriginalFormTheme = ConfigConstant::CONFIG_DEFAULT_FORM_THEME === $options['form_theme'];
+
+        $categoriesManager = $options['categories_manager'];
+        $categoriesTree = $categoriesManager instanceof CategoriesManager ? $categoriesManager->getCategoriesTree(true) : [];
 
         $builder
             ->add('published', CheckboxType::class, [
@@ -86,7 +90,18 @@ class ArticleType extends AbstractType
                 'required' => false,
                 'translation_domain' => 'BuilderEngineBundle-forms',
                 'class' => BuilderCategory::class,
-                'choice_label' => 'title',
+                'choices' => $categoriesTree,
+                'choice_label' => function (BuilderCategory $category) {
+                    return $category->getTitle();
+                },
+                'choice_attr' => function(BuilderCategory $category) {
+                    return [
+                        'data-veezions--builder-engine-bundle--veezions-builder-engine-bundle-tree-target' => 'category',
+                        'data-level' => ($category->level ?? 0) + 1,
+                        'style' => 'margin-left: '.(($category->level ?? 0) * 20).'px',
+                        'data-parent-id' => $category->getParent() ? $category->getParent()->getId() : '',
+                    ];
+                },
                 'multiple' => true,
                 'expanded' => true,
             ])
@@ -104,9 +119,11 @@ class ArticleType extends AbstractType
                     'rows' => 3,
                     'spellcheck' => 'false',
                     'autocorrect' => 'off',
+                    'data-veezions--builder-engine-bundle--veezions-builder-engine-bundle-quill-target' => 'content',
                 ],
                 'row_attr' => [
                     'class' => $isOriginalFormTheme ? 'vbe-form-theme-textarea-row' : 'textarea-row',
+                    'data-controller' => 'veezions--builder-engine-bundle--veezions-builder-engine-bundle-quill'
                 ],
             ])
             ->add('seo', SeoType::class, [
@@ -167,6 +184,7 @@ class ArticleType extends AbstractType
             'message' => null,
             'form_theme' => null,
             'locales_provider' => null,
+            'categories_manager' => null,
         ]);
     }
 }

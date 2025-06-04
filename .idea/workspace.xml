@@ -6,6 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="c086e9a7-04b9-43e7-960c-473e7fb427ac" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/ArticleType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/ArticleType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/PageType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/PageType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Manager/FormManager.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Manager/FormManager.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Resources/internal/libraries/modal.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/src/Resources/internal/libraries/modal.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/translations/BuilderEngineBundle-errors.fr.xlf" beforeDir="false" afterPath="$PROJECT_DIR$/translations/BuilderEngineBundle-errors.fr.xlf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -233,6 +240,7 @@
       <updated>1748439488954</updated>
       <workItem from="1748439490511" duration="15891000" />
       <workItem from="1748606409720" duration="278000" />
+      <workItem from="1748897951616" duration="11792000" />
     </task>
     <task id="LOCAL-00001" summary="Rename 'complided_locales.json' to 'compiled_locales.json'&#10;&#10;Fix a typo in the filename to ensure proper referencing and consistency. This prevents potential errors in loading the locales file.">
       <option name="closed" value="true" />
@@ -258,7 +266,39 @@
       <option name="project" value="LOCAL" />
       <updated>1748504115024</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Update dependencies and compatibility&#10;&#10;Upgraded `php` requirement to `&gt;=8.3` in `composer.json` and synchronized dependency versions in `composer.lock`, including updates to Symfony and AWS SDK packages. Also, refined workspace configuration and task tracking in `.idea/workspace.xml`.">
+      <option name="closed" value="true" />
+      <created>1748905578819</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1748905578819</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Rename `xlxeb_` routes and constants to `vzbeb_`&#10;&#10;Updated routing configurations, constants, twig templates, and other references to replace the `xlxeb_` prefix with `vzbeb_` for standardization and improved naming consistency across the codebase.">
+      <option name="closed" value="true" />
+      <created>1748933277419</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1748933277419</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Add locale support and frontend routing improvements&#10;&#10;Introduced `enabled_locales` configuration for better localization management and added support for `locale_provider`. Enhanced frontend routing definitions and templates to reflect changes in path structure. Updated related forms, constants, and documentation to align with new locale handling and route structures.">
+      <option name="closed" value="true" />
+      <created>1748957467431</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1748957467431</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Make constructor properties readonly, fix `getPublishedAt` method, and improve `FormManager` handling&#10;&#10;Made constructor properties readonly for improved immutability across controllers. Fixed the `getPublishedAt` method in `BuilderArticle` to correctly return `publishedAt` instead of `createdAt`. Simplified `FormManager` by removing redundant exception and updating the `compileRedirectionRoute` method to accept nullable route parameters.">
+      <option name="closed" value="true" />
+      <created>1748958077043</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1748958077043</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -268,6 +308,10 @@
     <MESSAGE value="Update media controller logic, assets, and dependencies  &#10;&#10;Enhanced media controller with dynamic URLs and improved form usage. Adjusted CSS for loader visuals, typography, and element positioning. Upgraded JS and dependencies, introducing reset styles and library updates, including `james-heinrich/getid3`. Removed obsolete `.idea` configuration files and improved code organization." />
     <MESSAGE value="Rename 'complided_locales.json' to 'compiled_locales.json'&#10;&#10;Fix a typo in the filename to ensure proper referencing and consistency. This prevents potential errors in loading the locales file." />
     <MESSAGE value="Update PHPStan config file path in documentation&#10;&#10;Replaced the PHPStan configuration file reference to point to `phpstan.builder.engine.dist.neon` instead of `phpstan.dist.neon` for clarity and accuracy. This ensures the documentation aligns with the correct configuration file setup." />
-    <option name="LAST_COMMIT_MESSAGE" value="Update PHPStan config file path in documentation&#10;&#10;Replaced the PHPStan configuration file reference to point to `phpstan.builder.engine.dist.neon` instead of `phpstan.dist.neon` for clarity and accuracy. This ensures the documentation aligns with the correct configuration file setup." />
+    <MESSAGE value="Update dependencies and compatibility&#10;&#10;Upgraded `php` requirement to `&gt;=8.3` in `composer.json` and synchronized dependency versions in `composer.lock`, including updates to Symfony and AWS SDK packages. Also, refined workspace configuration and task tracking in `.idea/workspace.xml`." />
+    <MESSAGE value="Rename `xlxeb_` routes and constants to `vzbeb_`&#10;&#10;Updated routing configurations, constants, twig templates, and other references to replace the `xlxeb_` prefix with `vzbeb_` for standardization and improved naming consistency across the codebase." />
+    <MESSAGE value="Add locale support and frontend routing improvements&#10;&#10;Introduced `enabled_locales` configuration for better localization management and added support for `locale_provider`. Enhanced frontend routing definitions and templates to reflect changes in path structure. Updated related forms, constants, and documentation to align with new locale handling and route structures." />
+    <MESSAGE value="Make constructor properties readonly, fix `getPublishedAt` method, and improve `FormManager` handling&#10;&#10;Made constructor properties readonly for improved immutability across controllers. Fixed the `getPublishedAt` method in `BuilderArticle` to correctly return `publishedAt` instead of `createdAt`. Simplified `FormManager` by removing redundant exception and updating the `compileRedirectionRoute` method to accept nullable route parameters." />
+    <option name="LAST_COMMIT_MESSAGE" value="Make constructor properties readonly, fix `getPublishedAt` method, and improve `FormManager` handling&#10;&#10;Made constructor properties readonly for improved immutability across controllers. Fixed the `getPublishedAt` method in `BuilderArticle` to correctly return `publishedAt` instead of `createdAt`. Simplified `FormManager` by removing redundant exception and updating the `compileRedirectionRoute` method to accept nullable route parameters." />
   </component>
 </project>

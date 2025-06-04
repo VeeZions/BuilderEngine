@@ -103,6 +103,8 @@ class BuilderEngineExtension extends Extension
         $def->setArgument('$localeFallback', $config['locale_fallback']);
         $def->setArgument('$maxUploadFile', is_array($config['library_config']) ? $config['library_config']['max_upload_file'] : ini_get('upload_max_filesize'));
         $def->setArgument('$frontRoutes', $config['front_routes']);
+        $def->setArgument('$crudPaginationLimit', $config['crud_pagination_limit']);
+        $def->setArgument('$frontPaginationLimit', $config['front_pagination_limit']);
     }
 
     /**
@@ -119,6 +121,8 @@ class BuilderEngineExtension extends Extension
         $def->setArgument('$localeFallback', $config['locale_fallback']);
         $def->setArgument('$maxUploadFile', is_array($config['library_config']) ? $config['library_config']['max_upload_file'] : ini_get('upload_max_filesize'));
         $def->setArgument('$frontRoutes', $config['front_routes']);
+        $def->setArgument('$crudPaginationLimit', $config['crud_pagination_limit']);
+        $def->setArgument('$frontPaginationLimit', $config['front_pagination_limit']);
     }
 
     /**

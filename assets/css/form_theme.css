@@ -217,6 +217,22 @@
     margin-top: 5px;
 }
 
+[data-controller="veezions--builder-engine-bundle--veezions-builder-engine-bundle-quill"] .ql-toolbar {
+    width: 100%;
+}
+
+[data-veezions--builder-engine-bundle--veezions-builder-engine-bundle-quill-target="content"] {
+    display: none;
+}
+
+.vbe-form-theme-textarea {
+    font-family: inherit;
+}
+
+.vbe-form-theme-quill-editor {
+    width: 100%;
+}
+
 @media only screen and (min-width: 769px) {
     .vbe-form-theme-row:not(.vbe-form-theme-seo-row):not(.vbe-form-theme-btns-container):not(.vbe-form-theme-published-row):not(.vbe-form-theme-textarea-row) {
         width: 33.33%;

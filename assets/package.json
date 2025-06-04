@@ -27,6 +27,11 @@
         "main": "controllers/veezions_builder_engine_bundle_media_controller.js",
         "fetch": "eager",
         "enabled": true
+      },
+      "veezions_builder_engine_bundle_quill": {
+        "main": "controllers/veezions_builder_engine_bundle_quill_controller.js",
+        "fetch": "eager",
+        "enabled": true
       }
     },
     "importmap": {
@@ -34,6 +39,7 @@
       "slugify": "^1.6.5",
       "dropzone": "^6.0.0-beta.2",
       "sortablejs": "^1.15.6",
+      "quill": "2.0.3",
       "@veezions/builder-engine-jquery": "path:%PACKAGE%/libraries/jquery.min.js",
       "@veezions/builder-engine-jquery-ui": "path:%PACKAGE%/libraries/jquery-ui.min.js",
       "@veezions/builder-engine-bundle-logic": "path:%PACKAGE%/js/logic.js",

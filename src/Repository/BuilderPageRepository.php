@@ -7,7 +7,6 @@ use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use VeeZions\BuilderEngine\Constant\TableConstant;
 use VeeZions\BuilderEngine\Entity\BuilderPage;
 
 /**
@@ -23,7 +22,6 @@ class BuilderPageRepository extends ServiceEntityRepository
         private readonly PaginatorInterface $paginator,
         private readonly RequestStack $requestStack,
         private readonly array $authors,
-        private readonly TableConstant $tableConstant, /**@phpstan-ignore-line */
     ) {
         parent::__construct($registry, BuilderPage::class);
     }
@@ -36,6 +34,7 @@ class BuilderPageRepository extends ServiceEntityRepository
     public function paginate(
         int $page,
         array $columns,
+        int $limit,
     ): PaginationInterface {
         $query = $this->createQueryBuilder('p')->select($columns);
         if (is_string($this->authors['author_class'])) {
@@ -53,6 +52,6 @@ class BuilderPageRepository extends ServiceEntityRepository
             }
         }
 
-        return $this->paginator->paginate($query, $page, 10);
+        return $this->paginator->paginate($query, $page, $limit);
     }
 }

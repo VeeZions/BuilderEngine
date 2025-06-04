@@ -10,10 +10,10 @@ builder_engine:
       author_placeholder:   id
   library_config:
     driver:               local # Required
-      
       # Examples:
       # - local
       # - s3
+    
     max_upload_file:      2M
     service:              null
     
@@ -54,6 +54,12 @@ builder_engine:
   
   # Display page title or not in "default" mode
   page_title_display:   true
+  
+  # Front pagination limit
+  front_pagination_limit: 10
+  
+  # Crud pagination limit
+  crud_pagination_limit: 10
   pagination_buttons:
     first_button:         '@BuilderEngineInternal/icons/pagination-first.html.twig'
     previous_button:      '@BuilderEngineInternal/icons/pagination-previous.html.twig'
