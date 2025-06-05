@@ -29,22 +29,6 @@ class BuilderEngineLoader extends Loader
         $asyncRoute->addPrefix('/_vzbeb'); /* @phpstan-ignore-line */
         $routes->addCollection($asyncRoute); /* @phpstan-ignore-line */
 
-        $defaultFrontRoutes = [
-            ConfigConstant::CONFIG_DEFAULT_BLOG_ROUTE,
-            ConfigConstant::CONFIG_DEFAULT_ARTICLE_ROUTE,
-            ConfigConstant::CONFIG_DEFAULT_CATEGORY_ROUTE,
-        ];
-
-        foreach ($this->frontRoutes as $target => $frontRoute) {
-            if (in_array($frontRoute, $defaultFrontRoutes, true)) {
-                $fr = $this->import(
-                    ConfigConstant::CONFIG_SHARED_TEMPLATE_PATH.'/config/routing/controllers/front/'.$target.'.yaml',
-                    $type
-                );
-                $routes->addCollection($fr); /* @phpstan-ignore-line */
-            }
-        }
-
         if ('form' !== $this->mode) {
             foreach ($this->actionsConfig as $entity => $actions) {
                 $index = sprintf(

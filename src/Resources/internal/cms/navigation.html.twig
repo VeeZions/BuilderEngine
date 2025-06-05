@@ -1,0 +1,230 @@
+{% import 'macros/svg.html.twig' as svg %}
+
+{% set header_type = constant('App\\Constant\\NavigationType::HEADER_TYPE') %}
+{% set sub_header_type = constant('App\\Constant\\NavigationType::SUP_HEADER_TYPE') %}
+
+{% for sup in nav[sub_header_type].content.stages %}
+    <nav class="w-full bg-black flex items-center justify-center">
+        <ul class="max-w-[1080px] w-full hidden md:flex text-xs items-center justify-end py-3 px-6 text-white font-rubik">
+            {% for sup_link in sup %}
+                <li class="ml-6">
+                    <a class="{{ is_active(sup_link.route) ? 'underline' : 'opacity-50' }} duration-200 hover:opacity-100" href="{{ path(sup_link.route, sup_link.query) }}">
+                        {{ sup_link.label }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </nav>
+{% endfor %}
+
+{% for stageIndex,header in nav[header_type].content.stages %}
+    <nav class="max-w-[1080px] w-full hidden md:flex items-center justify-between py-3 px-6 text-white font-rubik_bold">
+        {% if loop.index is same as 1 %}
+            <a href="{{ path('app_web_home') }}" class="w-1/4 lg:w-1/3 flex items-center justify-start {{ is_active('app_web_home') ? 'active' : 'inactive' }}">
+                <img class="h-[60px]" src="{{ asset('media/web/logo.png') }}" alt="logo">
+            </a>
+        {% endif %}
+        <ul class="w-3/4 lg:w-2/3 flex items-center justify-between pl-4">
+            {% for header_link in header %}
+                <li class="group cursor-pointer">
+                    {% if header_link.route is not null %}
+                        <a class="py-2 px-5 text-sm lg:text-base rounded-md group-hover:bg-gray-200 border-2 border-transparent group-hover:text-slate-900 duration-200 flex items-center relative z-20 {{ is_active(header_link.route, header_link.children) ? 'bg-gray-200 text-slate-900' : '' }}" href="{{ path(header_link.route, header_link.query) }}">{{ header_link.label|upper }}</a>
+                    {% elseif header_link.link not in [null, '#']  %}
+                        <a class="py-2 px-5 text-sm lg:text-base rounded-md group-hover:bg-gray-200 border-2 border-transparent group-hover:text-slate-900 duration-200 flex items-center relative z-20 {{ is_active(header_link.route, header_link.children) ? 'bg-gray-200 text-slate-900' : '' }}" href="{{ header_link.link }}" target="{{ header_link.blank is same as true ? '_blank' : '_self' }}">{{ header_link.label|upper }}</a>
+                    {% else %}
+                        <p class="py-2 px-5 text-sm lg:text-base rounded-md group-hover:bg-gray-200 border-2 border-transparent group-hover:text-slate-900 duration-200 flex items-center relative z-20 {{ is_active(header_link.route, header_link.children) ? 'bg-gray-200 text-slate-900' : '' }}">
+                            {{ header_link.label|upper }}
+                            {% if header_link.children is not empty %}
+                                <span class="flex items-center ml-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 60 320 512" class="text-inherit size-4">
+                                        <path fill="currentColor" d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z"/>
+                                    </svg>
+                                </span>
+                            {% endif %}
+                        </p>
+                    {% endif %}
+                    {% if header_link.children is not empty %}
+                        {% set sup_header_height = nav[sub_header_type].content.stages|length * 40 %}
+                        {% set realIndex = stageIndex + 1 %}
+                        {% set header_height = realIndex * 60 %}
+                        {% set min_height = ((nav[header_type].content.stages|length - stageIndex) * 60 ) + sup_header_height %}
+                        <span class="fixed z-50 top-[{{ sup_header_height + header_height }}px] left-0 pt-0 group-hover:pt-[24px] w-full flex justify-center items-start opacity-0 overflow-hidden h-0 group-hover:h-auto group-hover:opacity-100 transition-opacity duration-200">
+                            <span class="bg-gray-800 w-full group-hover:min-h-[{{ min_height }}px] flex items-start justify-center">
+                                <span class="w-full p-6 max-w-[1080px] flex items-center justify-center">
+                                    <ul class="flex w-full items-start justify-between flex-wrap">
+                                        {% for child in header_link.children %}
+                                            <li class="flex items-center justify-center text-center w-1/3">
+                                                {% if child.route is not null %}
+                                                    <a class="text-sm w-max py-1 px-3 rounded-md hover:bg-gray-200 border-2 border-transparent hover:text-slate-900 duration-200 flex items-center {{ is_active(child.route) ? 'bg-gray-200 text-slate-900' : '' }}" href="{{ path(child.route, child.query) }}">
+                                                        {% if child.icon is defined and child.icon is not null %}
+                                                            {{ svg.web_icon(child.icon, 'small', '') }}
+                                                            &nbsp;
+                                                        {% endif %}
+                                                        {{ child.label|upper }}
+                                                    </a>
+                                                {% elseif child.link not in [null, '#'] %}
+                                                    <a class="text-sm w-max py-1 px-3 rounded-md hover:bg-gray-200 border-2 border-transparent hover:text-slate-900 duration-200 flex items-center {{ is_active(child.route) ? 'bg-gray-200 text-slate-900' : '' }}" href="{{ child.link }}" target="{{ child.blank is same as true ? '_blank' : '_self' }}">
+                                                        {% if child.icon is defined and child.icon is not null %}
+                                                            {{ svg.web_icon(child.icon, 'small', '') }}
+                                                            &nbsp;
+                                                        {% endif %}
+                                                        {{ child.label|upper }}
+                                                    </a>
+                                                {% else %}
+                                                    <p class="text-sm w-max py-1 px-3 rounded-md hover:bg-gray-200 border-2 border-transparent hover:text-slate-900 duration-200 flex items-center {{ is_active(child.route) ? 'bg-gray-200 text-slate-900' : '' }}">
+                                                        {% if child.icon is defined and child.icon is not null %}
+                                                            {{ svg.web_icon(child.icon, 'small', '') }}
+                                                            &nbsp;
+                                                        {% endif %}
+                                                        {{ child.label|upper }}
+                                                    </p>
+                                                {% endif %}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </span>
+                            </span>
+                        </span>
+                    {% endif %}
+                </li>
+            {% endfor %}
+            {% if loop.index is same as 1 %}
+                {% if app.user is not null %}
+                    <li class="group">
+                        <a class="py-2 px-5 text-sm lg:text-base rounded-md group-hover:bg-gray-200 border-2 border-transparent group-hover:text-slate-900 duration-200 flex items-center justify-center {{ is_active('app_web_profile_index', [], 'app_web_profile') ? 'bg-gray-200 text-slate-900' : '' }}" href="{{ path('app_web_profile_index') }}">{{ 'header.nav.tab.profile'|trans({}, 'web')|upper }}</a>
+                    </li>
+                    <li class="group">
+                        <a class="py-2 px-5 text-sm lg:text-base rounded-md group-hover:bg-gray-200 border-2 border-transparent group-hover:text-slate-900 duration-200 flex items-center justify-center" href="{{ path('app_web_profile_logout') }}">{{ 'header.nav.tab.logout'|trans({}, 'web')|upper }}</a>
+                    </li>
+                {% else %}
+                    <li class="group">
+                        <a class="py-2 px-5 text-sm lg:text-base rounded-md group-hover:bg-gray-200 border-2 border-transparent group-hover:text-slate-900 duration-200 flex items-center justify-center {{ is_active('app_web_login') ? 'bg-gray-200 text-slate-900' : '' }}" href="{{ path('app_web_profile_index') }}">{{ 'header.nav.tab.login'|trans({}, 'web')|upper }}</a>
+                    </li>
+                    <li class="group">
+                        <a class="font-bold py-2 px-5 text-sm lg:text-base border-2 group-hover:border-green-700 rounded-md group-hover:text-green-700 duration-200 bg-white flex items-center justify-center {{ is_active('app_web_sign_up') ? 'border-green-700 text-green-700' : 'border-white text-violet-700' }}" href="{{ path('app_web_sign_up') }}">{{ 'header.nav.tab.register'|trans({}, 'web')|upper }}</a>
+                    </li>
+                {% endif %}
+            {% endif %}
+        </ul>
+    </nav>
+{% endfor %}
+
+<nav class="flex md:hidden w-full items-center justify-between py-3 px-6 text-white border-b border-b-gray font-rubik_bold">
+    <a href="{{ path('app_web_home') }}" class="w-1/3 flex items-center justify-start {{ is_active('app_web_home') ? 'active' : 'inactive' }}">
+        <img class="h-[40px]" src="{{ asset('media/web/icon.png') }}" alt="logo">
+    </a>
+    <div data-web--header-target="mobileNavOverlay">
+        <div data-web--header-target="mobileNav" class="bg-slate-900 flex flex-col items-start justify-start">
+            <span id="mobile-logo-container" class="w-full flex items-center justify-center py-8 border-b border-b-gray-50/10 mb-4 {{ is_active('app_web_home') ? 'active' : 'inactive' }}">
+                <a class="h-[60px]" href="{{ path('app_web_home') }}">
+                    <img class="h-full" src="{{ asset('media/web/logo.png') }}" alt="logo">
+                </a>
+            </span>
+            <div id="mobile-navigation" class="flex flex-col items-center justify-start overflow-y-auto w-full pb-4">
+                {% for sup in nav[sub_header_type].content.stages %}
+                    <ul class="w-full flex flex-col items-center justify-start">
+                        {% for sup_link in sup %}
+                            <li class="flex items-center justify-center w-full py-2">
+                                <a class="py-1 px-3 {{ is_active(sup_link.route) ? 'text-cyan-500' : '' }}" href="{{ path(sup_link.route, sup_link.query) }}">{{ sup_link.label|upper }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endfor %}
+                {% for header in nav[header_type].content.stages %}
+                    <ul class="w-full flex flex-col items-center justify-start">
+                        {% for header_link in header %}
+                            <li class="flex items-center justify-center w-full py-2 relative{{ is_active(header_link.route, header_link.children) ? ' text-cyan-500' : '' }}">
+                                {% if header_link.route is not null %}
+                                    <a class="text-sm flex items-center justify-start py-1 px-3" href="{{ path(header_link.route, header_link.query) }}">
+                                        {{ header_link.label|upper }}
+                                    </a>
+                                {% elseif header_link.link not in [null, '#'] %}
+                                    <a class="text-sm flex items-center justify-start py-1 px-3" target="{{ header_link.blank is same as true ? '_blank' : '_self' }}" href="{{ header_link.link }}">
+                                        {{ header_link.label|upper }}
+                                    </a>
+                                {% else %}
+                                    <p class="text-sm flex items-center justify-start py-1 px-3">
+                                        {{ header_link.label|upper }}
+                                    </p>
+                                {% endif %}
+                                {% if header_link.children is not empty %}
+                                    <span class="flex items-center absolute right-0 py-2 px-4" data-web--header-target="arrow">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 60 256 512" class="text-inherit size-4">
+                                            <path fill="currentColor" d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"/>
+                                        </svg>
+                                    </span>
+                                    <div class="fixed w-full h-full z-50 bg-slate-900 mobile-sub-navigation overflow-y-auto" data-web--header-target="subMenu">
+                                        <span class="flex items-center justify-center size-8 ml-4 rounded-full bg-gray-800 mt-4" data-web--header-target="return">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512" class="text-inherit size-4">
+                                                <path fill="currentColor" d="M9.4 278.6c-12.5-12.5-12.5-32.8 0-45.3l128-128c9.2-9.2 22.9-11.9 34.9-6.9s19.8 16.6 19.8 29.6l0 256c0 12.9-7.8 24.6-19.8 29.6s-25.7 2.2-34.9-6.9l-128-128z"/>
+                                            </svg>
+                                        </span>
+                                        <ul class="flex flex-col items-center justify-start{{ loop.index > 1 ? ' border-t border-t-gray-50/10 mt-4 pt-4' : '' }}">
+                                            {% for child in header_link.children %}
+                                                <li class="flex items-center justify-center text-center">
+                                                    {% if child.route is not null %}
+                                                        <a class="py-3 px-5 flex items-center {{ is_active(child.route) ? 'text-cyan-500' : 'text-white' }}" href="{{ path(child.route, child.query) }}">
+                                                            {% if child.icon is defined and child.icon is not null %}
+                                                                {{ svg.web_icon(child.icon, 'small', '') }}
+                                                                &nbsp;&nbsp;
+                                                            {% endif %}
+                                                            {{ child.label|upper }}
+                                                        </a>
+                                                    {% elseif child.link not in [null, '#'] %}
+                                                        <a class="py-3 px-5 flex items-center {{ is_active(child.route) ? 'text-cyan-500' : 'text-white' }}" href="{{ child.link }}" target="{{ child.blank is same as true ? '_blank' : '_self' }}">
+                                                            {% if child.icon is defined and child.icon is not null %}
+                                                                {{ svg.web_icon(child.icon, 'small', '') }}
+                                                                &nbsp;&nbsp;
+                                                            {% endif %}
+                                                            {{ child.label|upper }}
+                                                        </a>
+                                                    {% else %}
+                                                        <p class="py-3 px-5 flex items-center {{ is_active(child.route) ? 'text-cyan-500' : 'text-white' }}">
+                                                            {% if child.icon is defined and child.icon is not null %}
+                                                                {{ svg.web_icon(child.icon, 'small', '') }}
+                                                                &nbsp;&nbsp;
+                                                            {% endif %}
+                                                            {{ child.label|upper }}
+                                                        </p>
+                                                    {% endif %}
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                        {% if loop.index is same as nav[header_type].content.stages|length %}
+                            {% if app.user is not null %}
+                                <li class="flex items-center justify-center w-full pt-2 pb-6 border-b border-b-gray-50/10">
+                                    <a class="text-sm py-1 px-3 {{ is_active('app_web_profile_index', [], 'app_web_profile') ? 'text-cyan-500' : '' }}" href="{{ path('app_web_profile_index') }}">{{ 'header.nav.tab.profile'|trans({}, 'web')|upper }}</a>
+                                </li>
+                                <li class="flex items-center justify-center w-full py-2">
+                                    <a class="text-sm py-1 px-3" href="{{ path('app_web_profile_logout') }}">{{ 'header.nav.tab.logout'|trans({}, 'web')|upper }}</a>
+                                </li>
+                            {% else %}
+                                <li class="flex items-center justify-center w-full pt-2 pb-6 border-b border-b-gray-50/10">
+                                    <a class="text-sm py-1 px-3 {{ is_active('app_web_login') ? 'btext-cyan-500' : '' }}" href="{{ path('app_web_profile_index') }}">{{ 'header.nav.tab.login'|trans({}, 'web')|upper }}</a>
+                                </li>
+                                <li class="flex items-center justify-center w-full py-2 mt-4">
+                                    <a class="font-bold text-sm py-1 px-3 border-2 border-white hover:border-green-700 rounded-md hover:text-green-700 duration-200 text-violet-700 bg-white {{ is_active('app_web_sign_up') ? 'border-green-700 text-violet-700' : '' }}" href="{{ path('app_web_sign_up') }}">{{ 'header.nav.tab.register'|trans({}, 'web')|upper }}</a>
+                                </li>
+                            {% endif %}
+                        {% endif %}
+                    </ul>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="burger-container">
+        <input type="checkbox" id="checkbox-burger" class="checkbox-burger visually-hidden" data-web--header-target="burger">
+        <label for="checkbox-burger">
+        <span class="animation-container">
+            <span class="bar bar1"></span>
+            <span class="bar bar2"></span>
+            <span class="bar bar3"></span>
+            <span class="bar bar4"></span>
+        </span>
+        </label>
+    </div>
+</nav>

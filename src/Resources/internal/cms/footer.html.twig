@@ -1,0 +1,46 @@
+{% set footer_type = constant('App\\Constant\\NavigationType::FOOTER_TYPE') %}
+{% set sub_footer_type = constant('App\\Constant\\NavigationType::SUB_FOOTER_TYPE') %}
+{% set head_office = head_office_data() %}
+
+<div class="flex flex-col sm:flex-row items-center sm:items-stretch justify-between w-full max-w-[1080px] sm:py-8 pt-8 pb-4">
+    <ul class="w-full {% if nav[footer_type].content.stages is not empty %}sm:w-[{{ 100/(nav[footer_type].content.stages|length + 1) }}%]{% endif %} px-2 sm:px-3 py-4 mb-6 sm:mb-0 font-rubik">
+        <li class="w-full">
+            <a href="{{ path('app_web_home') }}" class="text-center sm:text-left w-full flex items-center justify-center sm:justify-start mb-2 sm:mb-4{{ is_active('app_web_home') ? 'active' : 'inactive' }}">
+                <img class="w-[200px]" src="{{ asset('media/web/logo.png') }}" alt="logo">
+            </a>
+        </li>
+        <li class="text-xs text-center sm:text-left">{{ head_office.address }}</li>
+        <li class="text-xs text-center sm:text-left">{{ head_office.zip }} {{ head_office.city }}</li>
+        <li class="text-xs text-center sm:text-left opacity-50">{{ head_office.phone }}</li>
+        <li class="text-xs text-center sm:text-left opacity-50">{{ head_office.email }}</li>
+    </ul>
+    {% for stage in nav[footer_type].content.stages %}
+        <ul class="{% if loop.index < nav[footer_type].content.stages|length %}w-[70%] sm:w-[{{ 100/(nav[footer_type].content.stages|length + 1) }}%] px-2 sm:px-3 pb-8 pt-4 sm:py-4 mb-4 sm:mb-0 border-b border-b-white/10 sm:border-b-0{% if loop.index is same as 1 %} pt-8 border-t border-t-white/10 sm:border-t-0{% endif %} font-rubik_bold{% else %}w-full sm:w-1/{{ (nav[footer_type].content.stages|length)+1 }} px-2 sm:px-3 py-4 font-rubik_bold{% endif %}">
+            {% for link in stage %}
+                <li class="px-4 py-2 w-full text-center">
+                    <a class="{{ is_active(link.route) ? 'underline' : '' }}" href="{{ path(link.route) }}">{{ link.label|upper }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+</div>
+{% if nav[sub_footer_type].content.stages is not empty %}
+    <div class="flex w-full justify-center items-center bg-gray-800">
+            {% for sub in nav[sub_footer_type].content.stages %}
+                <ul class="w-full max-w-[1080px] flex items-center justify-between text-xs py-2">
+                    {% for sub_link in sub %}
+                        <li class="px-4">
+                            <a class="{{ is_active(link.route) ? 'opacity-100' : 'opacity-50' }} duration-200 hover:opacity-100" href="{{ path(sub_link.route) }}">{{ sub_link.label }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+    </div>
+{% endif %}
+<div class="w-full px-4 py-4 bg-black flex items-center justify-center">
+    <div class="flex items-center justify-between w-full max-w-[1080px] font-rubik">
+        {% set d = 'now'|date("Y") is same as '2024' ? 'now'|date("Y") : '2024 - ' ~ 'now'|date("Y") %}
+        <p class="text-xs opacity-50">&copy;{{ d }} | {{ head_office.societyName }}</p>
+        <p class="text-xs opacity-50 text-right">{{ 'footer.copyright.developed-by'|trans({'%developer%': 'QS Conseil'}, 'web') }}</p>
+    </div>
+</div>

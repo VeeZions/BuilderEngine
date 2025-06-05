@@ -70,7 +70,7 @@
     "symfony/var-dumper": ">=7.0"
   },
   "suggest": {
-    "php": "PHP 8.2 or higher comes with attributes, a native replacement for annotations",
+    "php": "PHP 8.3 or higher comes with attributes, a native replacement for annotations",
     "monolog/monolog": "Allows to handle logs"
   },
   "autoload": {

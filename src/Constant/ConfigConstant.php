@@ -28,6 +28,7 @@ class ConfigConstant
     public const CONFIG_RENDER_BLOG = 'blog';
     public const CONFIG_RENDER_ARTICLE = 'article';
     public const CONFIG_RENDER_CATEGORY = 'category';
+    public const CONFIG_RENDER_PAGE = 'page';
     public const CONFIG_DEFAULT_ROUTES = [
         'articles_routes' => [
             'list' => 'vzbeb_controller_article_index',

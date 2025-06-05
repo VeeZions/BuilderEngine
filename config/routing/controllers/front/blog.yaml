@@ -1,4 +1,0 @@
-vzbeb_front_controller_blog:
-  controller: 'veezions_builder_engine.front_controller::blog'
-  path: '/blog'
-  methods: ['GET']

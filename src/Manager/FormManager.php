@@ -496,7 +496,7 @@ readonly class FormManager
         return null;
     }
 
-    public function frontData(string $type, ?string $slug): Response
+    protected function frontData(string $type, ?string $slug): Response
     {
         $request = $this->requestStack->getCurrentRequest();
         if (null === $request) {
@@ -569,5 +569,30 @@ readonly class FormManager
         }
 
         return $category;
+    }
+
+    protected function pageData(): Reponse
+    {
+        $request = $this->requestStack->getCurrentRequest();
+        if (null === $request) {
+            throw new InvalidArgumentException($this::class.'::frontData() expects a valid $request value');
+        }
+
+        $locale = $request->getLocale();
+        $route = $request->attributes->get('_route');
+        
+        $page = $this->entityManager->getRepository(BuilderPage::class)->findOneBy(['locale' => $locale, 'route' => $route]);
+
+        if (null === $page) {
+            throw new NotFoundHttpException($this->translator->trans('error.page.not.found', [], 'BuilderEngineBundle-errors'));
+        }
+
+        return new Response($this->twig->render(
+            '@BuilderEngineInternal/cms/cms.html.twig',
+            [
+                'page' => $page,
+                'title' => $page->getTitle(),
+            ]
+        ));
     }
 }

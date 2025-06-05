@@ -6,7 +6,6 @@ use VeeZions\BuilderEngine\Controller\NavigationController;
 use VeeZions\BuilderEngine\Controller\LibraryController;
 use VeeZions\BuilderEngine\Controller\PageController;
 use VeeZions\BuilderEngine\Controller\AsyncController;
-use VeeZions\BuilderEngine\Controller\FrontController;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\abstract_arg;
@@ -65,14 +64,6 @@ return static function (ContainerConfigurator $container) {
             service('doctrine.orm.entity_manager'),
             service('veezions_builder_engine.engine_manager'),
             service('veezions_builder_engine.asset_manager')
-        ])
-        ->tag('controller.service_arguments')
-    ;
-
-    $services
-        ->set('veezions_builder_engine.front_controller', FrontController::class)
-        ->args([
-            service('veezions_builder_engine.engine_manager'),
         ])
         ->tag('controller.service_arguments')
     ;

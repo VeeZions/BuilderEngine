@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Controller\BuilderEngineResources;
+
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+use VeeZions\BuilderEngine\Constant\ConfigConstant;
+use VeeZions\BuilderEngine\Manager\EngineManager;
+
+class ArticleController extends AbstractController
+{
+    public function __construct(private readonly EngineManager $builderEngineManager)
+    {
+    }
+
+    /**
+     * If you decide to change the controller route, remember to declare it
+     * in the builder_engine.yaml configuration file in:
+     *
+     * builder_engine:
+     *     front_routes:
+     *         article: my_new_article_route_name
+     */
+    #[Route('/blog/article/{slug}', name: 'vzbeb_front_controller_article', methods: ['GET'])]
+    public function index(string $slug): Response
+    {
+        return $this->builderEngineManager->frontRender(ConfigConstant::CONFIG_RENDER_ARTICLE, $slug);
+    }
+}
