@@ -1,22 +1,31 @@
-<div id="{{ app.request.get('_route')|replace({'_': '-'}) }}" data-route="{{ app.request.get('_route') }}" class="flex items-center justify-center flex-col w-full">
-    {% for row in content %}
-        <div
-            {% if row.id is defined and row.id|length > 0 %}id="{{ row.id }}"{% endif %}
-            class="w-full flex flex-col items-start justify-start{% if row.class is defined and row.class|length > 0 %} {{  row.class }}{% endif %}"
-            {% if row.stimulusController is defined and row.stimulusController is not null %}data-controller="{{ row.stimulusController }}"{% endif %}
-            {% if row.stimulusController is defined and row.stimulusController is not null and row.stimulusTarget is defined and row.stimulusTarget is not null %}data-{{ row.stimulusController }}-target="{{ row.stimulusTarget }}"{% endif %}
-            {% set bg = row.bg %}
-            {% if bg is defined and bg is not null %}
-                {% set gedValue = get_ged(bg.image) %}
-                style="{% if bg.image is defined and bg.image is not null %}background-image: url({{ gedValue is not null ? s3(gedValue.url) : '' }});{% endif %}{% if bg.position is defined and bg.position is not null %}background-position: {{ bg.position }};{% endif %}{% if bg.size is defined and bg.size is not null %}background-size: {{ bg.size }};{% endif %}{% if bg.repeat is defined and bg.repeat is not null %}background-repeat: {{ bg.repeat }};{% endif %}{% if bg.color is defined and bg.color is not null %}background-color: {{ bg.color }};{% endif %}{% if bg.attachment is defined and bg.attachment is not null %}background-attachment: {{ bg.attachment }};{% endif %}"
-            {% endif %}
-        >
-            {% for section in row.children %}
-                {{ _self.section(section) }}
-            {% endfor %}
-        </div>
-    {% endfor %}
-</div>
+{% set nav = vbe_navigations() %}
+<header class="fixed z-[99] top-0 left-0 w-full flex flex-col justify-center items-center bg-slate-900" data-controller="web--header">
+    {% include '@BuilderEngineInternal/front/navigation.html.twig' %}
+</header>
+<main class="{% if nav.sup_header.content.stages is not empty %}md:mt-[124px]{% else %}md:mt-[84px]{% endif %} mt-[65px] font-rubik">
+    <div id="{{ app.request.get('_route')|replace({'_': '-'}) }}" data-route="{{ app.request.get('_route') }}" class="flex items-center justify-center flex-col w-full">
+        {% for row in content %}
+            <div
+                {% if row.id is defined and row.id|length > 0 %}id="{{ row.id }}"{% endif %}
+                class="w-full flex flex-col items-start justify-start{% if row.class is defined and row.class|length > 0 %} {{  row.class }}{% endif %}"
+                {% if row.stimulusController is defined and row.stimulusController is not null %}data-controller="{{ row.stimulusController }}"{% endif %}
+                {% if row.stimulusController is defined and row.stimulusController is not null and row.stimulusTarget is defined and row.stimulusTarget is not null %}data-{{ row.stimulusController }}-target="{{ row.stimulusTarget }}"{% endif %}
+                {% set bg = row.bg %}
+                {% if bg is defined and bg is not null %}
+                    {% set gedValue = get_ged(bg.image) %}
+                    style="{% if bg.image is defined and bg.image is not null %}background-image: url({{ gedValue is not null ? s3(gedValue.url) : '' }});{% endif %}{% if bg.position is defined and bg.position is not null %}background-position: {{ bg.position }};{% endif %}{% if bg.size is defined and bg.size is not null %}background-size: {{ bg.size }};{% endif %}{% if bg.repeat is defined and bg.repeat is not null %}background-repeat: {{ bg.repeat }};{% endif %}{% if bg.color is defined and bg.color is not null %}background-color: {{ bg.color }};{% endif %}{% if bg.attachment is defined and bg.attachment is not null %}background-attachment: {{ bg.attachment }};{% endif %}"
+                {% endif %}
+            >
+                {% for section in row.children %}
+                    {{ _self.section(section) }}
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+</main>
+<footer class="flex flex-col items-center justify-center w-full bg-slate-900 text-white relative z-50">
+    {% include '@BuilderEngineInternal/front/footer.html.twig' %}
+</footer>
 
 {% macro section(section) %}
     <div

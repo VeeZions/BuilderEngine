@@ -1,6 +1,5 @@
-{% set footer_type = constant('App\\Constant\\NavigationType::FOOTER_TYPE') %}
-{% set sub_footer_type = constant('App\\Constant\\NavigationType::SUB_FOOTER_TYPE') %}
-{% set head_office = head_office_data() %}
+{% set footer_type = constant('VeeZions\\BuilderEngine\\Constant\\NavigationConstant::FOOTER_TYPE') %}
+{% set sub_footer_type = constant('VeeZions\\BuilderEngine\\Constant\\NavigationConstant::SUB_FOOTER_TYPE') %}
 
 <div class="flex flex-col sm:flex-row items-center sm:items-stretch justify-between w-full max-w-[1080px] sm:py-8 pt-8 pb-4">
     <ul class="w-full {% if nav[footer_type].content.stages is not empty %}sm:w-[{{ 100/(nav[footer_type].content.stages|length + 1) }}%]{% endif %} px-2 sm:px-3 py-4 mb-6 sm:mb-0 font-rubik">

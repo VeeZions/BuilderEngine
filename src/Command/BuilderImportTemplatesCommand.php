@@ -51,12 +51,12 @@ class BuilderImportTemplatesCommand extends Command
         }
 
         $io->text([
-            '<info>Articles</info> templates',
-            '<info>Categories</info> templates',
-            '<info>Libraries</info> templates',
-            '<info>Navigations</info> templates',
+            '<info>Articles</info> admin templates',
+            '<info>Categories</info> admin templates',
+            '<info>Libraries</info> admin templates',
+            '<info>Navigations</info> admin templates',
             '<info>Pages</info> templates',
-            '<comment>Main</comment> template',
+            '<comment>Base</comment> template',
         ]);
 
         $io->newLine();

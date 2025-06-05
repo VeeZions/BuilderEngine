@@ -153,7 +153,6 @@ class BuilderEngineExtension extends Extension
         $def->setArgument('$internal_css', $config['internal_css']);
         $def->setArgument('$page_title', $config['page_title_display']);
         $def->setArgument('$max_upload_file', is_array($config['library_config']) ? $config['library_config']['max_upload_file'] : ini_get('upload_max_filesize'));
-        $def->setArgument('$extended_front_template', $config['extended_front_template']);
     }
 
     /**

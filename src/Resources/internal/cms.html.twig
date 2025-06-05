@@ -1,0 +1,20 @@
+{% extends '@BuilderEngineBundle/base.html.twig' %}
+
+{% block seo %}
+    {% import '@BuilderEngineInternal/macros/seo.html.twig' as seo %}
+    {{ seo.tags(data.seo) }}
+{% endblock %}
+
+{% block title %}
+    {% if title is same as '' %}
+        {{ parent() }}
+    {% else if parent() is same as '' %}
+        {{ title }}
+    {% else %}
+        {{ title }} - {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% include '@BuilderEngineInternal/macros/builder.html.twig' with {content: data.content} %}
+{% endblock %}

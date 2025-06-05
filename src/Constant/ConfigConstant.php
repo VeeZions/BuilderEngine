@@ -13,7 +13,6 @@ class ConfigConstant
     public const CONFIG_S3_DRIVER = 's3';
     public const CONFIG_DEFAULT_CRUD_PREFIX = '/admin';
     public const CONFIG_EXTENDED_TEMPLATE = '@BuilderEngineInternal/base.html.twig';
-    public const CONFIG_EXTENDED_FRONT_TEMPLATE = '@BuilderEngineInternal/front.html.twig';
     public const CONFIG_SHARED_TEMPLATE_PATH = '@BuilderEngineBundle';
     public const CONFIG_INTERNAL_TEMPLATE_PATH = '@BuilderEngineInternal';
     public const CONFIG_DEFAULT_FORM_THEME = '@BuilderEngineInternal/form/builder_form_theme.html.twig';

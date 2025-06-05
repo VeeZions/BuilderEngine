@@ -134,7 +134,7 @@ readonly class FormManager
      */
     public function renderMediaList(string $order = 'asc', array $types = [], ?string $search = null, ?int $count = null): string
     {
-        return $this->twig->render('@BuilderEngineInternal/libraries/list.html.twig', [
+        return $this->twig->render(ConfigConstant::CONFIG_INTERNAL_TEMPLATE_PATH.'/libraries/list.html.twig', [
             /**@phpstan-ignore-next-line */
             'data' => $this->entityManager->getRepository(BuilderLibrary::class)->paginate($order, $types, $search, $count),
         ]);
@@ -142,7 +142,7 @@ readonly class FormManager
 
     public function renderModal(int $id): string
     {
-        return $this->twig->render('@BuilderEngineInternal/libraries/modal.html.twig', [
+        return $this->twig->render(ConfigConstant::CONFIG_INTERNAL_TEMPLATE_PATH.'/libraries/modal.html.twig', [
             'media' => $this->entityManager->getRepository(BuilderLibrary::class)->find($id),
             'routes' => $this->frontRoutes,
             'form' => $this->formFactory->create(LibraryModalType::class, null, [
@@ -191,10 +191,10 @@ readonly class FormManager
     private function getTwigTemplate(string $type, string $action): string
     {
         $template = match ($type) {
-            ArticleType::class => ConfigConstant::CONFIG_SHARED_TEMPLATE_PATH.'/articles/'.$action.'.html.twig',
-            PageType::class => ConfigConstant::CONFIG_SHARED_TEMPLATE_PATH.'/pages/'.$action.'.html.twig',
-            CategoryType::class => ConfigConstant::CONFIG_SHARED_TEMPLATE_PATH.'/categories/'.$action.'.html.twig',
-            NavigationType::class => ConfigConstant::CONFIG_SHARED_TEMPLATE_PATH.'/navigations/'.$action.'.html.twig',
+            ArticleType::class => ConfigConstant::CONFIG_SHARED_TEMPLATE_PATH.'/admin/articles/'.$action.'.html.twig',
+            PageType::class => ConfigConstant::CONFIG_SHARED_TEMPLATE_PATH.'/admin/pages/'.$action.'.html.twig',
+            CategoryType::class => ConfigConstant::CONFIG_SHARED_TEMPLATE_PATH.'/admin/categories/'.$action.'.html.twig',
+            NavigationType::class => ConfigConstant::CONFIG_SHARED_TEMPLATE_PATH.'/admin/navigations/'.$action.'.html.twig',
             LibraryType::class => ConfigConstant::CONFIG_INTERNAL_TEMPLATE_PATH.'/libraries/index.html.twig',
             default => null,
         };
@@ -509,6 +509,7 @@ readonly class FormManager
             ConfigConstant::CONFIG_RENDER_BLOG => $this->getBlog($locale, $request),
             ConfigConstant::CONFIG_RENDER_ARTICLE => $this->getArticle($locale, $slug),
             ConfigConstant::CONFIG_RENDER_CATEGORY => $this->getCategory($locale, $slug),
+            ConfigConstant::CONFIG_RENDER_PAGE => $this->getPage($locale, $request),
             default => null,
         };
 
@@ -517,12 +518,12 @@ readonly class FormManager
         }
 
         $title = match (true) {
-            $data instanceof BuilderCategory || $data instanceof BuilderArticle => $data->getTitle(),
+            $data instanceof BuilderCategory || $data instanceof BuilderArticle || $data instanceof BuilderPage => $data->getTitle(),
             default => 'Blog',
         };
 
         return new Response($this->twig->render(
-            '@BuilderEngineBundle/front/'.$type.'.html.twig',
+            ConfigConstant::CONFIG_INTERNAL_TEMPLATE_PATH.'/cms.html.twig',
             [
                 'data' => $data,
                 'title' => $title,
@@ -551,7 +552,7 @@ readonly class FormManager
         ]);
 
         if (null === $article) {
-            throw new NotFoundHttpException($this->translator->trans('error.article.not.found', [], 'BuilderEngineBundle-errors'));
+            throw new NotFoundHttpException($this->translator->trans('error.page.not.found', [], 'BuilderEngineBundle-errors'));
         }
 
         return $article;
@@ -565,34 +566,25 @@ readonly class FormManager
         ]);
 
         if (null === $category) {
-            throw new NotFoundHttpException($this->translator->trans('error.category.not.found', [], 'BuilderEngineBundle-errors'));
+            throw new NotFoundHttpException($this->translator->trans('error.page.not.found', [], 'BuilderEngineBundle-errors'));
         }
 
         return $category;
     }
 
-    protected function pageData(): Reponse
+    private function getPage(string $locale, Request $request): BuilderPage
     {
-        $request = $this->requestStack->getCurrentRequest();
-        if (null === $request) {
-            throw new InvalidArgumentException($this::class.'::frontData() expects a valid $request value');
+        $route = $request->attributes->get('_route');
+        if (!is_string($route)) {
+            throw new InvalidArgumentException($this::class.'::getPage() expects a valid $route value');
         }
 
-        $locale = $request->getLocale();
-        $route = $request->attributes->get('_route');
-        
         $page = $this->entityManager->getRepository(BuilderPage::class)->findOneBy(['locale' => $locale, 'route' => $route]);
 
         if (null === $page) {
             throw new NotFoundHttpException($this->translator->trans('error.page.not.found', [], 'BuilderEngineBundle-errors'));
         }
 
-        return new Response($this->twig->render(
-            '@BuilderEngineInternal/cms/cms.html.twig',
-            [
-                'page' => $page,
-                'title' => $page->getTitle(),
-            ]
-        ));
+        return $page;
     }
 }

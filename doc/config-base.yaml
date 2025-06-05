@@ -43,9 +43,6 @@ builder_engine:
   # Use your own extended template in "default" mode
   extended_template:    '@BuilderEngineInternal/base.html.twig'
   
-  # Use your own extended template in "default" mode
-  extended_front_template: '@BuilderEngineInternal/front.html.twig'
-  
   # form_theme to use in builder forms in "default" mode
   form_theme:           '@BuilderEngineInternal/form/builder_form_theme.html.twig'
   

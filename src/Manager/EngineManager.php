@@ -11,7 +11,6 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment as TwigEnvironment;
-use VeeZions\BuilderEngine\Constant\ConfigConstant;
 use VeeZions\BuilderEngine\Constant\NavigationConstant;
 use VeeZions\BuilderEngine\Constant\TableConstant;
 use VeeZions\BuilderEngine\Provider\AuthorProvider;
@@ -90,8 +89,6 @@ readonly class EngineManager extends FormManager
 
     public function frontRender(string $type, ?string $slug = null): Response
     {
-        return $type === ConfigConstant::CONFIG_RENDER_PAGE 
-            ? $this->pageData($type) 
-            : $this->frontData($type, $slug);
+        return $this->frontData($type, $slug);
     }
 }

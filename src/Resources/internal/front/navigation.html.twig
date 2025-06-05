@@ -1,7 +1,7 @@
-{% import 'macros/svg.html.twig' as svg %}
+{% import '@BuilderEngineInternal/macros/svg.html.twig' as svg %}
 
-{% set header_type = constant('App\\Constant\\NavigationType::HEADER_TYPE') %}
-{% set sub_header_type = constant('App\\Constant\\NavigationType::SUP_HEADER_TYPE') %}
+{% set header_type = constant('VeeZions\\BuilderEngine\\Constant\\NavigationConstant::HEADER_TYPE') %}
+{% set sub_header_type = constant('VeeZions\\BuilderEngine\\Constant\\NavigationConstant::SUP_HEADER_TYPE') %}
 
 {% for sup in nav[sub_header_type].content.stages %}
     <nav class="w-full bg-black flex items-center justify-center">
